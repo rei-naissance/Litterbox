@@ -11,23 +11,27 @@
   <body class="text-sm">
     {% include "header.html" %}
 
-    <div
-      class="mx-4 my-2 p-4 w-auto h-screen rounded-xl flex space-x-4 bg-gray-box"
-    >
+    <div class="mx-4 p-4 w-auto h-full rounded-xl flex space-x-4 bg-gray-box">
       <div class="w-1/4 h-full sticky top-16">
-        {% include "profile_panel.html" %}
-        {% include "tabs_panel.html" %}
+        {% include "profile_panel.html" %} {% include "tabs_panel.html" %}
       </div>
 
       <div class="w-2/3 h-full">
-        {% include "create_post_panel.html" %}
-
-        <div class="mt-4 h-2/3 bg-white rounded-xl">feed</div>
+        {% include "create_post_panel.html" %} 
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
+        {% include "feed_box.html" %}
       </div>
 
-      <div class="w-1/4 h-screen">
+      <div class="w-1/4 h-full sticky top-16">
         {% include "event_panel.html" %} {% include "announcement_panel.html" %}
-        <div class="mt-4 h-1/3 bg-white rounded-xl">calendar</div>
+        {% include "calendar_panel.html" %}
       </div>
     </div>
   </body>
