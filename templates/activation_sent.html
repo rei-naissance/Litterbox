@@ -1,0 +1,14 @@
+{ % load static tailwind_tags % }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation Sent</title>
+    { % tailwind_css % }
+</head>
+<body>
+    <p>Thank you for registering. A verification email has been sent to your email address.</p>
+    <p>If you did not receive the email, click <a href="{% url 'resend_verification_email' user_id=user_id %}">here</a> to resend the verification email.</p>
+</body>
+</html>

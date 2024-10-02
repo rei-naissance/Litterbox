@@ -1,0 +1,24 @@
+<!-- {% load static tailwind_tags %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to </title>
+    <!-- {% tailwind_css %} -->
+</head>
+<body>
+    <div>
+        <div>
+            <h1>Create your Litterbox account</h1>
+            <p>Provide your Cebu Institute of Technology - University email address and choose a password.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Continue</button>
+            </form>
+            <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+        </div>
+    </div>
+</body>
+</html>
