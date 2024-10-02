@@ -73,6 +73,7 @@ def activate_view(request, uidb64, token):
     except(TypeError, ValueError, OverflowError, Student.DoesNotExist):
         user = None
 
+    # Debugging line, was used to check if emails were actually being sent
     print(f"UID: {uid}, Token: {token}, User Exists: {user is not None}")
     
     if user is not None and default_token_generator.check_token(user, token):
