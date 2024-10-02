@@ -14,5 +14,4 @@ urlpatterns = [
         template_name = 'login.html',
         authentication_form = StudentLoginForm,
         ), name='login')
-    
 ]
