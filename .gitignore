@@ -22,3 +22,6 @@ authentication/migrations/__pycache__/0004_student_first_name_student_last_name_
 authentication/__pycache__
 Litterbox/__pycache__
 theme/__pycache__
+settings.cpython-312.pyc
+urls.cpython-312.pyc
+wsgi.cpython-312.pyc
