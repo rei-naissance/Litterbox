@@ -1,0 +1,162 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Litterbox</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+        <navbar>
+            <div class="logo">
+                <img src="{% static 'svg/logo.svg' %}" alt="Logo">
+            </div>
+            <div class="search-bar">
+                <div class="search-background">
+                    <button type="submit" class="searchButton">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <input type="text" class="searchTerm" placeholder="Search">
+                </div>
+
+
+            </div>
+        </navbar>
+        <div class ="body-container">
+            
+            <div class="side-container">
+                <div class="profile-container">
+                    <div class="profile-image-container" id="add-profile-photo-id">
+                        {% if profile.profile_image %}
+                            <img src="{{ profile.profile_image.url }}" alt="Profile Cover Image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" alt="Profile Placeholder">
+                        {% endif %}
+                        <div class="profile-option-section" id="profile-popup-add-id">
+                            <button id="add-profile-button-id" class="add-profile-button">Add Photo</button>
+                        </div>
+                    </div>
+
+                    
+                    <div class="profile-personal-info">
+                        <div class="identifier">@Jhon Doe</div>
+                        <div class="name">Jhon Doe Stalone</div>
+                        <div class="title">Junior Computer Science Student</div>
+                    </div>
+                    <div class="profile-stats-info">
+                        <div class="posts-stats">
+                            <div class="count">12</div>
+                            <div class="title">Posts</div>
+                        </div>
+                        <div class="comment-stats">
+                            <div class="count">51</div>
+                            <div class="title">Comments</div>
+                        </div>
+                        <div class="event-participated-stats">
+                            <div class="count">32</div>
+                            <div class="title">Events <br>participated</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-option-container">
+                    <button class="edit-profile-container">
+                        Edit Profile
+                    </button>
+                </div>
+
+                <div class="about-container">
+                    <div class="div-title">About</div>
+                    <div class="about-detail-container" id="about-detail-id">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi volutpat arcu nec sagittis faucibus. Morbi mauris leo, commodo a sagittis sit amet, convallis quis metus. Duis commodo nibh justo, eget aliquet sem egestas id. Integer varius dignissim justo ut efficitur. Aliquam odio enim, sollicitudin vel mauris nec, aliquam pulvinar eros. In faucibus odio id risus congue auctor. Praesent fermentum ex a bibendum mollis. Nam non mi enim.</div>
+                    <div class="about-form" id="about-form-id">
+
+                    </div>
+                    <button class="edit-about-container" id="edit-about-id">
+                        Edit Bio
+                    </button>
+                </div>
+
+
+
+                <div class="link-container">
+                    <div class="div-title">Links</div>
+                    <div class="links-container"></div>
+                    <button class="edit-link-container">
+                        Edit Link
+                    </button>
+                </div>
+            </div>
+            <div class="main-container">
+                <div class="cover-container">
+
+                    <div class="cover-image-container">
+                        {% if profile.cover_image %}
+                            <img src="{{ profile.cover_image.url }}" alt="Profile Cover Image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/150" alt="Profile Placeholder">
+                        {% endif %}
+                    </div>
+
+                    <div class="cover-popup" id="cover-popup-id">
+                        <div class="base-section" id="base-popup-id">
+                            <div class="title-section">
+                                <div class="popup-title">Select Photo</div>
+                                <button id="base-popup-close-id" class="close-button">X</button>
+                            </div>
+                            <div class="option-section" >
+                                <button id="add-cover-photo-id" class="add-cover-button">Add Photo</button>
+                            </div>
+                            
+                        </div>
+
+                        <div class="select-image-section" id="select-popup-id">
+                            <div class="title-section">
+                                <div class="popup-title">Select Cover Photo</div>
+                                <button id="select-popup-close-id"class="close-button">X</button>
+                            </div>
+                            <form method=POST enctype="multipart/form-data" id="cover-form">
+                                
+                                {% csrf_token %}
+                                {{ cover_form.as_p}}
+                                
+                                <input type="submit" name="cover-submit" value="Submit" class="btn btn-secondary">
+                            </form>
+                        </div>
+
+                        <div class="select-image-section" id="profile-add-photo-popup-id">
+                            <div class="title-section">
+                                <div class="popup-title">Select Profile Photo</div>
+                                <button id="select-profile-popup-close-id"class="close-button">X</button>
+                            </div>
+                            <form method=POST enctype="multipart/form-data" id="profile-img-form">
+                                
+                                {% csrf_token %}
+                                {{ profile_form.as_p}}
+                                
+                                <input type="submit" name="profile-img-submit" value="Submit" class="btn btn-secondary">
+                            </form>
+                        </div>
+
+                        <div class="edit-section">
+                            <div class="title-section">
+                                <div class="popup-title">Select Photo</div>
+                                <button class="close-button">X</button>
+                            </div>s
+                            <img id="edit-image-id">
+                            <button class="confirm-edit-button">Confirm</button>
+                        </div>
+
+                        <div id="overlay"></div>
+                    </div>
+
+                    <button id="popup-edit-cover-id" class="edit-cover-container" >
+                        Edit Cover Photo
+                    </button>
+                </div>
+                <div class="create-container">Create</div>
+            </div>
+        </div>
+    </body>
+</html>
+<script src="{% static 'js/myscripts.js' %}"></script>
