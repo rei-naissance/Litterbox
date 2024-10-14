@@ -1,0 +1,39 @@
+<div class="profile-container">
+    <div class="profile-image-container" id="add-profile-photo-id">
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" alt="Profile Cover Image">
+        {% else %}
+            <img src="https://via.placeholder.com/150" alt="Profile Placeholder">
+        {% endif %}
+        <div class="profile-option-section" id="profile-popup-add-id">
+            <button id="add-profile-button-id" class="add-profile-button">Add Photo</button>
+        </div>
+    </div>
+
+    
+    <div class="profile-personal-info">
+        <div class="identifier">@Jhon Doe</div>
+        <div class="name">Jhon Doe Stalone</div>
+        <div class="title">Junior Computer Science Student</div>
+    </div>
+    <div class="profile-stats-info">
+        <div class="posts-stats">
+            <div class="count">12</div>
+            <div class="title">Posts</div>
+        </div>
+        <div class="comment-stats">
+            <div class="count">51</div>
+            <div class="title">Comments</div>
+        </div>
+        <div class="event-participated-stats">
+            <div class="count">32</div>
+            <div class="title">Events <br>participated</div>
+        </div>
+    </div>
+</div>
+
+<div class="profile-option-container">
+    <button class="edit-profile-container">
+        Edit Profile
+    </button>
+</div>
