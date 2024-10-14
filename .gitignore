@@ -22,7 +22,6 @@ authentication/migrations/__pycache__/0004_student_first_name_student_last_name_
 authentication/__pycache__
 Litterbox/__pycache__
 theme/__pycache__
-Litterbox/settings.py
 authentication/__pycache__
 authentication/__pycache__/__init__.cpython-312.pyc
 authentication/__pycache__/admin.cpython-312.pyc
@@ -36,3 +35,5 @@ Litterbox/__pycache__/settings.cpython-312.pyc
 Litterbox/__pycache__/urls.cpython-312.pyc
 theme/__pycache__/__init__.cpython-312.pyc
 theme/__pycache__/apps.cpython-312.pyc
+Litterbox/__pycache__/settings.cpython-312.pyc
+authentication/__pycache__/forms.cpython-312.pyc
