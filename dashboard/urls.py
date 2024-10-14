@@ -5,6 +5,6 @@ from Litterbox import settings
 from . import views
 
 urlpatterns = [
-    path('/dashboard_home', views.dashboard_home, name='dashboard_home'),
+    path('dashboard_home/', views.dashboard_home, name='dashboard_home'),
 ]
 
