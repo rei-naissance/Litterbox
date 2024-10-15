@@ -1,24 +1,231 @@
-<!-- {% load static tailwind_tags %} -->
+{% load static tailwind_tags %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to </title>
-    <!-- {% tailwind_css %} -->
-</head>
-<body>
-    <div>
-        <div>
-            <h1>Create your Litterbox account</h1>
-            <p>Provide your Cebu Institute of Technology - University email address and choose a password.</p>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit">Continue</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Litterbox</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+    {% tailwind_css %}
+    <style>
+      /* Custom CSS for smaller placeholder text */
+      input::placeholder {
+        font-size: 0.85rem; /* Adjust this size as needed */
+        font-weight: 500;
+        color: rgba(107, 114, 128, 1); /* Example gray color */
+      }
+
+      .errorlist {
+        font-size: 0.85rem; /* Smaller font size */
+        color: red; /* Optional: Change color to red */
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body class="h-screen bg-cover bg-no-repeat bg-center">
+    <div class="w-full flex">
+      <div
+        class="relative bg-transparent w-[calc(33.3333%-50px)] h-[calc(100vh-32px)] m-4 rounded-md"
+        style="
+          box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05);
+          background-image: url('{% static 'imgs/bg.png' %}');
+        "
+      >
+        <div class="w-10 m-5">{% include "assets/drk_small_title.svg" %}</div>
+
+        <button class="flex text-gray-font1 text-13 mx-5 px-5 mt-12">
+          {% include 'assets/arrow_left.svg' %}
+          <div class="px-2 font-bold">
+            <a href="{% url 'index' %}">Back to home</a>
+          </div>
+        </button>
+        <button><a href="{% url 'login' %}">Sign in</a></button>
+      </div>
+
+      <div class="bg-white w-2/3">
+        <div
+          class="flex items-center justify-center bg-white py-5 px-4 sm:px-6 lg:px-8"
+        >
+          <div class="max-w-sm w-full p-3 mt-16 pt-6">
+            <div class="w-full mb-8 pl-36">
+              <div>{% include "assets/logo small.svg" %}</div>
+            </div>
+
+            <h1 class="text-2xl font-bold text-center">
+              Create a free account
+            </h1>
+            <p
+              class="text-gray-font1 font-medium text-center text-base mb-8 text-14"
+            >
+              Provide your email and choose a password
+            </p>
+
+            <form method="post" class="space-y-7">
+              {% csrf_token %}
+              <div class="space-y-3">
+                <div class="space-y-1">
+                  <p class="text-13 font-bold">Email*</p>
+                  <div class="rounded-sm font-sm">{{ form.email }}</div>
+                  {{ form.username.errors }}
+                </div>
+
+                <div class="space-y-1">
+                  <p class="text-13 font-bold">Password*</p>
+                  <div class="rounded-sm font-sm">{{ form.password }}</div>
+                  {{ form.password.errors }}
+                </div>
+
+                <div class="space-y-1">
+                  <p class="text-13 font-bold">Re-enter password*</p>
+                  <div class="rounded-sm font-sm">
+                    {{ form.confirm_password }}
+                  </div>
+                  {{ form.password.errors }}
+                </div>
+
+                {{ form.non_field_errors }}
+
+                <div class="flex space-x-4 pt-2 px-6">
+                  <div class="bg-gray-400 rounded-lg h-1 w-1/3 weak"></div>
+                  <div class="bg-gray-400 rounded-lg h-1 w-1/3 medium"></div>
+                  <div class="bg-gray-400 rounded-lg h-1 w-1/3 strong"></div>
+                </div>
+              </div>
+
+              <div class="relative flex items-center justify-center">
+                <hr class="w-full border-gray-300" />
+                <span class="absolute bg-white px-3 text-gray-font1 text-13"
+                  >OR</span
+                >
+              </div>
+
+              <div class="flex flex-col items-center justify-center space-y-4">
+                <button
+                  class="w-full flex justify-center items-center border border-input-border py-2 rounded-sm hover:bg-gray-100 font-semibold text-13 h-10"
+                >
+                  <div class="h-7 w-9 mr-1">
+                    {% include 'assets/outlook.svg' %}
+                  </div>
+
+                  <a href="#outlooksignin"> Sign in with Outlook </a>
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full bg-green-box text-white py-2 rounded-sm hover:bg-green-700 transition-colors font-regular text-base text-13 font-bold"
+              >
+                Continue
+              </button>
             </form>
-            <p>Already have an account? <a href="{% url 'login' %}">Sign In</a></p>
+          </div>
         </div>
+      </div>
     </div>
-</body>
+  </body>
+
+  <script>
+    // Get the password input and strength meter elements
+    const passwordInput = document.getElementById("id_password");
+    const meterBars = document.querySelectorAll(".flex .rounded-lg");
+
+    // Password strength check function
+    function updateStrengthMeter() {
+      const password = passwordInput.value;
+      let strength = 0;
+
+      // Check if the password has at least 8 characters
+      if (password.length >= 8) {
+        strength++;
+      }
+
+      // Check if the password contains at least one number
+      if (/\d/.test(password) || /[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        strength++;
+      }
+
+      // Check if the password contains at least one uppercase letter
+      if (/[A-Z]/.test(password)) {
+        strength++;
+      }
+
+      // Reset all bars and the password input's border to gray first
+      meterBars.forEach((bar) => {
+        bar.classList.remove("bg-red-400", "bg-yellow-400", "bg-green-400");
+        bar.classList.add("bg-gray-400");
+      });
+
+      passwordInput.classList.remove(
+        "border-red-400",
+        "border-yellow-400",
+        "border-green-400"
+      );
+      passwordInput.classList.add("border-gray-400"); // Default border color
+
+      // Apply colors based on the strength level
+      if (strength === 1) {
+        // When weak is met
+        meterBars[0].classList.remove("bg-gray-400");
+        meterBars[0].classList.add("bg-red-400");
+        passwordInput.classList.remove("border-gray-400");
+        passwordInput.classList.add("border-red-400");
+      } else if (strength === 2) {
+        // When medium is met
+        meterBars[0].classList.remove("bg-gray-400");
+        meterBars[0].classList.add("bg-yellow-400");
+        meterBars[1].classList.remove("bg-gray-400");
+        meterBars[1].classList.add("bg-yellow-400");
+        passwordInput.classList.remove("border-gray-400", "border-red-400");
+        passwordInput.classList.add("border-yellow-400");
+      } else if (strength === 3) {
+        // When strong is met
+        meterBars[0].classList.remove("bg-gray-400");
+        meterBars[0].classList.add("bg-green-400");
+        meterBars[1].classList.remove("bg-gray-400");
+        meterBars[1].classList.add("bg-green-400");
+        meterBars[2].classList.remove("bg-gray-400");
+        meterBars[2].classList.add("bg-green-400");
+        passwordInput.classList.remove(
+          "border-gray-400",
+          "border-red-400",
+          "border-yellow-400"
+        );
+        passwordInput.classList.add("border-green-400");
+      }
+    }
+
+    const confirmPasswordInput = document.getElementById("id_confirm_password");
+    const continueButton = document.querySelector("button[type='submit']");
+
+    // Function to check if passwords match and update button color
+    function checkPasswordMatch() {
+      // Only check if the confirm password field is not empty
+      if (confirmPasswordInput.value === "") {
+        // Reset button to original color (if no input in confirm password field)
+        continueButton.classList.remove("bg-gray-500");
+        continueButton.classList.remove("hover:bg-gray-700");
+        continueButton.classList.add("bg-green-box");
+        continueButton.classList.add("hover:bg-green-700");
+      } else if (passwordInput.value !== confirmPasswordInput.value) {
+        // If passwords don't match, turn the button red
+        continueButton.classList.remove("bg-green-box");
+        continueButton.classList.remove("hover:bg-green-700");
+        continueButton.classList.add("bg-gray-500");
+        continueButton.classList.add("hover:bg-gray-700");
+      } else {
+        // If passwords match, keep the original green color
+        continueButton.classList.remove("bg-gray-500");
+        continueButton.classList.remove("hover:bg-gray-700");
+        continueButton.classList.add("bg-green-box");
+        continueButton.classList.add("hover:bg-green-700");
+      }
+    }
+
+    // Add event listeners to both password and confirm password input fields
+    confirmPasswordInput.addEventListener("input", checkPasswordMatch);
+    passwordInput.addEventListener("input", checkPasswordMatch);
+
+    // Add event listener to the password input field
+    passwordInput.addEventListener("input", updateStrengthMeter);
+  </script>
 </html>
