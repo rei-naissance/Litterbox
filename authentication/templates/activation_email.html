@@ -1,0 +1,10 @@
+Greetings {{ user.email }}!,
+
+Welcome to Litterbox! We are excited to have you on board,
+
+To verify your account, click the link below to verify your email and activate your account:
+http://{{ domain }}{% url 'activate' uidb64=uid token=token %}
+
+Thank you!
+
+Sincerely, The Litterbox Team.
