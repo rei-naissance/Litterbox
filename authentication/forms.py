@@ -18,4 +18,18 @@ class StudentRegistrationForm(forms.ModelForm):
             raise forms.ValidationError('Password does not match.')
         
 class StudentLoginForm(AuthenticationForm):
-    username = forms.EmailField(label="Email") 
+    username = forms.EmailField(label="Email")
+    
+    def __init__(self, *args, **kwargs):
+        super(StudentLoginForm, self).__init__(*args, **kwargs)
+        
+        # Add Tailwind CSS classes to form fields
+        self.fields['username'].widget.attrs.update({
+            'class': 'w-full border-input-border rounded-sm py-2 px-4 focus:border-gray-500',
+            'placeholder': 'Enter your username',
+        })
+        
+        self.fields['password'].widget.attrs.update({
+            'class': 'w-full border-input-border rounded-sm py-2 px-4 focus:border-gray-500',
+            'placeholder': 'Enter password',
+        })
