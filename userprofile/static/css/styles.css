@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 
-html,
+/* html,
 body {
   margin: 0;
   padding: 0;
@@ -12,8 +12,8 @@ body {
 
 body{
     height: 100vh;
-    /* width: 100vw; */
-}
+    /* width: 100vw; 
+} */
 
 navbar{
     height: 100px;
@@ -66,16 +66,17 @@ navbar{
     outline: none;
 }
 
-.body-container{
+
+/* .body-container{
     display: flex;
     justify-content: center;
     gap: 25px;
     flex-wrap: wrap;
     padding: 20px 35px 20px 35px;
     background-color: #F7F7F7;
-}
+} */
 
-.side-container{
+/* .side-container{
     display: flex;
     flex-direction: column;
     position: sticky;
@@ -84,41 +85,43 @@ navbar{
     width: 100%;
     order: 1;
     top: 0;
-}
+} */
 
-.profile-container{
+/* .profile-container{
     width: 100%;
     height: 426px;
-    /* background-color: aquamarine; */
+    # background-color: aquamarine; 
     display: flex;
     flex-direction: column;
     align-items: center;
     row-gap: 20px;
     position: relative;
-}
 
+} */
+
+/* 
 .profile-image-container img{
     width: 208px;
     height: 208px;
     object-fit: cover;
     border-radius: 50%;
     
-}
+} */
 
-.profile-option-section{
+/* .profile-option-section{
     display: none;
     position: absolute;
     right: 35%;
     top: 10px;
     z-index: 10;
-}
+} */
 
-.profile-personal-info{
+/* .profile-personal-info{
     text-align: center;
     font-weight: bolder;
-}
+} */
 
-.profile-personal-info .identifier {
+/* .profile-personal-info .identifier {
     font-size: 16px;
     font-weight: lighter;
 }
@@ -131,73 +134,74 @@ navbar{
     margin-top: 21px;
     font-size: 10px;
     font-weight: lighter;
-}
+} */
 
-.profile-stats-info{
+/* .profile-stats-info{
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     text-align: center;
     column-gap: 10px;
     width: 100%;
-}
+} */
 
 
 
-.posts-stats, .comment-stats, .event-participated-stats{
+/* .posts-stats, .comment-stats, .event-participated-stats{
     display: flex;
     flex-direction: column;
     flex: 1;
     align-items: center;
-}
+} */
 
-.posts-stats .title, .comment-stats .title, .event-participated-stats .title {
+/* .posts-stats .title, .comment-stats .title, .event-participated-stats .title {
     font-size: 11px;
 }
 
 .posts-stats .count, .comment-stats .count, .event-participated-stats .count {
     font-size: 16px;
     font-weight: bold;
-}
+} */
 
-.about-container{
+/* .about-container{
     height: 231px;
-    /* background-color: bisque; */
-}
+    /* background-color: bisque; 
+} */
 
-.link-container{
+/* .link-container{
     height: 231px;
-    /* background-color: rgb(213, 167, 112); */
-}
+    /* background-color: rgb(213, 167, 112); 
+} */
 
 
-.main-container{
+/* .main-container{
     display: flex;
     flex-direction: column;
     flex: 1;
     gap: 25px;
     order: 2;
-}
+} */
 
-.main-container .cover-container{
+/* .main-container .cover-container{
     height: 360px;
-    /* margin-bottom: -100px; */
+    /* margin-bottom: -100px; 
     padding: 12px 25px;
     position: relative;
-    /* background-color: rgb(0, 208, 255); */
-}
+    /* background-color: rgb(0, 208, 255); 
+} */
 
-.create-container{
+/* .create-container{
     flex: 1;
-    /* background-color: blue; */
-}
+    /* background-color: blue; 
+} */
 
-.side-container > *, .main-container > *{
+/* .side-container > * */
+/* .main-container > *{
     border-radius: 15px;
     border: 1px solid rgba(0,0,0,0.2);
     padding: 34px 17px;
     background-color: #FFFFFF;
-}
+}  */
 
 .about-container, .link-container{
     display: flex;
@@ -206,49 +210,51 @@ navbar{
     justify-content: space-between;
 }
 
-.side-container .profile-option-container{
+/* .side-container .profile-option-container{
     display: flex;
     flex-direction: row-reverse;
     padding: 15px;
-}
+} */
 
-.cover-image-container{
+/* .cover-image-container{
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-.cover-image-container img{
+} */
+/* .cover-image-container img{
     width: 100%;
     height: 330px;
-}
+} */
 
-.edit-profile-container{
+/* .edit-profile-container{
     background-color: #EDEDED;
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 14px;
     border: none;
-}
+} */
 
-.about-container .about-detail-container , .link-container .links-container{
+/* .about-container  */
+/* 
+.about-detail-container , .link-container .links-container{
     display: flex;
     flex: 1;
     flex-direction: row;
     font-size: 11px;
     font-weight: lighter;
     padding-top:  10px;
-}
+} */
 
-.edit-about-container, .edit-link-container{
+/* .edit-about-container, .edit-link-container{
     background-color: #EDEDED;
     padding: 5px 10px;
     border-radius: 10px;
     text-align: center;
     font-size: 14px;
     border: none;
-}
+} */
 
-.cover-container .edit-cover-container{
+/* .cover-container .edit-cover-container{
     background-color: #EDEDED;
     padding: 5px 10px;
     border-radius: 10px;
@@ -259,11 +265,11 @@ navbar{
     right: 47px;
     bottom: 29px;
     border: none;
-}
+} */
 
 
 /*cover photo pop up*/
-.popup-title{
+/* .popup-title{
     padding-left: 40px;
     font-size: 1.25rem;
     font-weight: 700;
@@ -277,10 +283,10 @@ navbar{
     height: 36px;
     border-radius: 50%;
     border: 1px solid rgba(0,0,0,0.2);
-}
+} */
 
 
-.base-section, .select-image-section, .edit-section{
+/* .base-section, .select-image-section, .edit-section{
     display: none;
     position: fixed;
     flex-direction: column;
@@ -296,47 +302,47 @@ navbar{
     z-index: 9999;
     max-width: 680px;
     border: 1px solid rgba(0,0,0,0.2);
-}
+} */
 
 
 
-.title-section{
+/* .title-section{
     display: flex; 
     flex-direction: row;
     align-items: center; 
     justify-content: center;
     
-}
+} */
 
 /* .select-image-section{
     display: none;
 }*/
 
-.edit-section{
+/* .edit-section{
     height: 500px;
-} 
+}  */
 
 
-.option-section{
+/* .option-section{
     display: flex;
     flex-direction: row-reverse;
-}
+} */
 
 
-.add-cover-button .confirm-edit-button{
+/* .add-cover-button .confirm-edit-button{
     background-color: #EDEDED;
     padding: 5px 10px;
     border-radius: 10px;
     font-size: 14px;
     border: none;
 
-}
+} */
 
-.add-cover-button{
+/* .add-cover-button{
     width: fit-content;
-}
+} */
 
-#overlay{
+/* #overlay{
     display: none;
     position: fixed;
     top: 0;
@@ -346,18 +352,18 @@ navbar{
     background-color:rgba(0,0,0,0.2) ;
     backdrop-filter: blur(2px);
     z-index: 9998;
-}
+} */
 
 /*cover photo pop up*/
 
 
 
-.profile-image-container:hover img {
+/* .profile-image-container:hover img {
     filter: brightness(80%);
-}
+} */
 
-@media screen and (max-width: 460px) {
+/* @media screen and (max-width: 460px) {
     .side-container{
         position: static;
     }
-}
+} */

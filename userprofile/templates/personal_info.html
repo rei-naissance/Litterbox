@@ -1,39 +1,44 @@
-<div class="profile-container">
-    <div class="profile-image-container" id="add-profile-photo-id">
+{% load static tailwind_tags %}
+{% tailwind_css %}
+<div class="profile-container w-full h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
+    <div class="profile-image-container flex justify-center hover:brightness-90" id="add-profile-photo-id">
         {% if profile.profile_image %}
-            <img src="{{ profile.profile_image.url }}" alt="Profile Cover Image">
+            <img src="{{ profile.profile_image.url }}" alt="Profile Cover Image" class="w-[208px] h-[208px] object-cover rounded-full">
         {% else %}
-            <img src="https://via.placeholder.com/150" alt="Profile Placeholder">
+            <img src="https://via.placeholder.com/150" alt="Profile Placeholder" class="w-[208px] h-[208px] object-cover rounded-full">
         {% endif %}
-        <div class="profile-option-section" id="profile-popup-add-id">
-            <button id="add-profile-button-id" class="add-profile-button">Add Photo</button>
+        <div class="profile-option-section hidden absolute right-[35%] top-[10px] z-[10]" id="profile-popup-add-id">
+            <button id="add-profile-button-id" class="add-profile-button  bg-gray-btn py-2 px-3 my-2 rounded-lg text-sm">Add Photo</button>
         </div>
     </div>
 
     
-    <div class="profile-personal-info">
-        <div class="identifier">@Jhon Doe</div>
-        <div class="name">Jhon Doe Stalone</div>
-        <div class="title">Junior Computer Science Student</div>
+    <div class="profile-personal-info text-center font-semibold">
+        <div class="identifier text-[16px] font-extralight">@Jhon Doe</div>
+        <div class="name text-[20px] ">Jhon Doe Stalone</div>
+        <div class="title text-[10px] m-1 font-extralight">{{profile.title}}</div>
     </div>
-    <div class="profile-stats-info">
-        <div class="posts-stats">
-            <div class="count">12</div>
-            <div class="title">Posts</div>
+
+    <div class="profile-stats-info flex flex-row justify-around text-center gap-y-[10px] w-[100%]">
+        <div class="posts-stats flex flex-col flex-1 items-center">
+            <div class="count text-[16px] font-bold">{{profile.post_count}}</div>
+            <div class="title text-[11px]">Posts</div>
         </div>
-        <div class="comment-stats">
-            <div class="count">51</div>
-            <div class="title">Comments</div>
+        <div class="comment-stats flex flex-col flex-1 items-center">
+            <div class="count text-[16px] font-bold">{{profile.comment_count}}</div>
+            <div class="title text-[11px]">Comments</div>
         </div>
-        <div class="event-participated-stats">
-            <div class="count">32</div>
-            <div class="title">Events <br>participated</div>
+        <div class="event-participated-stats flex flex-col flex-1 items-center">
+            <div class="count text-[16px] font-bold">{{profile.event_count}}</div>
+            <div class="title text-[11px]">Events <br>participated</div>
         </div>
+    </div>
+
+    <div class="profile-option-container flex flex-row-reverse items-end mt-4 mb-2 border-t border-t-gray-200 pt-4">
+        <button id="profile-popup-open-id" class="edit-profile-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn">
+            Edit Profile
+        </button>
     </div>
 </div>
 
-<div class="profile-option-container">
-    <button class="edit-profile-container">
-        Edit Profile
-    </button>
-</div>
+<script src="{% static 'js/profile_scripts.js' %}" type="module"></script>

@@ -49,6 +49,7 @@ module.exports = {
         "gray-font1": "#6D6D6D",
         "blue-box": "#e5f1ff",
         "blue-font": "#3985de",
+        "gray-btn": "#EDEDED",
       },
       fontFamily: {
         sans: ["SFProDisplay", "sans-serif"],

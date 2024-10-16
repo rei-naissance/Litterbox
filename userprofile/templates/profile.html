@@ -2,28 +2,34 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Litterbox</title>
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         {% tailwind_css %}
     </head>
     <body>
         {% include "header.html" %}
-        <div class ="flex justify-center gap-6 flex-wrap p-10 bg-pink-100">
-            
-            <div class="side-container">
+        <div class ="body-container flex min-w-[285px] justify-center gap-[25px] flex-wrap mx-4 p-4 bg-gray-box rounded-x1 ">
+            <div class="side-container flex flex-col gap-5 max-w-[285px] w-full">
                 {% include "personal_info.html" %}
                 {% include "about_info.html" %}
             </div>
 
-            <div class="main-container">
-                <div class="cover-container">
+            <div class="main-container flex flex-col gap-y-4 flex-1 gap-[25px] order-2">
+                <div class="cover-container flex flex-col justify-center h-[400px] p-4 relative  bg-white z-[1] rounded-lg">
                     {% include "cover_section.html" %}
                 </div>
-                <div class="create-container">
-                    Create
+                <div class="create-container w-full h-fit flex flex-col overflow-y-auto">
+                    {% include "create_post_panel.html" %}
+                    {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
+                    {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
+                    {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
                 </div>
             </div>
         </div>
+        {% include "profile_popups.html" %}
     </body>
+    
 </html>
-<script src="{% static 'js/myscripts.js' %}"></script>
+<!-- <script src="{% static 'js/myscripts.js' %}"></script> -->

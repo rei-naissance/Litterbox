@@ -1,64 +1,16 @@
+{% load static tailwind_tags %}
+{% tailwind_css %}
 
-<div class="cover-image-container">
+<div class="cover-image-container flex flex-col items-center">
     {% if profile.cover_image %}
-        <img src="{{ profile.cover_image.url }}" alt="Profile Cover Image">
+        <img src="{{ profile.cover_image.url }}" alt="Profile Cover Image" class="w-full h-[360px]">
     {% else %}
-        <img src="https://via.placeholder.com/150" alt="Profile Placeholder">
+        <img src="https://via.placeholder.com/150" alt="Profile Placeholder" class="w-full h-[360px]">
     {% endif %}
+    <button id="popup-edit-cover-id" class="edit-cover-container bg-gray-btn px-2 py-1 rounded-lg text-center w-[168px] text-sm absolute right-[47px] bottom-[29px] border-none z-0" >
+        Edit Cover Photo
+    </button>
 </div>
 
-<div class="cover-popup" id="cover-popup-id">
-    <div class="base-section" id="base-popup-id">
-        <div class="title-section">
-            <div class="popup-title">Select Photo</div>
-            <button id="base-popup-close-id" class="close-button">X</button>
-        </div>
-        <div class="option-section" >
-            <button id="add-cover-photo-id" class="add-cover-button">Add Photo</button>
-        </div>
-        
-    </div>
 
-    <div class="select-image-section" id="select-popup-id">
-        <div class="title-section">
-            <div class="popup-title">Select Cover Photo</div>
-            <button id="select-popup-close-id"class="close-button">X</button>
-        </div>
-        <form method=POST enctype="multipart/form-data" id="cover-form">
-            
-            {% csrf_token %}
-            {{ cover_form.as_p}}
-            
-            <input type="submit" name="cover-submit" value="Submit" class="btn btn-secondary">
-        </form>
-    </div>
 
-    <div class="select-image-section" id="profile-add-photo-popup-id">
-        <div class="title-section">
-            <div class="popup-title">Select Profile Photo</div>
-            <button id="select-profile-popup-close-id"class="close-button">X</button>
-        </div>
-        <form method=POST enctype="multipart/form-data" id="profile-img-form">
-            
-            {% csrf_token %}
-            {{ profile_form.as_p}}
-            
-            <input type="submit" name="profile-img-submit" value="Submit" class="btn btn-secondary">
-        </form>
-    </div>
-
-    <div class="edit-section">
-        <div class="title-section">
-            <div class="popup-title">Select Photo</div>
-            <button class="close-button">X</button>
-        </div>s
-        <img id="edit-image-id">
-        <button class="confirm-edit-button">Confirm</button>
-    </div>
-
-    <div id="overlay"></div>
-</div>
-
-<button id="popup-edit-cover-id" class="edit-cover-container" >
-    Edit Cover Photo
-</button>

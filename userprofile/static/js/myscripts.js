@@ -1,30 +1,4 @@
-function hideElement(DIVname, condition) {
-    var x = document.getElementById(DIVname);
-
-
-    // style = condition;
-    // if(condition === "flex") {
-    //     style = "flex"
-    // }
-
-    if (x.style.display !== "flex") {
-      x.style.display = condition;
-    } else {
-      x.style.display = "none";
-    }
-}
-
-function toggleOverlay(DIVname, condition) {
-    hideElement(DIVname, condition)
-    hideElement('overlay', 'flex');
-}
-
-function replaceElement(DIVname1, condition1 , DIVname2, condition2){
-    hideElement(DIVname1, condition1)
-    // console.log("ok")
-    hideElement(DIVname2, condition2)
-    // console.log("ok")
-}
+import { hideElement, toggleOverlay, replaceElement} from './function.js'; 
 
 document.getElementById('edit-about-id')
     .addEventListener("click", function(event) {
@@ -44,7 +18,8 @@ document.getElementById('base-popup-close-id')
 })
 
 document.getElementById('add-cover-photo-id')
-    .addEventListener("click", function(event) {replaceElement('base-popup-id','flex', 'select-popup-id', 'flex')
+    .addEventListener("click", function(event) {
+        replaceElement('base-popup-id','flex', 'select-popup-id', 'flex')
 })
 
 document.getElementById('select-popup-close-id')
@@ -66,3 +41,4 @@ document.getElementById('select-profile-popup-close-id')
     .addEventListener("click", function(event) {
         toggleOverlay('profile-add-photo-popup-id','flex')
 })
+

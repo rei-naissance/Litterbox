@@ -1,0 +1,99 @@
+{% load static tailwind_tags %}
+{% tailwind_css %}
+
+<div class="edit-profile-section hidden fixed flex-col justify-between gap-5  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] w-full max-w-[680px] h-[600px] border border-[rgba(0,0,0,0.2)] overflow-y-scroll no-scrollbar" id="edit-profile-section-id">
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 flex flex-col items-center">
+        <div class="title-section flex flex-row items-center justify-between w-full">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Update Profile</div>
+            <button id="profile-edit-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        {% csrf_token %}
+        
+        <div class="flex flex-col items-start max-w-[360px]">
+            <label for="id_bio" class="block font-bold text-[20px]text-gray-700">Biography</label>
+            {{ profile_form.bio }}
+        </div>
+        
+        <div style="max-width: 380px; width: max-content ;overflow-x: auto;">
+            <label for="id_cover_image" class="block font-bold text-[20px] text-gray-700">Cover Image</label>
+                {{ profile_form.cover_image }}
+        </div>
+        
+        
+        <div style="max-width: 380px;  width: max-content; overflow-x: auto;">
+            <label for="id_profile_image" class="block font-bold text-[20px] text-gray-700">Profile Image</label>
+                {{ profile_form.profile_image }}
+        </div>
+        
+
+        <div class="flex flex-col flex-wrap max-w-[360px] items-center gap-x-4">
+            <label for="id_title" class="block font-bold text-[20px] w-full  text-gray-700">Title</label>
+            {{ profile_form.title }}
+        </div>
+
+        <div class="flex flex-col items-start max-w-[360px]">
+            <label for="id_social_links" class="block font-bold text-[20px] text-gray-700">Social Links</label>
+            {{ profile_form.social_links }}
+        </div>
+
+        <button type="submit" name="profile_change" class="bg-gray-btn text-white px-4 py-2 rounded-md hover:bg-gray-400">
+            Save Changes
+        </button>
+    </form>
+</div>
+
+<div class="cover-popup" id="cover-popup-id">
+    <div class="base-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="base-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Photo</div>
+            <button id="base-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <div class="option-section flex flex-row-reverse" >
+            <button id="add-cover-photo-id" class="add-cover-button py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn w-fit">Add Photo</button>
+        </div>
+        
+    </div>
+
+    <div class="select-image-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="select-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Cover Photo</div>
+            <button id="select-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <form method=POST enctype="multipart/form-data" id="cover-form">
+            
+            {% csrf_token %}
+            {{ cover_form.as_p}}
+            
+            <input type="submit" name="cover-submit" value="Submit" class="btn btn-secondary">
+        </form>
+    </div>
+
+    <div class="select-image-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="profile-add-photo-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Profile Photo</div>
+            <button id="select-profile-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <form method=POST enctype="multipart/form-data" id="profile-img-form">
+            
+            {% csrf_token %}
+            {{ profile_img_form.as_p}}
+            
+            <input type="submit" name="profile-img-submit" value="Submit" class="btn btn-secondary">
+        </form>
+    </div>
+
+    <div class="edit-section hidden fixed flex-col justify-between gap-5 w-full h-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Photo</div>
+            <button class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>s
+        <img id="edit-image-id">
+        <button class="confirm-edit-button py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn">Confirm</button>
+    </div>
+
+    <div id="overlay" class="hidden fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.2)] z-[9999]"></div>
+</div>
+
+
+
+<script src="{% static 'js/cover_function.js' %}" type="module"></script>
