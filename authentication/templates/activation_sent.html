@@ -11,17 +11,15 @@
   <body class="h-screen bg-cover bg-no-repeat bg-center">
     <div class="w-full flex">
       {% include 'left_panel_sent.html' %}
-      <div class="bg-white w-2/3">
+      <div class="bg-white w-full lg:w-2/3">
         <div
           class="flex items-center justify-center bg-white px-4 sm:px-6 lg:px-8"
         >
           <div class="max-w w-full p-3 mt-56 pt-6">
             <div class="mb-8 flex justify-center items-center -ml-5">
-                <div>
-                  {% include "assets/logo small.svg" %}
-                </div>
-              </div>
-            
+              <div>{% include "assets/logo small.svg" %}</div>
+            </div>
+
             <h1 class="text-2xl font-bold text-center">
               Email verification sent
             </h1>
@@ -35,7 +33,9 @@
               class="text-gray-font1 font-medium text-center text-base text-14"
             >
               If you did not receive the email, click
-              <a class="text-blue-600" href="{% url 'resend_verification_email' user_id=user_id %}"
+              <a
+                class="text-blue-600"
+                href="{% url 'resend_verification_email' user_id=user_id %}"
                 >here</a
               >
               to resend the verification email.

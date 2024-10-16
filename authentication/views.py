@@ -94,3 +94,6 @@ def activation_sent(request, user_id):
 def index(request):
     return render(request, 'dashboard.html')
 
+def home(request):
+    return render(request, 'home.html')
+

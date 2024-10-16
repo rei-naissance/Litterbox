@@ -50,6 +50,7 @@ module.exports = {
         20: "20px",
       },
       colors: {
+        "black-box": "#1E1E1E",
         "gray-box": "#F7F7F7",
         "gray-box1": "#FAFAFA",
         "gray-font": "#A1A1A1",
