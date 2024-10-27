@@ -1,10 +1,11 @@
 {% load static tailwind_tags %}
 {% tailwind_css %}
-<div class="about-container flex flex-col  gap-y-2  bg-white border-1 px-4 py-4 rounded-lg">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<div class="about-container flex flex-col gap-y-2 bg-white border-1 px-4 py-4 rounded-lg">
     <div id="edit-about-container-id" class="flex flex-col">
         <div class="div-title">About</div>
-        <div class="about-detail-container flex flex-col t-2 pb-2 overflow-y-auto max-h-100 text-[11px]" id="about-detail-id">
-            {{profile.bio}}
+        <div class="about-detail-container flex flex-col t-2 pb-2 overflow-x-hidden overflow-y-auto max-h-[150px] w-full text-[11px] my-4" id="about-detail-id">
+            {{ profile.bio|linebreaks }}
         </div>
         <button class="edit-about-container flex w-full justify-around py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn" id="edit-about-id">
             Edit Bio
@@ -12,23 +13,21 @@
     </div>
 
     <div class="about-form hidden max-h-100 h-full" id="about-form-id">
-        <form method=POST enctype="multipart/form-data" id="cover-form">
-            
+        <form method="POST" enctype="multipart/form-data" id="cover-form">
             {% csrf_token %}
-            {{ about_form.as_p}}
-            
+            {{ about_form.as_p }}
             <input type="submit" name="about-submit" value="Confirm" class="btn btn-secondary bg-gray-btn py-2 px-3 my-2 rounded-lg">
         </form>
     </div>
 </div>
 
-
-
-<div class="link-container w-full h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
+<div class="link-container w-full h-auto flex flex-col gap-y-2 bg-white border-1 px-4 pt-4 pb-2 rounded-lg ">
     <div class="div-title">Links</div>
     <div class="links-container"></div>
     <button class="edit-link-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn">
         Edit Link
     </button>
 </div>
+
+
 <script src="{% static 'js/profile_scripts.js' %}" type="module"></script>

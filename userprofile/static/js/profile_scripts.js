@@ -1,10 +1,19 @@
-import { hideElement, toggleOverlay} from './function.js'; 
+import {toggleOverlay} from './function.js'; 
 
+
+function toggle(elementId, displayStyle) {
+    var x = document.getElementById(elementId);
+    if (x.style.display === "none" || x.style.display === "") {
+        x.style.display = displayStyle;
+    } else {
+        x.style.display = "none";
+    }
+}
 
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('add-profile-photo-id')
         .addEventListener("click", function(event) {
-            hideElement('profile-popup-add-id', 'flex')
+            toggle('profile-popup-add-id', 'flex')
     })
 
     document.getElementById('add-profile-button-id')

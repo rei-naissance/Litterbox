@@ -37,12 +37,17 @@ class ProfileForm(ModelForm):
             'social_links': 'Social Links',
         }
         widgets = {
-            'bio': forms.Textarea(attrs={'class': 'form-textarea'}),
-            'cover_image': forms.ClearableFileInput(attrs={'class': 'form-input'}),
-            'profile_image': forms.ClearableFileInput(attrs={'class': 'form-input'}),
-            'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'social_links': forms.Textarea(attrs={'class': 'form-textarea'}),
+            'bio': forms.Textarea(attrs={'class': 'form-textarea',
+                                         'style': 'resize: none; overflow: auto; width: 400px; height: 150px;'}),
+            'cover_image': forms.ClearableFileInput(attrs={'class': 'hidden'
+                                                           , 'id': 'id_cover_image'
+                                                           , 'accept': 'image/*'}),
+            'profile_image': forms.ClearableFileInput(attrs={'class': 'hidden', 'id': 'id_profile_image', 'accept': 'image/*'}),
+            'title': forms.TextInput(attrs={'class': 'form-input',
+                                            'style': 'overflow: auto; width: 100%'}),
+            'social_links': forms.HiddenInput(),
         }
+
 
 class AddBio(ModelForm):
     class Meta:

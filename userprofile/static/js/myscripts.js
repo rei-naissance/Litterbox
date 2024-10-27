@@ -1,5 +1,8 @@
 import { hideElement, toggleOverlay, replaceElement} from './function.js'; 
 
+
+
+
 document.getElementById('edit-about-id')
     .addEventListener("click", function(event) {
         hideElement('about-detail-id', 'flex')
@@ -29,7 +32,7 @@ document.getElementById('select-popup-close-id')
 
 document.getElementById('add-profile-photo-id')
     .addEventListener("click", function(event) {
-        hideElement('profile-popup-add-id', 'flex')
+        toggleOverlay('profile-popup-add-id', 'flex')
 })
 
 document.getElementById('add-profile-button-id')

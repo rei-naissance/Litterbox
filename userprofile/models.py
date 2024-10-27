@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Profile(models.Model):
-    bio = models.CharField(null=True, max_length=1000)
+    bio = models.TextField(null=True, blank=True)
 
     cover_image = models.ImageField(null=True, blank=True, upload_to="images/")
     profile_image = models.ImageField(null=True, blank=True, upload_to="images/")
@@ -13,4 +13,4 @@ class Profile(models.Model):
     comment_count = models.IntegerField(default=0)  
     event_count = models.IntegerField(default=0)  
 
-    social_links = models.JSONField(default=dict, blank=True)  
+    social_links = models.JSONField(null=True,default=dict, blank=True)  

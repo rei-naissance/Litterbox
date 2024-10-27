@@ -10,17 +10,17 @@
     </head>
     <body>
         {% include "header.html" %}
-        <div class ="body-container flex min-w-[285px] justify-center gap-[25px] flex-wrap mx-4 p-4 bg-gray-box rounded-x1 ">
-            <div class="side-container flex flex-col gap-5 max-w-[285px] w-full">
+        <div class="body-container relative flex flex-wrap w-full h-full justify-center gap-6 p-4 bg-gray-box rounded-xl">
+            <div class="side-container flex flex-col gap-5 w-full h-auto md:sticky md:max-w-[285px] top-[-100px]">
                 {% include "personal_info.html" %}
                 {% include "about_info.html" %}
             </div>
 
-            <div class="main-container flex flex-col gap-y-4 flex-1 gap-[25px] order-2">
+            <div class="main-container flex flex-col gap-y-4 flex-1 gap-[25px] order-2 h-full">
                 <div class="cover-container flex flex-col justify-center h-[400px] p-4 relative  bg-white z-[1] rounded-lg">
                     {% include "cover_section.html" %}
                 </div>
-                <div class="create-container w-full h-fit flex flex-col overflow-y-auto">
+                <div class="create-container w-full h-full flex flex-col overflow-y-auto">
                     {% include "create_post_panel.html" %}
                     {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
                     {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}

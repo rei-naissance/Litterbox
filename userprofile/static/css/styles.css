@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+.form-textarea{
+    width: 100%;
+    max-width: 200px;
+}
+
 /* html,
 body {
   margin: 0;

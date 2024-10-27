@@ -78,3 +78,12 @@ userprofile/migrations/__pycache__/0002_profile_comment_count_profile_event_coun
 userprofile/migrations/__pycache__/0001_initial.cpython-312.pyc
 userprofile/migrations/0001_initial.py
 userprofile/migrations/__pycache__/0001_initial.cpython-312.pyc
+userprofile/__pycache__/forms.cpython-312.pyc
+userprofile/__pycache__/models.cpython-312.pyc
+userprofile/__pycache__/views.cpython-312.pyc
+userprofile/migrations/0002_remove_profile_user_alter_profile_social_links.py
+userprofile/migrations/0003_alter_profile_bio.py
+userprofile/migrations/__pycache__/0002_remove_profile_user_alter_profile_social_links.cpython-312.pyc
+userprofile/migrations/__pycache__/0003_alter_profile_bio.cpython-312.pyc
+
+db.sqlite3

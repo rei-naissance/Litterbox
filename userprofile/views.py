@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AddCoverImage, AddProfileImage, ProfileForm, AddBio
 from .models import Profile
 from PIL import Image
+import json
 
 # Create your views here.
 def profile_view(request, user_id):
@@ -37,7 +38,11 @@ def profile_view(request, user_id):
                 
                 profile.bio = profile_form.cleaned_data.get('bio')
                 profile.title = profile_form.cleaned_data.get('title')
-                profile.social_links = profile_form.cleaned_data.get('social_links')
+                social_links_json = request.POST.get('social_links_json')
+                if social_links_json:
+                    social_links = json.loads(social_links_json)
+                    profile.social_links = social_links
+                print("Received social links:", profile.social_links)
                 profile.save()
                 return redirect('profile_view', user_id=user_id)
 
@@ -46,20 +51,38 @@ def profile_view(request, user_id):
             cover_form = AddCoverImage(request.POST, request.FILES)
             if cover_form.is_valid():
                 cover_image = cover_form.cleaned_data['cover_image']
-                img = Image.open(cover_image)
-                width, height = img.size
+                if cover_image:
+                    try:
+                        img = Image.open(cover_image)
+                        width, height = img.size
+                        
+                        if width >= 400 and height >= 200:
+                            profile.cover_image = cover_image
+                            profile.save()
+                            return redirect('profile_view', user_id=user_id)
+                        else:
+                            print("Image is too small")
+                    except Exception:
+                        print("No images")
 
-                if width >= 400 and height >= 200:
-                    profile.cover_image = cover_image
-                    profile.save()
-                    return redirect('profile_view', user_id=user_id)
 
         if 'profile-img-submit' in request.POST:
             profile_img_form = AddProfileImage(request.POST, request.FILES)
             if profile_img_form.is_valid():
-                profile.profile_image = profile_img_form.cleaned_data['profile_image']
-                profile.save()
-                return redirect('profile_view', user_id=user_id)
+                profile_image = profile_img_form.cleaned_data['profile_image']
+                if profile_image:
+                    try:
+                        img = Image.open(profile_image)
+                        width, height = img.size
+                        
+                        if width >= 250 and height >= 250:
+                            profile.profile_image = profile_image
+                            profile.save()
+                            return redirect('profile_view', user_id=user_id)
+                        else:
+                            print("Image is too small")
+                    except Exception:
+                        print("No images")
             
         if 'about-submit' in request.POST:
             about_form = AddBio(request.POST)
