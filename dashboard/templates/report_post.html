@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report Post</title>
+    <!-- This html template file exists purely for development processes and checking for the reports and the admin dashboards -->
+    <!-- Feel free to make any changes to how the template works, this is purely for development. -->
+</head>
+<body>
+    <form method="post" action="{% url 'send_report' post.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Report</button>
+    </form>
+</body>
+</html>

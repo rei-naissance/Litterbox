@@ -38,6 +38,7 @@
           <div class="space-y-3">
             <div class="space-y-1">
               <p class="text-13 font-bold">Username*</p>
+              <input type="hidden" name="next" value="{% url 'dashboard_home' %}">
               <div class="rounded-sm font-sm">{{ form.username }}</div>
               {{ form.username.errors }}
             </div>

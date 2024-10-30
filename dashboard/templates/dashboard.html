@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Litterbox</title>
     {% tailwind_css %}
   </head>
   <body class="text-sm">
@@ -17,9 +17,12 @@
       </div>
 
       <div class="w-2/3 h-full">
-        {% include "create_post_panel.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
+        {% include "create_post_panel.html" %}
 
-        <div class="mt-4 h-2/3 bg-white rounded-xl">feed</div>
+        {% for post in posts %}
+          {% include "feed_box.html" with post=post %}
+        {% endfor %}
+        
       </div>
 
       <div class="w-1/4 h-full sticky top-16">

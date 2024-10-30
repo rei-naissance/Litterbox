@@ -4,24 +4,26 @@
     <div class="flex items-center p-4">
       <div class="h-9 w-9 bg-gray-font1 rounded-full"></div>
       <div class="ml-3">
-        <p class="font-medium">User Full Name</p>
-        <p class="text-xs text-gray-font">31 Month at 12:59 PM</p>
+        <p class="font-medium">{{ post.author.email }}</p>
+        <p class="text-xs text-gray-font"> {{ post.date_posted }}</p>
       </div>
     </div>
+    <a href="{% url 'send_report' post.id %}" class="block">
     <div class="p-6">{% include "assets/dots.svg" %}</div>
+    </a>
   </div>
   <!-- Main Content Section -->
+  <a href="{% url 'post_detail' post.id %}" class="block">
   <div class="px-4 flex border-b stroke-black pb-2">
     <div class="h-56 w-1/2 bg-gray-100 rounded-xl"></div>
     <div class="w-1/2 p-5 items-center">
-      <h2 class="text-3xl font-bold">Blog Post Title</h2>
+      <h2 class="text-3xl font-bold">{{ post.title }}</h2>
       <p class="text-gray-700 text-lg mt-2">
-        Understanding color theory helps in creating visually appealing designs,
-        evoking emotions, and guiding viewer attention. It's the foundation for
-        effective visual communication.
+        {{ post.content }}
       </p>
     </div>
   </div>
+  </a>
   <!-- Interactions Section -->
   <div class="px-4 py-2 flex justify-between text-xs">
     <div class="flex items-center">
