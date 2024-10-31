@@ -27,18 +27,25 @@
   <!-- Interactions Section -->
   <div class="px-4 py-2 flex justify-between text-xs">
     <div class="flex items-center">
-      <span class="text-gray-font flex">
-        <div class="mx-1">{% include "assets/ph_heart-bold.svg" %}</div>
-        99 Likes</span
-      >
+      <button class="text-gray-font flex cursor-pointer" onclick="toggleLike('{{ post.id }}')">
+        <div class="mx-1" id="like-svg-{{ post.id }}">
+          {% if post.id in user_likes %}
+            {% include "assets/heart-filled.svg" %}
+          {% else %}
+            {% include "assets/ph_heart-bold.svg" %}
+          {% endif %}
+        </div>
+        <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+      </button>
+
       <span class="mx-4 text-gray-font flex">
         <div class="mx-1">{% include "assets/iconamoon_comment.svg" %}</div>
-        99 Comments</span
-      >
+        Comment
+      </span>
       <span class="text-gray-font flex">
         <div class="mx-1">{% include "assets/uil_share.svg" %}</div>
-        99 Shares</span
-      >
+        Share
+      </span>
     </div>
     <div class="flex items-center">
       <span class="text-gray-font">59 min read</span>
@@ -48,3 +55,25 @@
     </div>
   </div>
 </div>
+
+<script>
+  function toggleLike(postId) {
+    fetch(`/toggle-like/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const likeCount = document.querySelector(`#like-count-${postId}`);
+      const likeSvg = document.querySelector(`#like-svg-${postId}`);
+      likeCount.textContent = data.like_count;
+      likeSvg.innerHTML = data.liked
+      ? `{% include "assets/heart-filled.svg" %}`
+      : `{% include "assets/ph_heart-bold.svg" %}`;
+    })
+    .catch(error => console.error('Error:', error));
+  }
+</script>

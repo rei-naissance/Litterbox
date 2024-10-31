@@ -81,7 +81,7 @@ def activate_view(request, uidb64, token):
         user.is_verified = True
         user.save()
         login(request, user)
-        return redirect('dashboard_home')
+        return redirect('create_post')
     else:
         return render(request, 'activation_failed.html')
 
