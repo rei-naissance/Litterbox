@@ -1,14 +1,12 @@
-from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_http_methods
+from datetime import datetime
 from .forms import PostForm, CommentForm, ReportForm
 from .models import Post, Comment, Report, Like
 from django.http import JsonResponse
-
-# Create your views here.
-
-def fetch_posts():
-    pass
+from django.db.models import Prefetch
+import json
 
 def admin_check(user):
     return user.is_authenticated and user.is_admin
@@ -49,13 +47,34 @@ def disregard_reported_post(request, report_id):
 @login_required
 def dashboard_home(request):
     user = request.user
-    posts = Post.objects.filter(is_deleted=False).order_by('-date_posted')
+    comments_queryset = Comment.objects.filter(is_deleted=False)
+    posts = Post.objects.filter(is_deleted=False).prefetch_related(Prefetch('comments', queryset=comments_queryset)).order_by('-date_posted')
     user_likes = set(request.user.likes.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
-    return render(request, 'dashboard.html', {'user' : user, 'posts': posts, 'user_likes': user_likes})
+    
+    post_count, comment_count = 0, 0
+    for post in posts:
+        if post.author == user and not post.is_deleted:
+            post_count += 1
+
+    for comment in comments_queryset:
+        if comment.author == user and not comment.is_deleted:
+            comment_count += 1
+            
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            return redirect('dashboard_home')
+        
+    else:
+        form = PostForm()
+    return render(request, 'dashboard.html', {'user': user, 'form': form, 'post_count': post_count, 'comment_count': comment_count, 'posts': posts, 'user_likes': user_likes})
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    comments = post.comments.all()
+    comments = post.comments.filter(is_deleted=False).order_by('-date_posted')
     user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
     # TOD0: returns a render of post details with current active user
     return render(request, 'post_testing.html', {
@@ -65,38 +84,50 @@ def post_detail(request, post_id):
     })
 
 @login_required
-def post_create(request):
-    posts = Post.objects.filter(is_deleted=False).order_by('-date_posted')
-    user_likes = set(request.user.likes.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
+def comment_create(request, post_id):
     if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('post_create')
+        data = json.loads(request.body)
+        content = data.get('content', '').strip()
         
-    else:
-        form = PostForm()
-    return render(request, 'dashboard.html', {'form': form, 'posts': posts, 'user_likes': user_likes})
+        if content:
+            post = get_object_or_404(Post, pk=post_id)
+            comment = Comment.objects.create(
+                post=post,
+                author=request.user,
+                content=content
+            )
+            return JsonResponse({'success': True, 'comment_id': comment.id, 'content': comment.content})
+        else:
+            return JsonResponse({'success': False, 'error': 'Comment content cannot be empty'}, status=400)
+    return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
+        
+@login_required
+@require_http_methods(["DELETE"])
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, author=request.user)
+    comment.is_deleted = True
+    comment.save()
+    return JsonResponse({'success': True})
 
 @login_required
-def comment_create(request):
-    if request.method == 'POST':
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = Post.objects.get(pk=request.POST.get('post_id'))
-            comment.author = request.user
-            comment.save()
-            return redirect('create_post')
+@require_http_methods(["PATCH"])
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id, author=request.user)
+    data = json.loads(request.body)
+    new_content = data.get('content', '').strip()
+
+    if new_content:
+        comment.content = new_content
+        comment.save()
+        return JsonResponse({'success': True, 'content': new_content})
+    else:
+        return JsonResponse({'success': False, 'error': 'Content cannot be empty'}, status=400)
         
 @user_passes_test(admin_check)
 def admin_dashboard(request):
     reports = Report.objects.filter(is_resolved=False).order_by('-reported_on')
     return render(request, 'admin_dashboard.html', {'reports': reports})
 
-# test view function for sending reports to admin dashboard
 @login_required
 def send_report(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
@@ -107,7 +138,7 @@ def send_report(request, post_id):
             report.author = request.user
             report.post = post
             report.save()
-            return redirect('create_post')
+            return redirect('dashboard_home')
     else: 
         form = ReportForm()
     return render(request, 'report_post.html', {'form': form, 'post': post})

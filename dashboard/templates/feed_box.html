@@ -1,3 +1,4 @@
+{% load static %}
 <div class="mt-4 bg-white rounded-xl">
   <!-- Profile Section -->
   <div class="flex justify-between">
@@ -15,7 +16,13 @@
   <!-- Main Content Section -->
   <a href="{% url 'post_detail' post.id %}" class="block">
   <div class="px-4 flex border-b stroke-black pb-2">
-    <div class="h-56 w-1/2 bg-gray-100 rounded-xl"></div>
+    <div class="h-56 w-1/2 bg-gray-100 rounded-xl overflow-hidden">
+      {% if post.image and post.image.url %}
+         <img src="{{ post.image.url }}" alt="" class="object-cover h-full w-full" />
+      {% else %}
+         <img src="{% static '/images/default_image.jpg' %}" alt="Default Image" class="object-cover h-full w-full" />
+      {% endif %}
+    </div>
     <div class="w-1/2 p-5 items-center">
       <h2 class="text-3xl font-bold">{{ post.title }}</h2>
       <p class="text-gray-700 text-lg mt-2">
@@ -38,10 +45,11 @@
         <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
       </button>
 
-      <span class="mx-4 text-gray-font flex">
+      <button class="mx-4 text-gray-font flex" onclick="toggleCommentInput('{{ post.id }}')">
         <div class="mx-1">{% include "assets/iconamoon_comment.svg" %}</div>
         Comment
-      </span>
+      </button>
+
       <span class="text-gray-font flex">
         <div class="mx-1">{% include "assets/uil_share.svg" %}</div>
         Share
@@ -54,9 +62,132 @@
       </div>
     </div>
   </div>
+  <!-- inputs -->
+   <!-- try: comment input box hidden until comment button is pressed (currently not working) -->
+    <div id="comment-input-{{ post.id }}" class="mt-2">
+        <input type="text" class="w-full border rounded px-2 py-1" 
+              placeholder="Comment as {{ request.user.email }}"
+              id="new-comment-{{ post.id }}">
+        <button onclick="postComment('{{ post.id }}')" class="mt-2 px-3 py-1 bg-blue-500 text-white rounded">
+          Post
+        </button>
+    </div>
+
+  <!-- para sa comments -->
+  <div id="comments-{{ post.id }}" class="p-4">
+    {% for comment in post.comments.all %}
+      <div id="comment-{{ comment.id }}" class="mt-2">
+        <p><strong>{{ comment.author.email }}</strong>: {{ comment.content }}</p>
+        {% if comment.author == request.user %}
+          <button onclick="editComment('{{ comment.id }}')">Edit</button>
+          <button onclick="deleteComment('{{ comment.id }}')">Delete</button>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
 </div>
 
 <script>
+  function postComment(postId) {
+    const content = document.getElementById(`new-comment-${postId}`).value;
+
+    fetch(`/add-comment/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({ content })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Generates comments
+      if (data.success) {
+        const commentsDiv = document.getElementById(`comments-${postId}`);
+        const newComment = document.createElement('div');
+        newComment.id = `comment-${data.comment_id}`;
+        newComment.innerHTML = `
+          <p><strong>{{ request.user.email }}</strong>: ${data.content}</p>
+          <button onclick="editComment('${data.comment_id}')">Edit</button>
+          <button onclick="deleteComment('${data.comment_id}')">Delete</button>
+        `;
+        commentsDiv.appendChild(newComment);
+        document.getElementById(`new-comment-${postId}`).value = '';
+      } else {
+        console.error('Error posting comment:', data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function deleteComment(commentId) {
+    fetch(`/delete-comment/${commentId}/`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handles deletion of comments without reload
+      if (data.success) {
+        const commentDiv = document.getElementById(`comment-${commentId}`);
+        commentDiv.remove();
+      } else {
+        console.error('Failed to delete comment');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function editComment(commentId) {
+    // Bandaid solution, email gets added to input field when editing text. Email removed with regex below.
+    const commentContent = document.querySelector(`#comment-${commentId} p`);
+    const currentContent = commentContent.textContent.replace(/^[^:]+:\s*/, '');
+    
+    commentContent.innerHTML = `
+      <input type="text" value="${currentContent}" id="edit-comment-${commentId}">
+      <button onclick="submitEditComment(${commentId})">Save</button>
+    `;
+  }
+
+  function submitEditComment(commentId) {
+    const newContent = document.getElementById(`edit-comment-${commentId}`).value;
+
+    fetch(`/edit-comment/${commentId}/`, {
+      // patch for partial update
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+
+      body: JSON.stringify({ content: newContent })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Submit edit without reload
+      if (data.success) {
+        const commentDiv = document.getElementById(`comment-${commentId}`);
+        commentDiv.innerHTML = `
+          <p><strong>{{ request.user.email }}</strong>: ${data.content}</p>
+          <button onclick="editComment('${commentId}')">Edit</button>
+          <button onclick="deleteComment('${commentId}')">Delete</button>
+        `;
+      } else {
+        alert(data.error || 'Failed to edit comment');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+  
+  // haven't found a fix for this, tried hiding comment input box until comment button is clicked, maybe we can fix later.
+
+  // function toggleCommentInput(postId) {
+  //   const inputBox = document.getElementById(`comment-input-${postId}`);
+  //   inputBox.classList.toggle('hidden');
+  // }
+
   function toggleLike(postId) {
     fetch(`/toggle-like/${postId}/`, {
       method: 'POST',
@@ -67,6 +198,7 @@
     })
     .then(response => response.json())
     .then(data => {
+      // Like toggling with json to avoid reload
       const likeCount = document.querySelector(`#like-count-${postId}`);
       const likeSvg = document.querySelector(`#like-svg-${postId}`);
       likeCount.textContent = data.like_count;

@@ -1,6 +1,6 @@
 
   <div class="h-1/6 bg-white rounded-xl p-4 px-6">
-    <form method="post" enctype="multipart/form-data" action="{% url 'post_create' %}">
+    <form method="post" enctype="multipart/form-data" action="{% url 'dashboard_home' %}">
       {% csrf_token %}
     <div class="h-14 w-full border-b stroke-gray-200 flex space-x-4">
       <div class="w-9 h-9 rounded-full bg-gray-300"></div>
@@ -24,14 +24,15 @@
         Share post
       </button>
     </div>
-    </form>
+    
 
     <div class="flex justify-between items-center mt-4">
       <div class="w-full flex space-x-6 font-normal text-gray-font2 items-center">
-        <button class="flex items-center space-x-2">
+        <button class="flex items-center space-x-2" onclick="document.getElementById('id_image').click()">
           {% include "assets/octicon_image-24.svg" %}
-          <p class="text-gray-font1">Image/Video</p>
+          <p class="text-gray-font1">Image/Video</p>  
         </button>
+        <input type="file" id="id_image" name="image" class="hidden" />
         <button class="flex items-center space-x-2">
           {% include "assets/prime_tags.svg" %}
           <p class="text-gray-font1">Tags</p>
@@ -42,6 +43,7 @@
         </button>
       </div>
 
+    </form>
       <!-- Make sure this div is part of the same flex container -->
       <div>
         <button class="text-gray-font1">Public</button>
