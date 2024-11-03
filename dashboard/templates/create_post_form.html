@@ -1,18 +1,52 @@
-<form method="post" enctype="multipart/form-data">
-  <div class="h-1/6 p-6 px-6 border border-b-border-gray">
-    {% csrf_token %}
-    <div class="w-full flex space-x-4">
-      <div class="w-[50px] rounded-full bg-gray-300"></div>
-      {{ form.content }}
-      <button
-        class="w-1/4 h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
-        type="submit"
-      >
-        Share post
-      </button>
-    </div>
-  </div>
-</form>
-<div class="h-full p-6 px-6 ">
-  <textarea placeholder="Write your post here..." class="placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"/></textarea>
+<div class="h-1/6 bg-white rounded-xl p-4 px-6">
+  <form method="post" enctype="multipart/form-data" action="{% url 'dashboard_home' %}">
+      {% csrf_token %}
+      
+      <div class="h-14 w-full border-b border-gray-200 flex space-x-4">
+          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+          
+          <div class="w-3/4 h-9 rounded-lg flex items-center bg-gray-box px-3">
+              {{ form.content }}
+              <button class="flex items-center px-2">
+                  {% include "assets/uil_smile.svg" %}
+              </button>
+          </div>
+          
+          <button
+              class="w-1/6 h-9 rounded-lg text-sm font-normal bg-blue-box text-blue-font"
+              type="submit"
+          >
+              Share post
+          </button>
+      </div>
+      
+      <div class="flex justify-between items-center mt-4">
+          <div class="w-full flex space-x-6 font-normal text-gray-font2 items-center">
+              <button class="flex items-center space-x-2" type="button" onclick="document.getElementById('id_image').click()">
+                  {% include "assets/octicon_image-24.svg" %}
+                  <p class="text-gray-font1">Image/Video</p>  
+              </button>
+              
+              <input type="file" id="id_image" name="image" class="" />
+              
+              <button class="flex items-center space-x-2" type="button">
+                  {% include "assets/prime_tags.svg" %}
+                  <p class="text-gray-font1">Tags</p>
+              </button>
+              
+              <button class="flex items-center space-x-2" type="button">
+                  {% include "assets/formkit_megaphone.svg" %}
+                  <p class="text-gray-font1">Announce</p>
+              </button>
+          </div>
+          
+          <div>
+              <button class="text-gray-font1">Public</button>
+          </div>
+      </div>
+  </form>
+</div>
+
+<div class="h-full p-6 px-6">
+  <textarea placeholder="Write your post here..." class="placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"></textarea>
 </div>

@@ -1,7 +1,7 @@
 {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'index' %}
     {% include "create_post_panel.html" %}
     {% for post in posts %}
-        {% include "feed_box.html" with post=post %}
+        {% include "feed_box.html" with post=post image=image %}
     {% endfor %}
 
 {% elif request.resolver_match.url_name == 'post_create' %}
@@ -11,8 +11,7 @@
     {% include "report_post.html" %}
 
 {% elif request.resolver_match.url_name == 'post_detail' %}
-    {% include "post_details.html" with post=post comments=comments user_liked=user_liked %}
-
+    {% include "post_details.html" with post=post comments=comments user_liked=user_liked image=image %}
 {% else %}
 <p>URL Name: {{ request.resolver_match.url_name }}</p>
 

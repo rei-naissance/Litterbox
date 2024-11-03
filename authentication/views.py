@@ -92,5 +92,5 @@ def activation_sent(request, user_id):
     return render(request, 'activation_sent.html', {'user_id': user_id})
 
 def index(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'home.html')
 

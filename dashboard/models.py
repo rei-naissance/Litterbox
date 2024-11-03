@@ -7,7 +7,7 @@ class Post(models.Model):
     author = models.ForeignKey('authentication.Student', on_delete=models.CASCADE, related_name='posts')
     content = models.TextField()
     # UPDATE DIRECTORY
-    image = models.ImageField(upload_to='images/', blank=True, null=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True, default='')
     date_posted = models.DateTimeField(auto_now_add=True)
     last_edited = models.DateTimeField(auto_now=True)
     is_deleted = models.BooleanField(default=False)

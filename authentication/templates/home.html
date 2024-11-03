@@ -13,7 +13,9 @@
       class="flex items-center justify-between p-6 pb-4 sticky top-0 z-50 bg-white w-full"
     >
       <!-- Logo on the left -->
-      <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
+       <a href="{% url 'dashboard_home' %}">
+         <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
+        </a>
 
       <!-- Buttons on the right -->
       <div class="flex space-x-4 mr-6">

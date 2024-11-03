@@ -7,6 +7,9 @@ class PostForm(forms.ModelForm):
         fields = ['title', 'content', 'image'] # add image to fields when ready to implement
         widgets = {
             'content': forms.TextInput(attrs={'class': 'w-full focus:outline-none rounded-lg border border-border-gray font-normal text-gray-font2 text-sm placeholder-gray-font', 'placeholder': 'Enter title here...'}),
+            'image': forms.ClearableFileInput(attrs={
+                'id': 'id_image',
+            }),
         }
 
 class CommentForm(forms.ModelForm):
