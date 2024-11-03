@@ -1,50 +1,12 @@
-
-  <div class="h-1/6 bg-white rounded-xl p-4 px-6">
-    <form method="post" enctype="multipart/form-data" action="{% url 'post_create' %}">
-      {% csrf_token %}
-    <div class="h-14 w-full border-b stroke-gray-200 flex space-x-4">
-      <div class="w-9 h-9 rounded-full bg-gray-300"></div>
-      <div class="w-3/4 h-9 rounded-lg text-sm flex bg-gray-box">
-        <!-- <input
-          type="text"
-          placeholder="What's on your mind?"
-          class="w-full focus:outline-none rounded-lg border-none font-normal text-gray-font2 bg-gray-box text-sm placeholder-gray-font"
-        /> -->
-        <div class="w-full focus:outline-none rounded-lg border-none font-normal text-gray-font2 bg-gray-box text-sm placeholder-gray-font">
-          {{ form.content }} 
-        </div>
-        <button class="flex items-center px-4">
-          {% include "assets/uil_smile.svg" %}
-        </button>
-      </div>
-      <button
-        class="w-1/6 h-9 rounded-lg text-sm font-normal bg-blue-box text-blue-font"
-        type="submit"
-      >
-        Share post
-      </button>
-    </div>
-    </form>
-
-    <div class="flex justify-between items-center mt-4">
-      <div class="w-full flex space-x-6 font-normal text-gray-font2 items-center">
-        <button class="flex items-center space-x-2">
-          {% include "assets/octicon_image-24.svg" %}
-          <p class="text-gray-font1">Image/Video</p>
-        </button>
-        <button class="flex items-center space-x-2">
-          {% include "assets/prime_tags.svg" %}
-          <p class="text-gray-font1">Tags</p>
-        </button>
-        <button class="flex items-center space-x-2">
-          {% include "assets/formkit_megaphone.svg" %}
-          <p class="text-gray-font1">Announce</p>
-        </button>
-      </div>
-
-      <!-- Make sure this div is part of the same flex container -->
-      <div>
-        <button class="text-gray-font1">Public</button>
-      </div>
-    </div>
+<div class="h-1/6 p-6 px-6 border border-b-border-gray">
+  <div class="w-full flex space-x-4 justify-between">
+    <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+    <a class="w-1/6 h-9" href="{% url 'post_create' %}">
+    <button
+      class="w-full h-full rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
+    >
+      Add post
+    </button>
+    </a>
   </div>
+</div>

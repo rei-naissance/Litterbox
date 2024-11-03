@@ -6,7 +6,7 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'image'] # add image to fields when ready to implement
         widgets = {
-            'content': forms.TextInput(attrs={'class': 'w-full focus:outline-none rounded-lg border-none font-normal text-gray-font2 bg-gray-box text-sm placeholder-gray-font', 'placeholder': 'What\'s on your mind?'}),
+            'content': forms.TextInput(attrs={'class': 'w-full focus:outline-none rounded-lg border border-border-gray font-normal text-gray-font2 text-sm placeholder-gray-font', 'placeholder': 'Enter title here...'}),
         }
 
 class CommentForm(forms.ModelForm):
@@ -16,9 +16,14 @@ class CommentForm(forms.ModelForm):
 
 class ReportForm(forms.ModelForm):
     class Meta:
-        model = Report 
+        model = Report
         fields = ['reason', 'reason_category']
         widgets = {
-            'reason': forms.Textarea(attrs={'placeholder': 'Please provide a reason for reporting this post'}),
-            'reason_category': forms.Select(attrs={'class': 'form-select'}),
+            'reason': forms.Textarea(attrs={
+                'placeholder': 'Please provide a reason for reporting this post',
+                'class': 'placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray'
+            }),
+            'reason_category': forms.Select(attrs={
+                'class': 'w-full h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray'
+            }),
         }

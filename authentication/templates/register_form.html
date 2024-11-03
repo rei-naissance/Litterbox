@@ -1,79 +1,67 @@
-<div class="bg-white w-2/3">
-    <div
-      class="flex items-center justify-center bg-white py-5 px-4 sm:px-6 lg:px-8"
-    >
-      <div class="max-w-sm w-full p-3 mt-16 pt-6">
-        <div class="w-full mb-8 pl-36">
-          <div>{% include "assets/logo small.svg" %}</div>
+<div
+  class="flex items-center justify-center bg-white px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-sm w-full p-3 mt-16 pt-6">
+    <div class="w-full mb-8 pl-36">
+      <div>{% include "assets/logo small.svg" %}</div>
+    </div>
+
+    <h1 class="text-2xl font-bold text-center">Create a free account</h1>
+    <p class="text-gray-font1 font-medium text-center text-base mb-8 text-14">
+      Provide your email and choose a password
+    </p>
+
+    <form method="post" class="space-y-7">
+      {% csrf_token %}
+      <div class="space-y-3">
+        <div class="space-y-1">
+          <p class="text-13 font-bold">Email*</p>
+          <div class="rounded-sm font-sm">{{ form.email }}</div>
+          {{ form.username.errors }}
         </div>
 
-        <h1 class="text-2xl font-bold text-center">
-          Create a free account
-        </h1>
-        <p
-          class="text-gray-font1 font-medium text-center text-base mb-8 text-14"
-        >
-          Provide your email and choose a password
-        </p>
+        <div class="space-y-1">
+          <p class="text-13 font-bold">Password*</p>
+          <div class="rounded-sm font-sm">{{ form.password }}</div>
+          {{ form.password.errors }}
+        </div>
 
-        <form method="post" class="space-y-7">
-          {% csrf_token %}
-          <div class="space-y-3">
-            <div class="space-y-1">
-              <p class="text-13 font-bold">Email*</p>
-              <div class="rounded-sm font-sm">{{ form.email }}</div>
-              {{ form.username.errors }}
-            </div>
+        <div class="space-y-1">
+          <p class="text-13 font-bold">Re-enter password*</p>
+          <div class="rounded-sm font-sm">{{ form.confirm_password }}</div>
+          {{ form.password.errors }}
+        </div>
 
-            <div class="space-y-1">
-              <p class="text-13 font-bold">Password*</p>
-              <div class="rounded-sm font-sm">{{ form.password }}</div>
-              {{ form.password.errors }}
-            </div>
+        {{ form.non_field_errors }}
 
-            <div class="space-y-1">
-              <p class="text-13 font-bold">Re-enter password*</p>
-              <div class="rounded-sm font-sm">
-                {{ form.confirm_password }}
-              </div>
-              {{ form.password.errors }}
-            </div>
-
-            {{ form.non_field_errors }}
-
-            <div class="flex space-x-4 pt-2 px-6">
-              <div class="bg-gray-400 rounded-lg h-1 w-1/3 weak"></div>
-              <div class="bg-gray-400 rounded-lg h-1 w-1/3 medium"></div>
-              <div class="bg-gray-400 rounded-lg h-1 w-1/3 strong"></div>
-            </div>
-          </div>
-
-          <div class="relative flex items-center justify-center">
-            <hr class="w-full border-gray-300" />
-            <span class="absolute bg-white px-3 text-gray-font1 text-13"
-              >OR</span
-            >
-          </div>
-
-          <div class="flex flex-col items-center justify-center space-y-4">
-            <button
-              class="w-full flex justify-center items-center border border-input-border py-2 rounded-sm hover:bg-gray-100 font-semibold text-13 h-10"
-            >
-              <div class="h-7 w-9 mr-1">
-                {% include 'assets/outlook.svg' %}
-              </div>
-
-              <a href="#outlooksignin"> Sign in with Outlook </a>
-            </button>
-          </div>
-
-          <button
-            type="submit"
-            class="w-full bg-green-box text-white py-2 rounded-sm hover:bg-green-700 transition-colors font-regular text-base text-13 font-bold"
-          >
-            Continue
-          </button>
-        </form>
+        <div class="flex space-x-4 pt-2 px-6">
+          <div class="bg-gray-400 rounded-lg h-1 w-1/3 weak"></div>
+          <div class="bg-gray-400 rounded-lg h-1 w-1/3 medium"></div>
+          <div class="bg-gray-400 rounded-lg h-1 w-1/3 strong"></div>
+        </div>
       </div>
-    </div>
+
+      <div class="relative flex items-center justify-center">
+        <hr class="w-full border-gray-300" />
+        <span class="absolute bg-white px-3 text-gray-font1 text-13">OR</span>
+      </div>
+
+      <div class="flex flex-col items-center justify-center space-y-4">
+        <button
+          class="w-full flex justify-center items-center border border-input-border py-2 rounded-sm hover:bg-gray-100 font-semibold text-13 h-10"
+        >
+          <div class="h-7 w-9 mr-1">{% include 'assets/outlook.svg' %}</div>
+
+          <a href="#outlooksignin"> Sign in with Outlook </a>
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-green-box text-white py-2 rounded-sm hover:bg-green-700 transition-colors font-regular text-base text-13 font-bold"
+      >
+        Continue
+      </button>
+    </form>
   </div>
+</div>

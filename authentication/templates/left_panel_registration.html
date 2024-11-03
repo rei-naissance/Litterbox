@@ -1,0 +1,60 @@
+{% load static tailwind_tags %}
+<div
+  class="relative bg-transparent w-[calc(33.3333%-50px)] h-[calc(100vh-32px)] m-4 rounded-md hidden md:block"
+  style="
+    box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05);
+    background-image: url('{% static 'imgs/bg.png' %}');
+  "
+>
+  <div class="w-10 m-5">{% include "assets/drk_small_title.svg" %}</div>
+
+  <div class="flex flex-col justify-between h-[calc(80vh)]">
+    <div class="mt-16 border-l-2 m-16">
+      <div class="flex items-center my-6 mt-0">
+        <div
+          class="border-2 rounded-md p-2 w-12 h-12 bg-white -ml-6 flex items-center justify-center relative z-10 border-gray-font"
+        >
+          {% include "assets/iconamoon_profile.svg" %}
+        </div>
+        <div class="px-4 py-2">
+          <p class="text-14 font-bold">Your details</p>
+          <p class="text-xs text-gray-font1">Provide an email and password</p>
+        </div>
+      </div>
+      <div class="flex items-center my-6">
+        <div
+          class="border-2 rounded-md p-2 w-12 h-12 bg-white -ml-6 flex items-center justify-center relative z-10"
+        >
+          {% include "assets/lucide_mail.svg" %}
+        </div>
+        <div class="px-4 py-2">
+          <p class="text-14 font-bold text-gray-font1">Verify your email</p>
+          <p class="text-xs text-gray-font">Wait for us to get you verified</p>
+        </div>
+      </div>
+      <div class="flex items-center my-6 mb-0">
+        <div
+          class="border-2 rounded-md p-2 w-12 h-12 bg-white -ml-6 flex items-center justify-center relative z-10"
+        >
+          {% include "assets/lucide_rocket.svg" %}
+        </div>
+        <div class="px-4 py-2">
+          <p class="text-14 font-bold text-gray-font1">Welcome to Litterbox!</p>
+          <p class="text-xs text-gray-font">Get up and running in 3 minutes</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex mx-10 justify-between">
+      <button class="flex text-gray-font1 text-13">
+        {% include 'assets/arrow_left.svg' %}
+        <div class="px-2 font-bold text-13">
+          <a href="{% url 'dashboard_home' %}">Back to home</a>
+        </div>
+      </button>
+      <button class="font-bold text-gray-font1 text-13">
+        <a href="{% url 'login' %}">Sign in</a>
+      </button>
+    </div>
+  </div>
+</div>

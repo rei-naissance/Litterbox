@@ -23,7 +23,7 @@ def post_detail(request, post_id):
     comments = post.comments.all()
     user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
     # TOD0: returns a render of post details with current active user
-    return render(request, 'post_testing.html', {
+    return render(request, 'dashboard.html', {
         'post': post,
         'comments': comments,
         'user_liked': user_liked
@@ -74,4 +74,4 @@ def send_report(request, post_id):
             return redirect('dashboard_home')
     else: 
         form = ReportForm()
-    return render(request, 'report_post.html', {'form': form, 'post': post})
+    return render(request, 'dashboard.html', {'form': form, 'post': post})
