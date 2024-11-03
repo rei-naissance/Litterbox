@@ -1,6 +1,8 @@
 # from django.conf import settings
 import os
 from django.shortcuts import render, redirect, get_object_or_404
+
+from dashboard.models import Post
 from .forms import AddCoverImage, AddProfileImage, ProfileForm, AddBio, AddLinks
 from .models import Profile
 from authentication.models import Student
@@ -23,6 +25,7 @@ def delete_image(file_path):
 def profile_view(request, user_id):
     student = get_object_or_404(Student, id=user_id)
     profile = get_object_or_404(Profile, student=student)
+    posts = Post.objects.filter(author=student).order_by('-date_posted')
     
     cover_form = AddCoverImage()
     profile_img_form = AddProfileImage()
@@ -172,6 +175,7 @@ def profile_view(request, user_id):
         'about_form': about_form,
         'links_form': links_form,
         'profile': profile,
+        'posts': posts,
         'user': student
     }
 

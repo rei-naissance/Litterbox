@@ -2,13 +2,19 @@
 <div
   class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex"
 >
-  <div class="h-9 w-9 bg-gray-font1 rounded-full"></div>
+  <a href="{% url 'profile_view' post.author.id %}" class="">
+    {% if user.profile.profile_image %}
+      <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
+    {% else %}
+        <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+    {% endif %}
+  </a>
   <div class="w-full px-3">
     <!-- Profile Section -->
     <div class="flex justify-between items-center">
       <div class="flex flex-row pb-2 space-x-2">
-          <p class="font-medium">{{ post.author.email }}</p>
-          <p class="text-gray-font">{{ post.date_posted|timesince_first }}</p>
+          <p class="font-medium">{{ post.author.first_name }} {{ post.author.last_name }}</p>
+          <p class="text-gray-font">{{ post.date_posted|timesince }}</p>
       </div>
       <a href="{% url 'send_report' post.id %}" class="block">
         <div
@@ -18,6 +24,7 @@
         </div>
       </a>
     </div>
+    <p>Post ID: {{ post.id }}</p>
     <!-- Main Content Section -->
     <a href="{% url 'post_detail' post.id %}" class="block">
       <div class="flex pb-2">

@@ -5,7 +5,7 @@ from Litterbox import settings
 from . import views
 
 urlpatterns = [
-    path('dashboard_home', views.dashboard_home, name='dashboard_home'),
+    path('dashboard_home/', views.dashboard_home, name='dashboard_home'),
     path('post/<int:post_id>', views.post_detail, name='post_detail'),
     path('post_create', views.post_create, name='post_create'),
     path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
