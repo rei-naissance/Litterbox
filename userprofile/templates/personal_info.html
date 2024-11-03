@@ -1,44 +1,66 @@
 {% load static tailwind_tags %}
 {% tailwind_css %}
-<div class="profile-container w-full h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
-    <div class="profile-image-container flex justify-center hover:brightness-90" id="add-profile-photo-id">
-        {% if profile.profile_image %}
-            <img src="{{ profile.profile_image.url }}" alt="Profile Cover Image" class="w-[208px] h-[208px] object-cover rounded-full">
-        {% else %}
-            <img src="https://via.placeholder.com/150" alt="Profile Placeholder" class="w-[208px] h-[208px] object-cover rounded-full">
-        {% endif %}
+<div class="profile-container h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
+    <div class="profile-image-container flex justify-center" id="add-profile-photo-id">
+            <img src="{% if profile.profile_image %} {{ profile.profile_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}"  alt="Profile Cover Image" class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90">
         <div class="profile-option-section hidden absolute right-[35%] top-[10px] z-[10]" id="profile-popup-add-id">
-            <button id="add-profile-button-id" class="add-profile-button  bg-gray-btn py-2 px-3 my-2 rounded-lg text-sm">Add Photo</button>
+            {% if request.user == profile.student%}
+                <div>
+                    <button id="add-profile-button-id" class="add-profile-button bg-gray-btn py-2 px-3 my-2 rounded-lg text-sm shadow-gray-shadow hover:bg-gray-200">Add Photo</button>
+                </div>
+            {% endif %}
         </div>
     </div>
 
     
     <div class="profile-personal-info text-center font-semibold">
-        <div class="identifier text-[16px] font-extralight">@Jhon Doe</div>
-        <div class="name text-[20px] ">Jhon Doe Stalone</div>
-        <div class="title text-[10px] m-1 font-extralight">{{profile.title}}</div>
+        <div class="identifier text-[16px] font-medium  text-gray-font ">{{profile.username}}</div>
+        <div class="name text-[20px] font-bold ">{{ user.first_name }} {{ user.last_name }}</div>
+        <div class="title text-[10px] my-[21px]  text-gray-font font-medium">{{profile.title}}</div>
     </div>
 
     <div class="profile-stats-info flex flex-row justify-around text-center gap-y-[10px] w-[100%]">
         <div class="posts-stats flex flex-col flex-1 items-center">
             <div class="count text-[16px] font-bold">{{profile.post_count}}</div>
-            <div class="title text-[11px]">Posts</div>
+            <div class="title text-[11px] text-gray-font">Posts</div>
         </div>
         <div class="comment-stats flex flex-col flex-1 items-center">
             <div class="count text-[16px] font-bold">{{profile.comment_count}}</div>
-            <div class="title text-[11px]">Comments</div>
+            <div class="title text-[11px] text-gray-font">Comments</div>
         </div>
         <div class="event-participated-stats flex flex-col flex-1 items-center">
             <div class="count text-[16px] font-bold">{{profile.event_count}}</div>
-            <div class="title text-[11px]">Events <br>participated</div>
+            <div class="title text-[11px] text-gray-font">Events <br>participated</div>
         </div>
     </div>
 
-    <div class="profile-option-container flex flex-row-reverse items-end mt-4 mb-2 border-t border-t-gray-200 pt-4">
-        <button id="profile-popup-open-id" class="edit-profile-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn">
-            Edit Profile
-        </button>
-    </div>
+    {% if request.user == profile.student%}
+        <div class="profile-option-container flex flex-row-reverse items-end mt-2 mb-2 border-t border-t-gray-200 pt-4 gap-x-2">
+    
+            <div class="dropdown relative">
+                <button id="profile-settings-id" class="py-[5px] px-[10px] rounded-lg h-[31px] w-[31px] text-[14px] border-none bg-gray-btn flex items-center justify-center hover:bg-gray-200">
+                    <ul class="flex flex-col space-y-[2px] items-center">
+                        <li class="w-1 h-1  bg-black rounded-full"></li>
+                        <li class="w-1 h-1  bg-black rounded-full"></li>
+                        <li class="w-1 h-1  bg-black rounded-full"></li>
+                    </ul>                
+                </button>
+
+                <div id="myDropdown" class="dropdown-content shadow-gray-shadow absolute right-0 mt-2 bg-white rounded-lg overflow-hidden hidden z-10">
+                    <a href="{% url 'account_termination' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Termination</a>
+                </div>
+            </div>
+
+
+        
+            <button id="profile-popup-open-id" class="edit-profile-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn  hover:bg-gray-200">
+                Edit Profile
+            </button>
+            
+        </div>
+    {% endif %}
+    
 </div>
 
 <script src="{% static 'js/profile_scripts.js' %}" type="module"></script>
+

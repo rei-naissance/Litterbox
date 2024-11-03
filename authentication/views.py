@@ -38,7 +38,7 @@ def register_view(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
             })
-            send_mail(subject, message, 'philippeandrei.dael@cit.edu', [user.email])
+            send_mail(subject, message, 'theodore.ladera@cit.edu', [user.email])
 
             return redirect('activation_sent', user_id=user.id)
     else:
@@ -58,7 +58,7 @@ def resend_verification_email(request, user_id):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
         })
-        send_mail(subject, message, 'philippeandrei.dael@cit.edu', [user.email])
+        send_mail(subject, message, 'theodore.ladera@cit.edu', [user.email])
         messages.info(request, 'A new verification email has been sent. Please check your Outlook inbox.')
     else:
         messages.error(request, 'This account is already verified or does not exist.')

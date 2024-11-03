@@ -1,16 +1,21 @@
 {% load static tailwind_tags %}
 {% tailwind_css %}
 
-<div class="cover-image-container flex flex-col items-center">
-    {% if profile.cover_image %}
-        <img src="{{ profile.cover_image.url }}" alt="Profile Cover Image" class="w-full h-[360px]">
-    {% else %}
-        <img src="https://via.placeholder.com/150" alt="Profile Placeholder" class="w-full h-[360px]">
+<div class="cover-image-container flex flex-col items-center p-4">
+    <img 
+        src="{% if profile.cover_image %} {{ profile.cover_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}" 
+        alt="Profile Cover Image" 
+        class="min-w-[730px] w-full h-[400px] rounded-lg"
+    >
+    {% if request.user == profile.student%}
+        <button id="popup-edit-cover-id" class="edit-cover-container absolute bg-gray-btn px-2 py-1 rounded-lg text-center w-[168px] text-sm  right-[47px] bottom-[29px] border-none z-0  hover:bg-gray-200" >
+            Edit Cover Photo
+        </button>
     {% endif %}
-    <button id="popup-edit-cover-id" class="edit-cover-container bg-gray-btn px-2 py-1 rounded-lg text-center w-[168px] text-sm absolute right-[47px] bottom-[29px] border-none z-0" >
-        Edit Cover Photo
-    </button>
+
 </div>
+
+<script src="{% static 'js/cover_function.js' %}" type="module"></script>
 
 
 
