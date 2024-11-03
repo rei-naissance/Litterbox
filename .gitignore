@@ -37,3 +37,4 @@ theme/__pycache__/__init__.cpython-312.pyc
 theme/__pycache__/apps.cpython-312.pyc
 Litterbox/__pycache__/settings.cpython-312.pyc
 authentication/__pycache__/forms.cpython-312.pyc
+.env

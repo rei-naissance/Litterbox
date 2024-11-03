@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
@@ -38,7 +38,7 @@ def register_view(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user),
             })
-            send_mail(subject, message, 'philippeandrei.dael@cit.edu', [user.email])
+            send_mail(subject, message, 'elwison.denampo@cit.edu', [user.email])
 
             return redirect('activation_sent', user_id=user.id)
     else:
@@ -58,7 +58,7 @@ def resend_verification_email(request, user_id):
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': default_token_generator.make_token(user),
         })
-        send_mail(subject, message, 'philippeandrei.dael@cit.edu', [user.email])
+        send_mail(subject, message, 'elwison.denampo@cit.edu', [user.email])
         messages.info(request, 'A new verification email has been sent. Please check your Outlook inbox.')
     else:
         messages.error(request, 'This account is already verified or does not exist.')
@@ -84,9 +84,6 @@ def activate_view(request, uidb64, token):
         return redirect('dashboard_home')
     else:
         return render(request, 'activation_failed.html')
-
-def login_view(request):
-    pass
     
 def activation_sent(request, user_id):
     return render(request, 'activation_sent.html', {'user_id': user_id})
@@ -94,3 +91,52 @@ def activation_sent(request, user_id):
 def index(request):
     return render(request, 'dashboard.html')
 
+def password_reset_request(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        user = Student.objects.filter(email=email).first()
+        if user:
+            subject = 'Password Reset'
+            current_site = get_current_site(request)
+            message = render_to_string('password_reset_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            send_mail(subject, message, 'elwison.denampo@cit.edu', [user.email])
+            messages.success(request, 'Password reset email sent.')
+            return redirect('password_reset_sent')
+        else:
+            messages.error('Account with this cit.edu email does not exist.')
+    return render(request, 'password_reset_form.html')
+
+def password_reset_confirmation(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = Student.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, Student.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            new_password = request.POST.get('password')
+            confirm_password = request.POST.get('confirm_password')
+            
+            if new_password == confirm_password:
+                user.set_password(new_password)
+                user.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Password successfully changed.')
+                return redirect('login')
+            else:
+                messages.error(request, 'Passwords do not match. Please try again.')
+                return render(request, "password_reset_confirm.html", {'user': user})
+        else:
+            return render(request, "password_reset_confirm.html", {'user': user})
+    else:
+        messages.error(request, 'This link is invalid or has expired.')
+        return redirect('password_reset')
+    
+def password_reset_sent(request):
+    return render(request, 'password_reset_sent.html')
