@@ -1,0 +1,18 @@
+<form method="post" enctype="multipart/form-data">
+  <div class="h-1/6 p-6 px-6 border border-b-border-gray">
+    {% csrf_token %}
+    <div class="w-full flex space-x-4">
+      <div class="w-[50px] rounded-full bg-gray-300"></div>
+      {{ form.content }}
+      <button
+        class="w-1/4 h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
+        type="submit"
+      >
+        Share post
+      </button>
+    </div>
+  </div>
+</form>
+<div class="h-full p-6 px-6 ">
+  <textarea placeholder="Write your post here..." class="placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"/></textarea>
+</div>

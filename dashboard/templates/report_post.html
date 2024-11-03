@@ -1,0 +1,17 @@
+<form method="post" enctype="multipart/form-data">
+  <div class="h-1/6 p-6 px-6 border border-b-border-gray">
+    {% csrf_token %}
+    <div class="w-full flex space-x-4">
+      <div class="w-[50px] rounded-full bg-gray-300"></div>
+      {{ form.reason_category }}
+      <button
+        class="w-1/4 h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
+        type="submit"
+      >
+        Report
+      </button>
+    </div>
+  </div>
+
+  <div class="h-full p-6 px-6">{{ form.reason }}</div>
+</form>
