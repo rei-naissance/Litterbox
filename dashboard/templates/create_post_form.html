@@ -1,5 +1,5 @@
 <div class="h-1/6 bg-white rounded-xl p-4 px-6">
-  <form method="post" enctype="multipart/form-data" action="{% url 'dashboard_home' %}">
+  <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       
       <div class="h-14 w-full border-b border-gray-200 flex space-x-4">
@@ -27,7 +27,7 @@
                   <p class="text-gray-font1">Image/Video</p>  
               </button>
               
-              <input type="file" id="id_image" name="image" class="" />
+              <input type="file" id="id_image" name="image" class="hidden" />
               
               <button class="flex items-center space-x-2" type="button">
                   {% include "assets/prime_tags.svg" %}

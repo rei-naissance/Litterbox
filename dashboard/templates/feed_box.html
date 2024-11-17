@@ -39,36 +39,42 @@
   </a>
   
     <!-- Interactions Section -->
-    <div class=" py-2 flex justify-between text-xs">
-      <div class="flex items-center">
-        <button class="text-gray-font flex cursor-pointer" onclick="toggleLike('{{ post.id }}')">
-          <div class="mx-1" id="like-svg-{{ post.id }}">
+    <div class="py-2 flex justify-between text-xs">
+      <div class="flex items-center space-x-2">
+        <!-- Like Button -->
+        <button class="text-gray-font flex items-center cursor-pointer" onclick="toggleLike('{{ post.id }}')">
+          <div class="mx-2" id="like-svg-{{ post.id }}">
             {% if post.id in user_likes %}
               {% include "assets/heart-filled.svg" %}
             {% else %}
               {% include "assets/ph_heart-bold.svg" %}
             {% endif %}
           </div>
-          <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span>
+          <span id="like-count-{{ post.id }}" class="flex items-center">{{ post.likes.count }}</span>
         </button>
-
-        <button class="mx-4 text-gray-font flex" onclick="toggleCommentInput('{{ post.id }}')">
-          <div class="mx-1">{% include "assets/iconamoon_comment.svg" %}</div>
-          {{ post.comments.count }}
+    
+        <!-- Comment Button -->
+        <button class="text-gray-font flex items-center" onclick="toggleCommentInput('{{ post.id }}')">
+          <div class="mx-2">{% include "assets/iconamoon_comment.svg" %}</div>
+          <span class="flex items-center">{{ post.comments.count }}</span>
         </button>
-
-        <span class="text-gray-font flex">
+    
+        <!-- Share -->
+        <span class="text-gray-font flex items-center">
           <div class="mx-2">{% include "assets/uil_share.svg" %}</div>
-          99</span
-        >
+          <span class="flex items-center">0</span>
+        </span>
       </div>
+    
+      <!-- Read Time and Bookmark -->
       <div class="flex items-center">
-        <span class="text-gray-font">59 min read</span>
+        <span class="text-gray-font flex items-center">0 min read</span>
         <div class="ml-6">
           {% include "assets/material-symbols_bookmark-outline.svg" %}
         </div>
       </div>
     </div>
+    
   </div>
 </div>
 
@@ -133,8 +139,8 @@
     {% endif %}
 </div>
 
-<div id="comment-input-{{ post.id }}" class="mt-2 flex px-6 pt-2 pb-6 border border-x-0 border-t-0 border-b-border-gray">
-  <input type="text" class="w-full border rounded px-2 py-1" 
+<div id="comment-input-{{ post.id }}" class="mt-2 flex px-6 pt-2 pb-4 border border-x-0 border-t-0 border-b-border-gray">
+  <input type="text" class="w-full border border-border-gray px-3 py-2 rounded-lg text-sm" 
         placeholder="Comment as {{ request.user.email }}"
         id="new-comment-{{ post.id }}">
   <button onclick="postComment('{{ post.id }}')" class="text-black rounded-lg h-9 w-12 flex  items-center justify-center">
