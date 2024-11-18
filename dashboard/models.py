@@ -87,3 +87,11 @@ class Notification(models.Model):
 
     def __str__(self):
         return f'{self.author} notified {self.post}'
+
+class Organization(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    
+    pass
+class Event(models.Model):
+    pass
