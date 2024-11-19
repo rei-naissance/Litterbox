@@ -1,48 +1,326 @@
-<div class="mt-4 bg-white rounded-xl">
-  <!-- Profile Section -->
-  <div class="flex justify-between">
-    <div class="flex items-center p-4">
-      <div class="h-9 w-9 bg-gray-font1 rounded-full"></div>
-      <div class="ml-3">
-        <p class="font-medium">User Full Name</p>
-        <p class="text-xs text-gray-font">31 Month at 12:59 PM</p>
+{% load custom_filters %}
+{% load static %}
+<div
+  class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex"
+>
+  <div class="h-9 w-9 bg-gray-font1 rounded-full"></div>
+  <div class="w-full px-3">
+    <!-- Profile Section -->
+    <div class="flex justify-between items-center">
+      <div class="flex flex-row pb-2 space-x-2">
+          <p class="font-medium">{{ post.author.email }}</p>
+          <p class="text-gray-font">{{ post.date_posted|timesince_first }}</p>
+      </div>
+      <a href="{% url 'send_report' post.id %}" class="block">
+        <div
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100"
+        >
+          {% include "assets/dots.svg" %}
+        </div>
+      </a>
+    </div>
+    <!-- Main Content Section -->
+    <a href="{% url 'post_detail' post.id %}" class="block">
+      <div class="flex pb-2">
+          <div class="h-56 w-1/2 bg-gray-100 rounded-xl overflow-hidden">
+            {% if post.image and post.image.url %}
+              <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full" />
+            {% else %}
+              <img src="{% static '/images/default_image.jpg' %}" alt="Default Image" class="object-cover h-full w-full" />
+            {% endif %}
+          </div>
+          <div class="h-56 w-1/2 p-5 flex flex-col justify-between">
+              <h2 class="text-3xl font-bold">{{ post.title }}</h2>
+              <p class="text-gray-700 text-lg mt-2 overflow-hidden text-ellipsis ">
+                  {{ post.content }}
+              </p>
+          </div>
+      </div>
+  </a>
+  
+    <!-- Interactions Section -->
+    <div class="py-2 flex justify-between text-xs">
+      <div class="flex items-center space-x-2">
+        <!-- Like Button -->
+        <button class="text-gray-font flex items-center cursor-pointer" onclick="toggleLike('{{ post.id }}')">
+          <div class="mx-2" id="like-svg-{{ post.id }}">
+            {% if post.id in user_likes %}
+              {% include "assets/heart-filled.svg" %}
+            {% else %}
+              {% include "assets/ph_heart-bold.svg" %}
+            {% endif %}
+          </div>
+          <span id="like-count-{{ post.id }}" class="flex items-center">{{ post.likes.count }}</span>
+        </button>
+    
+        <!-- Comment Button -->
+        <button class="text-gray-font flex items-center" onclick="toggleCommentInput('{{ post.id }}')">
+          <div class="mx-2">{% include "assets/iconamoon_comment.svg" %}</div>
+          <span class="flex items-center">{{ post.comments.count }}</span>
+        </button>
+    
+        <!-- Share -->
+        <span class="text-gray-font flex items-center">
+          <div class="mx-2">{% include "assets/uil_share.svg" %}</div>
+          <span class="flex items-center">0</span>
+        </span>
+      </div>
+    
+      <!-- Read Time and Bookmark -->
+      <div class="flex items-center">
+        <span class="text-gray-font flex items-center">0 min read</span>
+        <div class="ml-6">
+          {% include "assets/material-symbols_bookmark-outline.svg" %}
+        </div>
       </div>
     </div>
-    <div class="p-6">{% include "assets/dots.svg" %}</div>
-  </div>
-  <!-- Main Content Section -->
-  <div class="px-4 flex border-b stroke-black pb-2">
-    <div class="h-56 w-1/2 bg-gray-100 rounded-xl"></div>
-    <div class="w-1/2 p-5 items-center">
-      <h2 class="text-3xl font-bold">Blog Post Title</h2>
-      <p class="text-gray-700 text-lg mt-2">
-        Understanding color theory helps in creating visually appealing designs,
-        evoking emotions, and guiding viewer attention. It's the foundation for
-        effective visual communication.
-      </p>
-    </div>
-  </div>
-  <!-- Interactions Section -->
-  <div class="px-4 py-2 flex justify-between text-xs">
-    <div class="flex items-center">
-      <span class="text-gray-font flex">
-        <div class="mx-1">{% include "assets/ph_heart-bold.svg" %}</div>
-        99 Likes</span
-      >
-      <span class="mx-4 text-gray-font flex">
-        <div class="mx-1">{% include "assets/iconamoon_comment.svg" %}</div>
-        99 Comments</span
-      >
-      <span class="text-gray-font flex">
-        <div class="mx-1">{% include "assets/uil_share.svg" %}</div>
-        99 Shares</span
-      >
-    </div>
-    <div class="flex items-center">
-      <span class="text-gray-font">59 min read</span>
-      <div class="ml-6">
-        {% include "assets/material-symbols_bookmark-outline.svg" %}
-      </div>
-    </div>
+    
   </div>
 </div>
+
+<div id="comment-section-{{ post.id }}" class="hidden">
+  <!-- para sa comments -->
+  <h1 class="text-md font-bold py-4 px-6 border border-x-0 border-t-0 border-b-border-gray">Replies</h1>
+
+  <div id="comments-{{ post.id }}" class="">
+    <ul class="">
+        <!-- Initial 3 Comments -->
+        {% for comment in post.comments.all|slice:":3" %}
+        <div id="comment-{{ comment.id }}" class="mt-2 comment">
+            <li class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+                <div class="flex space-x-2">
+                    <div class="font-bold">{{ comment.author.email }}</div>
+                    <div class="text-gray-font">{{ comment.date_posted|timesince_first }}</div>
+                </div>
+                
+
+                {% if comment.author == request.user %}
+                <div class="flex justify-between w-full pr-2">
+                  <p>{{ comment.content }}</p>
+                  <div class="space-x-2">
+                    <button onclick="editComment('{{ comment.id }}')">{% include "assets/tabler_pencil.svg" %}</button>
+                    <button onclick="deleteComment('{{ comment.id }}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+                  </div>
+                </div>
+                {% endif %}
+            </li>
+        </div>
+        {% endfor %}
+
+        <!-- Additional hidden comments -->
+        {% for comment in post.comments.all|slice:"3:" %}
+        <div id="comment-{{ comment.id }}" class="mt-2 comment">
+          <li class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+              <div class="flex space-x-2">
+                  <div class="font-bold">{{ comment.author.email }}</div>
+                  <div class="text-gray-font">{{ comment.date_posted|timesince_first }}</div>
+              </div>
+              
+
+              {% if comment.author == request.user %}
+              <div class="flex justify-between w-full pr-2">
+                <p>{{ comment.content }}</p>
+                <div class="space-x-2">
+                  <button onclick="editComment('{{ comment.id }}')">{% include "assets/tabler_pencil.svg" %}</button>
+                  <button onclick="deleteComment('{{ comment.id }}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+                </div>
+              </div>
+              {% endif %}
+          </li>
+      </div>
+        {% endfor %}
+    </ul>
+
+    <!-- Show More button -->
+    {% if post.comments.count > 3 %}
+    <button id="show-more-btn-{{ post.id }}" onclick="showMoreComments('{{ post.id }}', 5)" class="text-gray-font1 px-6 py-2 border border-x-0 border-t-0 border-b-border-gray w-full">
+        Show More Comments
+    </button>
+    {% endif %}
+</div>
+
+<div id="comment-input-{{ post.id }}" class="mt-2 flex px-6 pt-2 pb-4 border border-x-0 border-t-0 border-b-border-gray">
+  <input type="text" class="w-full border border-border-gray px-3 py-2 rounded-lg text-sm" 
+        placeholder="Comment as {{ request.user.email }}"
+        id="new-comment-{{ post.id }}">
+  <button onclick="postComment('{{ post.id }}')" class="text-black rounded-lg h-9 w-12 flex  items-center justify-center">
+    {% include "assets/iconamoon_send-bold.svg" %}
+  </button>
+</div>
+</div>
+
+
+<script>
+  function toggleCommentInput(postId) {
+  // Toggle the visibility of the comment section
+  const commentSection = document.getElementById(`comment-section-${postId}`);
+  commentSection.classList.toggle('hidden');
+
+  if (!commentSection.classList.contains('hidden')) {
+    // Show only the first 3 comments initially
+    const allComments = document.querySelectorAll(`#comments-${postId} .comment`);
+    allComments.forEach((comment, index) => {
+      comment.classList.toggle('hidden', index >= 3); // Hide comments after the first 3
+    });
+
+    // Display the "Show More" button if there are more than 3 comments
+    const showMoreBtn = document.getElementById(`show-more-btn-${postId}`);
+    if (allComments.length > 3) {
+      showMoreBtn.style.display = 'block';
+    } else {
+      showMoreBtn.style.display = 'none';
+    }
+  }
+}
+
+function showMoreComments(postId, count) {
+  // Select all hidden comments for the current post
+  const hiddenComments = document.querySelectorAll(`#comments-${postId} .comment.hidden`);
+
+  // Show up to the specified count of hidden comments
+  for (let i = 0; i < count && i < hiddenComments.length; i++) {
+    hiddenComments[i].classList.remove('hidden'); // Use class removal to reveal
+  }
+
+  // Hide the "Show More" button if there are no more hidden comments
+  if (document.querySelectorAll(`#comments-${postId} .comment.hidden`).length === 0) {
+    document.getElementById(`show-more-btn-${postId}`).style.display = 'none';
+  }
+}
+
+
+    function postComment(postId) {
+    const content = document.getElementById(`new-comment-${postId}`).value;
+    fetch(`/add-comment/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({ content })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const commentsDiv = document.getElementById(`comments-${postId}`);
+        const newComment = document.createElement('div');
+        newComment.id = `comment-${data.comment_id}`;
+        newComment.classList.add('mt-2', 'comment');
+        
+        newComment.innerHTML = `
+          <div class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+            <div class="flex space-x-2">
+              <div class="font-bold">{{ request.user.email }}</div>
+              <div class="text-gray-font">${data.date_posted}</div>
+            </div>
+            <div class="flex justify-between w-full pr-2">
+              <p>${data.content}</p>
+              <div class="space-x-2">
+                <button onclick="editComment('${data.comment_id}')">{% include "assets/tabler_pencil.svg" %}</button>
+                <button onclick="deleteComment('${data.comment_id}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        commentsDiv.appendChild(newComment);
+        document.getElementById(`new-comment-${postId}`).value = ''; // Clear the input
+      } else {
+        console.error('Error posting comment:', data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function deleteComment(commentId) {
+    fetch(`/delete-comment/${commentId}/`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handles deletion of comments without reload
+      if (data.success) {
+        const commentDiv = document.getElementById(`comment-${commentId}`);
+        commentDiv.remove();
+      } else {
+        console.error('Failed to delete comment');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+  function editComment(commentId) {
+    // Bandaid solution, email gets added to input field when editing text. Email removed with regex below.
+    const commentContent = document.querySelector(`#comment-${commentId} p`);
+    const currentContent = commentContent.textContent.replace(/^[^:]+:\s*/, '');
+    
+    commentContent.innerHTML = `
+      <input type="text" value="${currentContent}" id="edit-comment-${commentId}" class="h-9">
+      <button onclick="submitEditComment(${commentId})">Save</button>
+    `;
+  }
+  function submitEditComment(commentId) {
+  const newContent = document.getElementById(`edit-comment-${commentId}`).value;
+  fetch(`/edit-comment/${commentId}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({ content: newContent })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      const commentDiv = document.getElementById(`comment-${commentId}`);
+      commentDiv.innerHTML = `
+        <div class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+          <div class="flex space-x-2">
+            <div class="font-bold">{{ request.user.email }}</div>
+            <div class="text-gray-font">${data.date_posted}</div>
+          </div>
+          <div class="flex justify-between w-full pr-2">
+            <p>${data.content}</p>
+            <div class="space-x-2">
+              <button onclick="editComment('${commentId}')">{% include "assets/tabler_pencil.svg" %}</button>
+              <button onclick="deleteComment('${commentId}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      alert(data.error || 'Failed to edit comment');
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
+  
+  // haven't found a fix for this, tried hiding comment input box until comment button is clicked, maybe we can fix later.
+  // function toggleCommentInput(postId) {
+  //   const inputBox = document.getElementById(`comment-input-${postId}`);
+  //   inputBox.classList.toggle('hidden');
+  // }
+  function toggleLike(postId) {
+    fetch(`/toggle-like/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Like toggling with json to avoid reload
+      const likeCount = document.querySelector(`#like-count-${postId}`);
+      const likeSvg = document.querySelector(`#like-svg-${postId}`);
+      likeCount.textContent = data.like_count;
+      likeSvg.innerHTML = data.liked
+      ? `{% include "assets/heart-filled.svg" %}`
+      : `{% include "assets/ph_heart-bold.svg" %}`;
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  </script>

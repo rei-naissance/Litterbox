@@ -1,0 +1,88 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Litterbox</title>
+    <link rel="stylesheet" href="{% static 'css/tailwind.css' %}" />
+    {% tailwind_css %}
+  </head>
+  <body>
+    <header
+      class="flex items-center justify-between p-6 pb-4 sticky top-0 z-50 bg-white w-full"
+    >
+      <!-- Logo on the left -->
+       <a href="{% url 'dashboard_home' %}">
+         <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
+        </a>
+
+      <!-- Buttons on the right -->
+      <div class="flex space-x-4 mr-6">
+        <!-- Sign In button -->
+        <a href="{% url 'login' %}" class="text-gray-700 font-semibold">
+          Sign In
+        </a>
+      </div>
+    </header>
+
+    <div
+      class="h-[calc(90vh)] flex flex-col justify-center items-center w-full relative pb-20"
+      style="
+        box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05);
+        background-image: url('{% static 'imgs/home-bg-2.png' %}');
+        background-position-x: -50px; /* Move background 50px to the left */
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="text-center w-full">
+        <p class="text-center w-1/2 m-auto text-6xl font-bold">
+          Where Students Write, Connect, and Inspire
+        </p>
+        <p class="text-gray-font1 text-2xl text-center w-1/2 m-auto mt-4">
+          A space to share ideas, spark creativity, and build community.
+        </p>
+        <button
+          class="mt-6 px-24 py-2 border-2 border-black bg-black text-white rounded-lg hover:bg-white hover:text-black"
+        >
+          <a href="{% url 'register' %}" class="text-16 font-semibold">Join now</a>
+        </button>
+      </div>
+    </div>
+    <div class="h-[calc(60vh)] bg-black-box flex">
+      <div class="p-24 flex flex-col w-3/5 space-y-10 pr-0">
+        <div class="w-10">{% include "assets/logo-dark.svg" %}</div>
+        <p class="text-left text-5xl font-bold text-white">
+          Never miss a moment: stay organized with events and deadlines
+        </p>
+        <p class="text-1xl text-left mt-4 text-white">
+          Stay updated with events, deadlines, and reminders—all in one place.
+        </p>
+      </div>
+      <div class="h-96 w-1/2 pr-24 m-auto">
+        <img src="{% static 'imgs/example-page.png' %}" alt="example-page" />
+      </div>
+    </div>
+    <div
+      class="h-[calc(115vh)] flex flex-col justify-center items-center w-full relative pb-20 mb-12"
+      style="
+        box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05);
+        background-image: url('{% static 'imgs/orgs-logo.png' %}');
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="text-center w-full">
+        <p class="text-gray-font1 text-2xl text-center w-1/2 m-auto mt-4">
+          A growing app of
+        </p>
+        <p class="text-center w-1/2 m-auto text-6xl font-bold">4054 users</p>
+        <p class="text-center w-1/2 m-auto text-6xl font-bold">
+          12+ organizations
+        </p>
+      </div>
+    </div>
+    {% include "footer.html" %}
+  </body>
+</html>

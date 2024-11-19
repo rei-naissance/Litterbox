@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+        <h2 class="text-xl font-semibold mb-2">Reports</h2>
+        <table class="min-w-full bg-white">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">Author</th>
+                    <th class="py-2 px-4 border-b">Post</th>
+                    <th class="py-2 px-4 border-b">Reason</th>
+                    <th class="py-2 px-4 border-b">Category</th>
+                    <th class="py-2 px-4 border-b">Reported On</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td class="py-2 px-4 border-b">{{ report.author }}</td>
+                    <td class="py-2 px-4 border-b">{{ report.post.content }}</td>
+                    <td class="py-2 px-4 border-b">{{ report.reason }}</td>
+                    <td class="py-2 px-4 border-b">{{ report.get_reason_category_display }}</td>
+                    <td class="py-2 px-4 border-b">{{ report.reported_on }}</td>
+                    <td>
+                        <form action="{% url 'delete_reported_post' report.id %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Post</button>
+                        </form>
+                        <form action="{% url 'disregard_reported_post' report.id %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Ignore Report</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> 
+</body>
+</html>

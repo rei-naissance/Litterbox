@@ -1,0 +1,60 @@
+<div
+  class="h-full  left-0 top-0 fixed w-16"
+>
+<div class="flex flex-col justify-between w-20 items-center h-full pb-6">
+  <div class="flex flex-col items-center space-y-5">
+    <div class="p-5">{% include "assets/logo small2.svg" %}</div>
+    <!-- Home Icon -->
+     <a href="/dashboard_home">
+       <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_home' %}{% endif %}">
+         {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'post_create' or request.resolver_match.url_name == 'send_report' or request.resolver_match.url_name == 'post_detail'%}
+         {% include "assets/majesticons_home.svg" %}
+         {% else %}
+         {% include "assets/majesticons_home-line.svg" %}
+         {% endif %}
+        </div>
+      </a>
+
+    <!-- Event Icon -->
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_event' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'dashboard_event' %}
+        {% include "assets/material-symbols_event.svg" %}
+      {% else %}
+        {% include "assets/material-symbols_event-outline.svg" %}
+      {% endif %}
+    </div>
+
+    <!-- Tags Icon -->
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_tags' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'dashboard_tags' %}
+        {% include "assets/tabler_tags-solid.svg" %}
+      {% else %}
+        {% include "assets/tabler_tags.svg" %}
+      {% endif %}
+    </div>
+
+    <!-- Megaphone Icon -->
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
+        {% include "assets/majesticons_megaphone.svg" %}
+      {% else %}
+        {% include "assets/majesticons_megaphone-line.svg" %}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="flex flex-col items-center space-y-8">
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
+      {% include "assets/basil_settings.svg" %}
+      {% else %}
+      {% include "assets/basil_settings-outline.svg" %}
+      {% endif %}
+    </div>
+    <div class="w-10 h-10 rounded-full bg-gray-300">
+
+    </div>
+  </div>
+
+</div>
+</div>

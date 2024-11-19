@@ -31,6 +31,7 @@ class Student(AbstractBaseUser):
     email = models.EmailField(unique=True, validators=[validate_email])
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
+    """user_bio = models.TextField(blank=True)"""
     is_active = models.BooleanField(default=False)
     is_admin = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)

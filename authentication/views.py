@@ -81,7 +81,7 @@ def activate_view(request, uidb64, token):
         user.is_verified = True
         user.save()
         login(request, user)
-        return redirect('index')
+        return redirect('dashboard_home')
     else:
         return render(request, 'activation_failed.html')
 
@@ -92,5 +92,5 @@ def activation_sent(request, user_id):
     return render(request, 'activation_sent.html', {'user_id': user_id})
 
 def index(request):
-    return render(request, 'dashboard.html')
+    return render(request, 'home.html')
 

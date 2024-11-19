@@ -44,6 +44,9 @@ module.exports = {
   theme: {
     extend: {
       fontSize: {
+        10: "10px",
+        11: "11px",
+        12: "12px",
         13: "13px",
         14: "14px",
         16: "16px",
@@ -58,6 +61,8 @@ module.exports = {
         "blue-font": "#3985de",
         "input-border": "#A9A9A9",
         "green-box": "#087443",
+        "bg-gray": "#FAFAFA",
+        "border-gray": "#c1c1c1",
       },
       fontFamily: {
         sans: ["SFProDisplay", "sans-serif"],

@@ -9,20 +9,20 @@
     </div>
   </div>
   <div class="ml-28 mt-2">
-    <div class="text-base">@username</div>
-    <div class="text-sm text-gray-font">user bio stuff for user</div>
+    <div class="text-base">{{ user.email }}</div>
+    <div class="text-sm text-gray-font">{{ user.user_bio}}</div>
   </div>
   <div class="flex text-center space-x-6 text-base">
     <div class="w-1/4">
-      <div class="mt-3">99</div>
-      <div class="text-xs text-gray-font mt-1">Post</div>
+      <div class="mt-3">{{ post_count }}</div>
+      <div class="text-xs text-gray-font mt-1">Posts</div>
     </div>
     <div class="w-1/4">
-      <div class="mt-3">99</div>
+      <div class="mt-3">{{ comment_count }}</div>
       <div class="text-xs text-gray-font mt-1">Comments</div>
     </div>
     <div class="w-1/4">
-      <div class="mt-3">99</div>
+      <div class="mt-3">0</div>
       <div class="text-xs text-gray-font mt-1">Events Participated</div>
     </div>
   </div>

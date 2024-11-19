@@ -1,30 +1,43 @@
-{% load static tailwind_tags %}
-{% load static %}
+{% load static tailwind_tags %} {% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Litterbox</title>
     {% tailwind_css %}
   </head>
-  <body class="text-sm">
-    {% include "header_dashboard.html" %}
+  <style>
+    .custom-border1{
+      left: calc(25% + 2.25%);
+    }
+    
+    .custom-border2{
+      right: calc(25% + 2.21%);
+    }
 
-    <div class="mx-4 p-4 w-auto h-full rounded-xl flex space-x-4 bg-gray-box">
-      <div class="w-1/4 h-full sticky top-16">
-        {% include "profile_panel.html" %} {% include "tabs_panel.html" %}
-      </div>
+    .header-size{
+      width: calc(45.5%);
+    }
+  </style>
+  <body class="text-sm bg-bg-gray">
+    <div class="w-auto h-full rounded-xl flex">
+      {% include "left_panel.html" %}
 
-      <div class="w-2/3 h-full">
-        {% include "create_post_panel.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %} {% include "feed_box.html" %}
+      <div class="w-full h-full ">
+        {% include "header_dashboard.html" %}
 
-        <div class="mt-4 h-2/3 bg-white rounded-xl">feed</div>
-      </div>
-
-      <div class="w-1/4 h-full sticky top-16">
-        {% include "event_panel.html" %} {% include "announcement_panel.html" %}
-        {% include "calendar_panel.html" %}
+        <div class="flex flex-row w-full">
+          <div class="w-1/4"></div>
+          <div class="w-1/4"></div>
+          <div class="w-5/6 m-auto top-0 sticky bg-white border border-border-gray border-t-0 rounded-b-[30px]">
+            <div class="overflow-y-auto z-[-100]">
+              {% include "main_feed.html" %}
+            </div>
+          </div>
+          <div class="w-1/4"></div>
+          <div class="w-1/4"></div>
+        </div>
       </div>
     </div>
   </body>

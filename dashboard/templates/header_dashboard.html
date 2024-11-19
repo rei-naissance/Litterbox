@@ -1,15 +1,19 @@
 {% load static tailwind_tags %} {% tailwind_css %}
-<header class="flex items-center p-6 pb-4 sticky top-0 z-50 bg-white">
-  <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
-
-  <div class="flex-grow flex justify-center">
-    <div class="w-1/3 h-9 bg-gray-box rounded-lg flex items-center px-3">
+<div class="sticky top-0 z-10 m-auto">
+  <div class="flex-grow flex justify-center p-8 header-size m-auto bg-bg-gray border border-b-border-gray border-x-0">
+    <div class=" h-9 bg-white rounded-lg flex items-center px-3 border border-border-gray">
       {% include "assets/search.svg" %}
       <input
-        type="text"
-        placeholder="Search"
-        class="w-full h-full bg-transparent border-none rounded-lg focus:outline-none outline-none px-4 text-sm font-normal text-gray-font placeholder-gray-font"
+      type="text"
+      placeholder="Search"
+      class="w-full h-full bg-white border-none rounded-lg focus:outline-none outline-none px-4 text-sm font-normal text-black placeholder-gray-font"
       />
     </div>
   </div>
-</header>
+  <div class="absolute custom-border1" style="margin-top: -1px;">
+    {% include "assets/hide-corner-left.svg" %}
+  </div>
+  <div class="absolute custom-border2" style="margin-top: -1px;">
+    {% include "assets/hide-corner-right.svg" %}
+  </div>
+</div>
