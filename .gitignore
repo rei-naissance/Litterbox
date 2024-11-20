@@ -70,3 +70,5 @@ Litterbox/__pycache__/urls.cpython-312.pyc
 Litterbox/__pycache__/__init__.cpython-312.pyc
 Litterbox/__pycache__/settings.cpython-312.pyc
 dashboard/__pycache__/forms.cpython-312.pyc
+.env
+theme/static/css/dist/Litterbox.code-workspace
