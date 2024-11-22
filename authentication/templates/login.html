@@ -48,6 +48,10 @@
               <div class="rounded-sm font-sm">{{ form.password }}</div>
               {{ form.password.errors }}
             </div>
+
+            <div class="space-y-1">
+              <a href="{% url 'password_reset' %}" class="text-gray-font1 text-13">Forgot Password?</a>
+            </div>
           </div>
           <div class="relative flex items-center justify-center">
             <hr class="w-full border-gray-300" />

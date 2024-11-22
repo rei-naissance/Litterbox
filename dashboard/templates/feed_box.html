@@ -69,8 +69,13 @@
       <!-- Read Time and Bookmark -->
       <div class="flex items-center">
         <span class="text-gray-font flex items-center">0 min read</span>
-        <div class="ml-6">
-          {% include "assets/material-symbols_bookmark-outline.svg" %}
+        <button class="text-gray-font flex items-center" onclick="toggleSave('{{ post.id }}')">
+        <div class="ml-6" id="save-svg-{{ post.id }}">
+          {% if post.id in user_saves %}
+            {% include "assets/bookmark.svg" %}
+          {% else %}
+            {% include "assets/material-symbols_bookmark-outline.svg" %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -323,4 +328,21 @@ function showMoreComments(postId, count) {
     .catch(error => console.error('Error:', error));
   }
 
+  function toggleSave(postId) {
+    fetch(`/toggle-save/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const saveSvg = document.querySelector(`#save-svg-${postId}`);
+      saveSvg.innerHTML = data.saved
+      ? `{% include "assets/bookmark.svg" %}`
+      : `{% include "assets/material-symbols_bookmark-outline.svg" %}`;
+    })
+    .catch(error => console.error('Error:', error));
+  }
   </script>

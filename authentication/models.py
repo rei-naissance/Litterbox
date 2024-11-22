@@ -21,7 +21,7 @@ class StudentManager(BaseUserManager):
     def create_superuser(self, email, password):
         user = self.create_user(
             email,
-            password=password,
+            password=password,  
         )
         user.is_admin = True
         user.save(using=self._db)

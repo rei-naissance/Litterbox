@@ -1,35 +1,50 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
-from datetime import datetime
+from .models import Post, Comment, Report, Like, Save
 from .forms import PostForm, CommentForm, ReportForm
-from .models import Post, Comment, Report, Like
-from django.http import JsonResponse
 from django.db.models import Prefetch
+from django.http import JsonResponse
+from datetime import datetime
 import json
 
-def admin_check(user):
+def admin_check(user):                                                          # decorator to check if user is admin.
     return user.is_authenticated and user.is_admin
 
+@login_required
 def toggle_like(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     user = request.user
-    like, created = Like.objects.get_or_create(author=user, post=post)
-    if created:
+    like, created = Like.objects.get_or_create(author=user, post=post)          # get_or_create returns a tuple contaning like object and boolean.
+    if created:                                                                 # boolean used to check if like object was created (post was unliked beforehand).
         like.liked_on = datetime.now()
         like.save()
     else:
         like.delete()
-    return JsonResponse({
+    return JsonResponse({                                                       # returns line count and status to reflect on frontend.
         'like_count': post.likes.count(),
         'liked': created
+    })
+
+@login_required
+def toggle_save(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    user = request.user
+    save, created = Save.objects.get_or_create(author=user, post=post)          # similar logic to post likes except number of saves is not saved.
+    if created:
+        save.saved_on = datetime.now()
+        save.save()
+    else:
+        save.delete()
+    return JsonResponse({
+        'saved': created
     })
 
 @user_passes_test(admin_check)
 def delete_reported_post(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
-    if request.method == 'POST':
-        post = report.post
+    if request.method == 'POST':                                                
+        post = report.post                                                      # grabs post from report.
         post.is_deleted = True
         post.save()
         report.is_resolved = True
@@ -47,13 +62,23 @@ def disregard_reported_post(request, report_id):
 @login_required
 def dashboard_home(request):
     user = request.user
-    comments_queryset = Comment.objects.filter(is_deleted=False)
+    comments_queryset = Comment.objects.filter(is_deleted=False)                # grabs all comments.
     posts = (
         Post.objects.filter(is_deleted=False)
         .prefetch_related(Prefetch('comments', queryset=comments_queryset))
         .order_by('-date_posted')
     )
-    user_likes = set(request.user.likes.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
+
+    if request.user.is_authenticated:                                           # renders the user's likes and saves for dashboard frontend.
+        user_likes = set(request.user.likes.values_list('post_id', flat=True))
+        user_saves = set(request.user.saves.values_list('post_id', flat=True))
+    else:
+        user_likes = set()
+        user_saves = set()
+    
+    # changed for readability.
+    # user_likes = set(request.user.likes.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
+    # user_saves = set(request.user.saves.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
     
     post_count = posts.filter(author=user).count()
     comment_count = comments_queryset.filter(author=user).count()
@@ -63,8 +88,25 @@ def dashboard_home(request):
         'post_count': post_count,
         'comment_count': comment_count,
         'posts': posts,
-        'user_likes': user_likes
+        'user_likes': user_likes,
+        'user_saves': user_saves
     })
+
+@login_required
+def saved_posts(request):
+    user = request.user
+    saved_posts = (
+        Post.objects.filter(is_deleted=False, saves__author=user)                # gets all saved posts.
+        .distinct()                                                              # removes duplicates.
+        .order_by('-date_posted')
+    )
+
+    if request.user.is_authenticated:                                           
+        user_saves = set(request.user.saves.values_list('post_id', flat=True))
+    else:
+        user_saves = set()
+
+    return render(request, 'saved_posts.html', {'saved_posts': saved_posts, 'user_saves': user_saves})
 
 
 @login_required
@@ -83,8 +125,14 @@ def post_create(request):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(is_deleted=False).order_by('-date_posted')
-    user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
-    # TOD0: returns a render of post details with current active user
+
+
+    if request.user.is_authenticated:
+        user_liked = post.likes.filter(author=request.user).exists()
+    else:
+        user_liked = False
+
+    # user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
     return render(request, 'dashboard.html', {
         'post': post,
         'comments': comments,
@@ -100,13 +148,15 @@ def comment_create(request, post_id):
         if content:
             post = get_object_or_404(Post, pk=post_id)
             comment = Comment.objects.create(
-                post=post,
-                author=request.user,
-                content=content
+                post = post,
+                author = request.user,
+                content = content
             )
             return JsonResponse({'success': True, 'comment_id': comment.id, 'content': comment.content})
         else:
+            # 400 Bad Request
             return JsonResponse({'success': False, 'error': 'Comment content cannot be empty'}, status=400)
+    # 405 Method Not Allowed
     return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=405)
         
 @login_required
@@ -129,8 +179,10 @@ def edit_comment(request, comment_id):
         comment.save()
         return JsonResponse({'success': True, 'content': new_content})
     else:
+        # 400 Bad Request
         return JsonResponse({'success': False, 'error': 'Content cannot be empty'}, status=400)
         
+@login_required
 @user_passes_test(admin_check)
 def admin_dashboard(request):
     reports = Report.objects.filter(is_resolved=False).order_by('-reported_on')

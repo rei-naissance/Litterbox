@@ -13,9 +13,11 @@ urlpatterns = [
     path('report/<int:report_id>/delete/', views.delete_reported_post, name='delete_reported_post'),
     path('report/<int:report_id>/ignore/', views.disregard_reported_post, name='disregard_reported_post'),
     path('toggle-like/<int:post_id>/', views.toggle_like, name='toggle_like'),
+    path('toggle-save/<int:post_id>/', views.toggle_save, name='toggle_save'),  
     path('add-comment/<int:post_id>/', views.comment_create, name='add_comment'),
     path('delete-comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('edit-comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
+    path('saved_posts', views.saved_posts, name='saved_posts'),
 ]
 
 if settings.DEBUG:

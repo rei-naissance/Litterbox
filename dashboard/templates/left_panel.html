@@ -8,9 +8,9 @@
      <a href="/dashboard_home">
        <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_home' %}{% endif %}">
          {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'post_create' or request.resolver_match.url_name == 'send_report' or request.resolver_match.url_name == 'post_detail'%}
-         {% include "assets/majesticons_home.svg" %}
+          {% include "assets/majesticons_home.svg" %}
          {% else %}
-         {% include "assets/majesticons_home-line.svg" %}
+          {% include "assets/majesticons_home-line.svg" %}
          {% endif %}
         </div>
       </a>
@@ -41,14 +41,31 @@
         {% include "assets/majesticons_megaphone-line.svg" %}
       {% endif %}
     </div>
+
+    <a href="/saved_posts">
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'saved_posts' or request.resolver_match.url_name == 'post_detail'   %}
+        {% include "assets/bookmark.svg" %}
+      {% else %}
+        {% include "assets/material-symbols_bookmark-outline.svg" %}
+      {% endif %}
+    </div>
+    </a>
   </div>
 
   <div class="flex flex-col items-center space-y-8">
     <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
       {% if request.resolver_match.url_name == 'dashboard_announcement' %}
-      {% include "assets/basil_settings.svg" %}
+        {% include "assets/notification-outline.svg" %}
       {% else %}
-      {% include "assets/basil_settings-outline.svg" %}
+        {% include "assets/notification-alert.svg" %}
+      {% endif %}
+    </div>
+    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
+        {% include "assets/basil_settings.svg" %}
+      {% else %}
+        {% include "assets/basil_settings-outline.svg" %}
       {% endif %}
     </div>
     <div class="w-10 h-10 rounded-full bg-gray-300">
