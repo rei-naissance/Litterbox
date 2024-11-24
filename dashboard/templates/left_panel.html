@@ -57,25 +57,66 @@
     </a>
   </div>
 
-  <div class="flex flex-col items-center space-y-8">
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == '' %}
+  <div class="flex flex-col justify-center items-center space-y-6">
+    <div class="relative flex flex-col items-center space-y-8">
+      <!-- Notification Button -->
+      <div id="notif-button" class="p-3 rounded-lg hover:bg-gray-box cursor-pointer">
+        {% if request.resolver_match.url_name == '' %}
         {% include "assets/notification-outline.svg" %}
-      {% else %}
+        {% else %}
         {% include "assets/notification-alert.svg" %}
-      {% endif %}
+        {% endif %}
+      </div>
+
+    <!-- Dropdown Menu -->
+      <div 
+      id="notif-dropdown" 
+      class="fixed bottom-36 left-20 ml-2 mb-2 w-56 bg-white border border-border-gray rounded-lg hidden"
+      >
+        <ul class="text-13 text-gray-700 divide-y divide-gray-200">
+          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif1</li>
+          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif2</li>
+          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
+          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
+          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
+        </ul>
+            <div class="border-t border-gray-200">
+                <button class="w-full text-xs font-bold py-2 px-4 hover:bg-gray-100 text-center">
+                    View all notifications
+                </button>
+            </div>
+      </div>
     </div>
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == '' %}
+
+      <div class="pb-2 mb-5 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+        {% if request.resolver_match.url_name == '' %}
         {% include "assets/basil_settings.svg" %}
-      {% else %}
+        {% else %}
         {% include "assets/basil_settings-outline.svg" %}
-      {% endif %}
+        {% endif %}
+      </div>
+      <div class="w-10 h-10 rounded-full bg-gray-300">
+      </div>
     </div>
-    <div class="w-10 h-10 rounded-full bg-gray-300">
-
-    </div>
-  </div>
 
 </div>
 </div>
+</div>
+
+
+<script>
+  document.getElementById('notif-button').addEventListener('click', () => {
+    const dropdown = document.getElementById('notif-dropdown');
+    dropdown.classList.toggle('hidden');
+  });
+  
+  // Close dropdown when clicking outside
+  document.addEventListener('click', (event) => {
+    const dropdown = document.getElementById('notif-dropdown');
+    const button = document.getElementById('notif-button');
+    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+        dropdown.classList.add('hidden');
+    }
+});
+
+</script>

@@ -11,10 +11,41 @@
 
 <div>
   <div class="p-6 pb-1">
-    <div class="flex space-x-3 mb-4 w-full items-center">
-      <div class="w-9 h-9 rounded-full bg-gray-300"></div>
-      <div class="font-bold">{{ post.author }}</div>
-      <div class="text-gray-font">{{ post.date_posted|timesince_first }}</div>
+    <div class="flex justify-between">
+      <div class="flex space-x-3 mb-4 w-full items-center">
+        <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+        <div class="font-bold">{{ post.author }}</div>
+        <div class="text-gray-font">{{ post.date_posted|timesince_first }}</div>
+      </div>
+      <div class="relative">
+        <!-- Dots Button -->
+        <button
+          type="button"
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100"
+          onclick="toggleDropdown('{{ post.id }}')"
+        >
+          {% include "assets/dots.svg" %}
+        </button>
+      
+        <!-- Dropdown Menu -->
+        <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+          <!-- Edit Option -->
+          <a
+            href=""
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Edit
+          </a>
+      
+          <!-- Report Option -->
+          <a
+            href="{% url 'send_report' post.id %}"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Report
+          </a>
+        </div>
+      </div>
     </div>
 
     
@@ -76,3 +107,33 @@
 </div>
 </div>
 
+<script>
+  function toggleDropdown(id) {
+  const dropdown = document.getElementById(`dropdown-${id}`);
+  
+  if (dropdown) {
+    dropdown.classList.toggle('hidden');
+    dropdown.classList.toggle('block');
+
+    if (!dropdown.classList.contains('hidden')) {
+      // Add a document listener to close the dropdown
+      document.addEventListener('click', (event) => closeOnClickOutside(event, id));
+    }
+  } else {
+    console.error(`Dropdown with ID 'dropdown-${id}' not found.`);
+  }
+}
+
+function closeOnClickOutside(event, id) {
+  const dropdown = document.getElementById(`dropdown-${id}`);
+  const button = document.querySelector(`[onclick="toggleDropdown('${id}')"]`);
+  
+  if (dropdown && !dropdown.contains(event.target) && !button.contains(event.target)) {
+    dropdown.classList.add('hidden');
+    dropdown.classList.remove('block');
+    
+    // Remove the document listener after closing
+    document.removeEventListener('click', (e) => closeOnClickOutside(e, id));
+  }
+}
+</script>
