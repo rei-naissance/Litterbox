@@ -1,4 +1,14 @@
 {% load custom_filters %}
+{% load static %}
+
+<div class="w-1/5 fixed right-10 border border-border-gray rounded-3xl">
+  {% if post.image and post.image.url %}
+    <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full rounded-3xl"/>
+  {% else %}
+    <img src="{% static '/images/default_image.jpg' %}" alt="Default Image" class="object-cover h-full w-full rounded-3xl" />
+  {% endif %}
+</div>
+
 <div>
   <div class="p-6 pb-1">
     <div class="flex space-x-3 mb-4 w-full items-center">
@@ -65,3 +75,4 @@
   </div>
 </div>
 </div>
+

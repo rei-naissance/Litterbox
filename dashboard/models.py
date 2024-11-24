@@ -110,3 +110,16 @@ class Notification(models.Model):
 
     class Meta: 
         ordering = ['-created_at']
+
+class Announcement(models.Model):
+    title = models.CharField(max_length=150)
+    content = models.TextField()
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='announcements'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_archived = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title        

@@ -16,13 +16,15 @@
       </a>
 
     <!-- Event Icon -->
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_event' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'dashboard_event' %}
-        {% include "assets/material-symbols_event.svg" %}
-      {% else %}
-        {% include "assets/material-symbols_event-outline.svg" %}
-      {% endif %}
-    </div>
+    <a href="/events">
+      <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_event' %}{% endif %}">
+        {% if request.resolver_match.url_name == 'dashboard_event' %}
+          {% include "assets/material-symbols_event.svg" %}
+        {% else %}
+          {% include "assets/material-symbols_event-outline.svg" %}
+        {% endif %}
+      </div>
+    </a>
 
     <!-- Tags Icon -->
     <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_tags' %}{% endif %}">
@@ -34,13 +36,15 @@
     </div>
 
     <!-- Megaphone Icon -->
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
-        {% include "assets/majesticons_megaphone.svg" %}
-      {% else %}
-        {% include "assets/majesticons_megaphone-line.svg" %}
-      {% endif %}
-    </div>
+    <a href="/announcements">
+      <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
+        {% if request.resolver_match.url_name == 'announcements' %}
+          {% include "assets/majesticons_megaphone.svg" %}
+        {% else %}
+          {% include "assets/majesticons_megaphone-line.svg" %}
+        {% endif %}
+      </div>
+    </a>
 
     <a href="/saved_posts">
     <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
@@ -55,14 +59,14 @@
 
   <div class="flex flex-col items-center space-y-8">
     <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
+      {% if request.resolver_match.url_name == '' %}
         {% include "assets/notification-outline.svg" %}
       {% else %}
         {% include "assets/notification-alert.svg" %}
       {% endif %}
     </div>
     <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'dashboard_announcement' %}
+      {% if request.resolver_match.url_name == '' %}
         {% include "assets/basil_settings.svg" %}
       {% else %}
         {% include "assets/basil_settings-outline.svg" %}

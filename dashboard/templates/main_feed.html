@@ -10,6 +10,29 @@
 {% elif request.resolver_match.url_name == 'send_report' %}
     {% include "report_post.html" %}
 
+{% elif request.resolver_match.url_name == 'events' %}
+    {% include "event_feed_box.html" %}
+
+{% elif request.resolver_match.url_name == 'announcements' %}
+    {% for month_year, announcements in grouped_announcements.items %}
+    <!-- Month Header -->
+    <p class="text-xl font-bold py-4 px-6 mt-4">{{ month_year }}</p>
+
+    <!-- Announcements for this month -->
+    {% for announcement in announcements %}
+        {% include "announcement_feed_box.html" with announcement=announcement %}
+    {% endfor %}
+    <div class="mb-5"></div>
+    {% empty %}
+    <p class="text-gray-500 text-center py-6">No announcements available.</p>
+    {% endfor %}
+
+{% elif request.resolver_match.url_name == 'announcement_create' %}
+    {% include "create_announcement.html" %}
+
+{% elif request.resolver_match.url_name == 'announcement_detail' %}
+    {% include "announcement_details.html" with announcement=announcement %}
+
 {% elif request.resolver_match.url_name == 'post_detail' %}
     {% include "post_details.html" with post=post comments=comments user_liked=user_liked image=image %}
 {% else %}

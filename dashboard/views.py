@@ -1,11 +1,13 @@
+from time import localtime
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
-from .models import Post, Comment, Report, Like, Save
-from .forms import PostForm, CommentForm, ReportForm
+from .models import Post, Comment, Report, Like, Save, Announcement
+from .forms import PostForm, CommentForm, ReportForm, AnnouncementForm
 from django.db.models import Prefetch
 from django.http import JsonResponse
 from datetime import datetime
+from django.utils.timezone import localtime
 import json
 
 def admin_check(user):                                                          # decorator to check if user is admin.
@@ -90,6 +92,64 @@ def dashboard_home(request):
         'posts': posts,
         'user_likes': user_likes,
         'user_saves': user_saves
+    })
+
+
+@login_required
+def event_home(request):
+    # user = request.user
+    # comments_queryset = Comment.objects.filter(is_deleted=False)
+    # posts = (
+    #     Post.objects.filter(is_deleted=False)
+    #     .prefetch_related(Prefetch('comments', queryset=comments_queryset))
+    #     .order_by('-date_posted')
+    # )
+    # user_likes = set(request.user.likes.values_list('post_id', flat=True)) if request.user.is_authenticated else set()
+    
+    # post_count = posts.filter(author=user).count()
+    # comment_count = comments_queryset.filter(author=user).count()
+    
+    return render(request, 'dashboard.html', {
+        # 'user': user,
+        # 'post_count': post_count,
+        # 'comment_count': comment_count,
+        # 'posts': posts,
+        # 'user_likes': user_likes
+    })
+
+@login_required
+def announcement_home(request):
+    # Fetch and order announcements
+    announcements = Announcement.objects.filter(is_archived=False).order_by('-created_at')
+
+    # Group announcements by "Month Year"
+    grouped_announcements = {}
+    for announcement in announcements:
+        # Safely format datetime into "Month Year" string
+        month_year = localtime(announcement.created_at).strftime("%B %Y")
+        grouped_announcements.setdefault(month_year, []).append(announcement)
+
+    # Pass grouped announcements to the template
+    return render(request, 'dashboard.html', {'grouped_announcements': grouped_announcements})
+
+@login_required
+def announcement_create(request):
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST)
+        if form.is_valid():
+            announcement = form.save(commit=False)
+            announcement.author = request.user
+            form.save()
+            return redirect('announcements')  # Redirect to announcements list
+    else:
+        form = AnnouncementForm()
+    return render(request, 'dashboard.html', {'form': form})
+
+def announcement_detail(request, announcement_id):
+    announcement = get_object_or_404(Announcement, pk=announcement_id)
+
+    return render(request, 'dashboard.html', {
+        'announcement': announcement
     })
 
 @login_required

@@ -18,6 +18,10 @@ urlpatterns = [
     path('delete-comment/<int:comment_id>/', views.delete_comment, name='delete_comment'),
     path('edit-comment/<int:comment_id>/', views.edit_comment, name='edit_comment'),
     path('saved_posts', views.saved_posts, name='saved_posts'),
+    path('events', views.event_home, name='events'),
+    path('announcements', views.announcement_home, name='announcements'),
+    path('announcement_create', views.announcement_create, name='announcement_create'),
+    path('announcements/<int:announcement_id>', views.announcement_detail, name='announcement_detail'),
 ]
 
 if settings.DEBUG:
