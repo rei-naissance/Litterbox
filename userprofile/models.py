@@ -1,8 +1,7 @@
 from django.db import models
-from authentication.models import Student
 
 class Profile(models.Model):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE,related_name='profile', null=True)
+    student = models.OneToOneField('authentication.Student', on_delete=models.CASCADE ,related_name='profile')
     username = models.CharField(null=True,max_length=150)
     bio = models.TextField(null=True, blank=True)
 

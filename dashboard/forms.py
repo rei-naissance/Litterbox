@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Comment, Report
+from .models import Post, Comment, Report, Event
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -26,4 +26,17 @@ class ReportForm(forms.ModelForm):
             'reason_category': forms.Select(attrs={
                 'class': 'w-full h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray'
             }),
+        }
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title', 'start_date', 'start_time', 'end_date', 'end_time', 'location', 'description']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),  
+            'end_time': forms.TimeInput(attrs={'type': 'time'}),  
+            'location': forms.TextInput(attrs={'placeholder': 'Enter location here...'}), 
+            'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter event description...'}),
         }

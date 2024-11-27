@@ -40,45 +40,14 @@ def profile_view(request, user_id):
 
             current_cover_image_path = profile.cover_image.path if profile.cover_image else None
             current_profile_image_path = profile.profile_image.path if profile.profile_image else None
+            # print("cci", current_cover_image_path)
+            # print("cpi", current_profile_image_path )
 
             if profile_form.is_valid():
                 cover_image = profile_form.cleaned_data.get('cover_image')
-
-                # Delete old cover image if it exists
-                delete_image(current_cover_image_path)
-                if 'cover_image-clear' in request.POST:
-                    delete_image(current_cover_image_path) 
-                    profile.profile_image = None
-
-                # Save the new cover image if provided and valid
-                elif cover_image:
-                    if current_cover_image_path:
-                        delete_image(current_cover_image_path) 
-                    try:
-                        img = Image.open(cover_image)
-                        width, height = img.size
-                        if width >= 400 and height >= 200:
-                            profile.cover_image = cover_image
-                    except Exception as e:
-                        print("Error opening cover image:", e)
-
-                # Handle profile image upload
                 profile_image = profile_form.cleaned_data.get('profile_image')
-                
-                # Handle profile image clearing
-                if 'profile_image-clear' in request.POST:
-                    delete_image(current_profile_image_path) 
-                    profile.profile_image = None
-                elif profile_image:
-                    if current_profile_image_path:
-                        delete_image(current_profile_image_path) 
-                    try:
-                        img = Image.open(profile_image)
-                        width, height = img.size
-                        if width >= 200 and height >= 200:
-                            profile.profile_image = profile_image
-                    except Exception as e:
-                        print("Error opening profile image:", e)
+                # print("ci", cover_image)
+                # print("pi", profile_image )
 
                 # Update other profile fields
                 profile.bio = profile_form.cleaned_data.get('bio')
@@ -87,12 +56,43 @@ def profile_view(request, user_id):
                 # Handle social links
                 social_links_json = request.POST.get('social_links_json')
                 if social_links_json:
-                    social_links = json.loads(social_links_json)
-                    profile.social_links = social_links
+                    profile.social_links = json.loads(social_links_json)
+
+                # Handle cover image clear
+                if 'cover_image-clear' in request.POST and current_cover_image_path:
+                    delete_image(current_cover_image_path)
+                    profile.cover_image = None
+                elif cover_image and cover_image != profile.cover_image.name: 
+                    if current_cover_image_path:
+                        delete_image(current_cover_image_path)
+                    try:
+                        img = Image.open(cover_image)
+                        width, height = img.size
+                        if width >= 400 and height >= 200:
+                            profile.cover_image = cover_image
+                    except Exception as e:
+                        print("Error opening cover image:", e)
+
+                # Handle profile image clear
+                if 'profile_image-clear' in request.POST and current_profile_image_path:
+                    delete_image(current_profile_image_path)
+                    profile.profile_image = None
+                elif profile_image and profile_image != profile.profile_image.name:
+                    if current_profile_image_path:
+                        delete_image(current_profile_image_path)
+                    try:
+                        img = Image.open(profile_image)
+                        width, height = img.size
+                        if width >= 400 and height >= 200:
+                            profile.profile_image = profile_image
+                    except Exception as e:
+                        print("Error opening profile image:", e)
 
                 # Save the profile instance
                 profile.save()
                 return redirect('profile_view', user_id=user_id)
+
+
                     
         if 'cover-submit' in request.POST:
             cover_form = AddCoverImage(request.POST, request.FILES)
@@ -102,8 +102,7 @@ def profile_view(request, user_id):
             if cover_form.is_valid():
                 cover_image = cover_form.cleaned_data['cover_image']
 
-                # Delete old cover image if it exists
-                delete_image(current_cover_image_path)
+
                 if 'cover_image-clear' in request.POST:
                     delete_image(current_cover_image_path) 
                     profile.profile_image = None
