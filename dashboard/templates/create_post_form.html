@@ -1,18 +1,79 @@
-<form method="post" enctype="multipart/form-data">
-  <div class="h-1/6 p-6 px-6 border border-b-border-gray">
-    {% csrf_token %}
-    <div class="w-full flex space-x-4">
-      <div class="w-[50px] rounded-full bg-gray-300"></div>
-      {{ form.content }}
-      <button
-        class="w-1/4 h-9 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
-        type="submit"
-      >
-        Share post
-      </button>
+<div class="h-1/6 bg-white rounded-xl p-4 px-6">
+  <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      <div class="h-14 w-full border-b border-gray-200 flex space-x-4">
+          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+          
+          <div class="w-3/4 h-9 rounded-lg flex items-center  px-3">
+              {{ form.title }}
+          </div>
+          
+          <button
+              class="w-1/6 h-9 rounded-lg text-sm font-normal bg-blue-box text-blue-font"
+              type="submit"
+          >
+              Share post
+          </button>
+      </div>
+      
+      <div class="flex justify-between items-center mt-4">
+        <div class="w-full flex space-x-6 font-normal text-gray-font2 items-center">
+            <!-- File Name Display -->
+            
+            <!-- Upload Button -->
+            <button class="flex items-center space-x-2" type="button" onclick="document.getElementById('id_image').click()">
+                {% include "assets/octicon_image-24.svg" %}
+                <p class="text-gray-font1">Image</p>  
+            </button>
+            
+            <div class="flex justify-center items-center border rounded-lg p-3">
+                <span id="file-name" class="text-sm text-gray-font2 hidden"></span>
+                <!-- Cancel Button -->
+                <button id="cancel-upload" class="hidden text-sm text-red-500 hover:underline" type="button" onclick="cancelFile()">
+                    <div class="mx-2 mr-0">
+                        {% include "assets/ix_cancel.svg" %}
+                    </div>
+                </button>
+            </div>
+
+            <!-- Hidden File Input -->
+            <input type="file" id="id_image" name="image" class="hidden" onchange="handleFileChange(event)" />
+        </div>
     </div>
-  </div>
-</form>
-<div class="h-full p-6 px-6 ">
-  <textarea placeholder="Write your post here..." class="placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"/></textarea>
 </div>
+
+<div class="h-full py-0 pb-6 px-6">
+    {{ form.content }}
+</div>
+</form>
+
+<script>
+    // Handle File Selection
+    function handleFileChange(event) {
+        const fileInput = event.target;
+        const fileName = fileInput.files[0]?.name || ''; // Get selected file name
+        const fileNameDisplay = document.getElementById('file-name');
+        const cancelButton = document.getElementById('cancel-upload');
+        
+        if (fileName) {
+            fileNameDisplay.textContent = fileName;
+            fileNameDisplay.classList.remove('hidden');
+            cancelButton.classList.remove('hidden');
+        } else {
+            cancelFile(); // Reset if no file is selected
+        }
+    }
+
+    // Cancel File Upload
+    function cancelFile() {
+        const fileInput = document.getElementById('id_image');
+        const fileNameDisplay = document.getElementById('file-name');
+        const cancelButton = document.getElementById('cancel-upload');
+        
+        fileInput.value = ''; // Clear file input
+        fileNameDisplay.textContent = '';
+        fileNameDisplay.classList.add('hidden');
+        cancelButton.classList.add('hidden');
+    }
+</script>

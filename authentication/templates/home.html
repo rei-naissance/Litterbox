@@ -13,7 +13,9 @@
       class="flex items-center justify-between p-6 pb-4 sticky top-0 z-50 bg-white w-full"
     >
       <!-- Logo on the left -->
-      <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
+       <a href="{% url 'dashboard_home' %}">
+         <div class="w-10">{% include "assets/drk_small_title.svg" %}</div>
+        </a>
 
       <!-- Buttons on the right -->
       <div class="flex space-x-4 mr-6">
@@ -39,7 +41,7 @@
           Where Students Write, Connect, and Inspire
         </p>
         <p class="text-gray-font1 text-2xl text-center w-1/2 m-auto mt-4">
-          A space to share ideas, spark creativity, and build community.
+          A space to share ideas, spark creativity, and build communities.
         </p>
         <button
           class="mt-6 px-24 py-2 border-2 border-black bg-black text-white rounded-lg hover:bg-white hover:text-black"

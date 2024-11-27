@@ -17,7 +17,6 @@
                     <th class="py-2 px-4 border-b">Reason</th>
                     <th class="py-2 px-4 border-b">Category</th>
                     <th class="py-2 px-4 border-b">Reported On</th>
-                    <th class="py-2 px-4 border-b">Resolved</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,7 +27,16 @@
                     <td class="py-2 px-4 border-b">{{ report.reason }}</td>
                     <td class="py-2 px-4 border-b">{{ report.get_reason_category_display }}</td>
                     <td class="py-2 px-4 border-b">{{ report.reported_on }}</td>
-                    <td class="py-2 px-4 border-b">{{ report.is_resolved }}</td>
+                    <td>
+                        <form action="{% url 'delete_reported_post' report.id %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Delete Post</button>
+                        </form>
+                        <form action="{% url 'disregard_reported_post' report.id %}" method="post" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Ignore Report</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

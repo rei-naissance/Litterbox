@@ -1,24 +1,72 @@
 {% load custom_filters %}
+{% load static %}
+
+<div class="w-1/5 fixed right-10 border border-border-gray rounded-3xl">
+  {% if post.image and post.image.url %}
+    <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full rounded-3xl"/>
+  {% else %}
+    <img src="{% static '/images/default_image.jpg' %}" alt="Default Image" class="object-cover h-full w-full rounded-3xl" />
+  {% endif %}
+</div>
+
 <div>
-  <div class="p-6">
-    <div class="flex space-x-3 mb-4 w-full items-center">
-      <div class="w-9 h-9 rounded-full bg-gray-300"></div>
-      <div class="font-bold">{{ post.author }}</div>
-      <div class="text-gray-font">{{ post.date_posted|timesince_first }}</div>
+  <div class="p-6 pb-1">
+    <div class="flex justify-between">
+      <div class="flex space-x-3 mb-4 w-full items-center">
+        <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+        <div class="font-bold">{{ post.author }}</div>
+        <div class="text-gray-font">{{ post.date_posted|timesince_first }}</div>
+      </div>
+      <div class="relative">
+        <!-- Dots Button -->
+        <button
+          type="button"
+          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100"
+          onclick="toggleDropdown('{{ post.id }}')"
+        >
+          {% include "assets/dots.svg" %}
+        </button>
+      
+        <!-- Dropdown Menu -->
+        <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+          <!-- Edit Option -->
+          <a
+            href=""
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Edit
+          </a>
+      
+          <!-- Report Option -->
+          <a
+            href="{% url 'send_report' post.id %}"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Report
+          </a>
+        </div>
+      </div>
     </div>
 
+    
     <h1 class="text-2xl font-bold mb-4">{{ post.title }}</h1>
     <p class="mb-4">{{ post.content }}</p>
 
     <div class="px-4 pl-0 py-2 flex justify-between text-xs mb-4">
       <div class="flex items-center">
         <span class="text-gray-font flex">
-          <div class="mx-2 ml-0">{% include "assets/ph_heart-bold.svg" %}</div>
+          <div class="mx-2 ml-0">
+            {% if user_liked %}
+              {% include "assets/heart-filled.svg" %}
+            {% else %}
+              {% include "assets/ph_heart-bold.svg" %}
+            {% endif %}
+          </div>
           {{ post.likes.count }}</span
         >
         <span class="mx-4 text-gray-font flex">
           <div class="mx-2">{% include "assets/iconamoon_comment.svg" %}</div>
-          0</span
+          {{ post.comments.count }}</span
         >
         <span class="text-gray-font flex">
           <div class="mx-2">{% include "assets/uil_share.svg" %}</div>
@@ -32,24 +80,60 @@
         </div>
       </div>
     </div>
-    <hr />
   </div>
-<div class="px-6 bg-white border-x-0 border-t-0 border border-b-border-gray ">
-    <h1 class="text-md font-bold mb-4">Replies</h1>
+<div class="w-full">
+    <div>
+      {% if post.comments.count > 0 %}
+      <div class="w-full px-6 mb-4">
+        <hr/>
+      </div>
+    <h1 class="text-md font-bold pb-4 px-6 border border-x-0 border-t-0 border-b-border-gray">
+      Replies
+    </h1>
+    {% endif %}
+
+    <ul class="">
+      {% for comment in comments %}
+      <li class="px-6 py-4 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+        <div class="flex space-x-2">
+          <div class="font-bold">{{ comment.author }}</div>
+          <div class="text-gray-font">{{ comment.date_posted|timesince_first }}</div>
+        </div>
+        <p>{{ comment.content }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
 </div>
 
-<div class="container mx-auto p-4">
-  <p class="mb-4">
-    You {{ user_liked|yesno:"have,have not" }} liked this post.
-  </p>
+<script>
+  function toggleDropdown(id) {
+  const dropdown = document.getElementById(`dropdown-${id}`);
+  
+  if (dropdown) {
+    dropdown.classList.toggle('hidden');
+    dropdown.classList.toggle('block');
 
-  <ul>
-    {% for comment in comments %}
-    <li class="mb-2">
-      <p>{{ comment.author }}: {{ comment.content }}</p>
-      <p class="text-sm text-gray-500">{{ comment.date_posted }}</p>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+    if (!dropdown.classList.contains('hidden')) {
+      // Add a document listener to close the dropdown
+      document.addEventListener('click', (event) => closeOnClickOutside(event, id));
+    }
+  } else {
+    console.error(`Dropdown with ID 'dropdown-${id}' not found.`);
+  }
+}
+
+function closeOnClickOutside(event, id) {
+  const dropdown = document.getElementById(`dropdown-${id}`);
+  const button = document.querySelector(`[onclick="toggleDropdown('${id}')"]`);
+  
+  if (dropdown && !dropdown.contains(event.target) && !button.contains(event.target)) {
+    dropdown.classList.add('hidden');
+    dropdown.classList.remove('block');
+    
+    // Remove the document listener after closing
+    document.removeEventListener('click', (e) => closeOnClickOutside(e, id));
+  }
+}
+</script>

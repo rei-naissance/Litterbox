@@ -1,0 +1,31 @@
+{% load custom_filters %}
+{% load static %}
+    <!-- Event 1 -->
+    <!-- <p class="text-xl font-bold py-4 px-6 mt-4">
+        {{ announcement.created_at|date:"F Y" }} <!-- Display month and year -->
+    <!-- </p> -->
+    <a href="{% url 'announcement_detail' announcement.id %}" class="block">
+    <div class="flex justify-between items-center border border-t-0 border-x-0 border-b-gray-200 p-4 px-8 w-full">
+        <div class="flex items-center space-x-4">
+            <div class="flex flex-col items-center justify-center w-14 h-14 bg-gray-100 rounded-lg">
+                <span class="text-base font-bold text-gray-700">
+                    {{ announcement.created_at|date:"d" }} <!-- Day -->
+                </span>
+                <span class="text-xs text-gray-500">
+                    {{ announcement.created_at|date:"M" }} <!-- Month -->
+                </span>
+            </div>
+            <div>
+                <h2 class="text-base font-semibold text-gray-800">
+                    {{ announcement.title }}
+                </h2>
+                <p class="text-xs text-gray-600">
+                    {{ announcement.content|truncatewords:10 }} <!-- Truncate content -->
+                </p>
+            </div>
+        </div>
+        <div class="flex -space-x-3 items-center justify-center text-xs text-gray-600">
+            {{ announcement.created_at|date:"H:i" }}
+        </div>
+    </div>
+    </a>

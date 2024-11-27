@@ -57,6 +57,7 @@ module.exports = {
       },
       colors: {
         "gray-box": "#F7F7F7",
+        "gray-box1": "#FAFAFA",
         "gray-font": "#A1A1A1",
         "gray-font1": "#6D6D6D",
         "blue-box": "#e5f1ff",

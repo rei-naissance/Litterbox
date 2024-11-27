@@ -41,6 +41,9 @@
               {% include "event_panel.html" %} 
               {% include "announcement_panel.html" %} {% include "calendar_panel.html" %}
             </div>
+          {% if request.resolver_match.url_name == 'announcements' %}
+            <a href="/announcement_create"><button class="w-16 h-16 rounded-2xl flex justify-center items-center fixed right-5 bottom-5 bg-gray-100 padding-5 hover:bg-gray-200"> {% include "assets/mingcute_add-fill.svg" %}</button></a>
+          {% endif %}
         </div>
       </div>
     </div>

@@ -1,0 +1,18 @@
+{% if request.resolver_match.url_name == 'saved_posts' or request.resolver_match.url_name == 'index' %}
+    {% if saved_posts %}
+        {% for post in saved_posts %}
+            {% include "feed_box.html" with post=post image=image %}
+        {% endfor %}
+    {% else %}
+        <p class="text-gray-font1 font-medium text-center text-base text-14">No saved posts yet.</p>
+    {% endif %}
+
+{% elif request.resolver_match.url_name == 'send_report' %}
+    {% include "report_post.html" %}
+
+{% elif request.resolver_match.url_name == 'post_detail' %}
+    {% include "post_details.html" with post=post comments=comments user_liked=user_liked image=image %}
+{% else %}
+<p>URL Name: {{ request.resolver_match.url_name }}</p>
+
+{% endif %}

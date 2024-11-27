@@ -1,0 +1,45 @@
+{% load static tailwind_tags %} 
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Litterbox</title>
+    {% tailwind_css %}
+  </head>
+  <style>
+    .custom-border1{
+      left: calc(25% + 2.25%);
+    }
+    
+    .custom-border2{
+      right: calc(25% + 2.21%);
+    }
+
+    .header-size{
+      width: calc(45.5%);
+    }
+  </style>
+  <body class="text-sm bg-bg-gray">
+    <div class="w-auto h-full rounded-xl flex">
+      {% include "left_panel.html" %}
+
+      <div class="w-full h-full ">
+        {% include "header_dashboard.html" %}
+
+        <div class="flex flex-row w-full">
+          <div class="w-1/4"></div>
+          <div class="w-1/4"></div>
+          <div class="w-5/6 m-auto top-0 sticky bg-white border border-border-gray border-t-0 rounded-b-[30px]">
+            <div class="overflow-y-auto z-[-100]">
+              {% include "saved_posts_feed.html" %}
+            </div>
+          </div>
+          <div class="w-1/4"></div>
+          <div class="w-1/4"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
