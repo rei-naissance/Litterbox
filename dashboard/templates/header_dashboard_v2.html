@@ -1,0 +1,35 @@
+{% load static tailwind_tags %} {% tailwind_css %}
+<div class="sticky top-0 z-10 m-auto">
+    <div class="flex justify-between items-center header-size m-auto bg-bg-gray border border-b-border-gray border-x-0">
+        <!-- Logo Section -->
+        <div class="p-5 flex-shrink-0">
+            <a href="{% url 'dashboard_home' %}" class="text-gray-500 hover:underline">
+                {% include "assets/drk_small_title.svg" %}
+            </a>
+          
+        </div>
+      
+        <!-- Search Section -->
+        <!-- <div class="h-9 bg-white rounded-lg flex items-center px-3 border border-border-gray flex-grow mx-4 max-w-md">
+          {% include "assets/search.svg" %}
+          <input
+            type="text"
+            placeholder="Search"
+            class="w-full h-full bg-white border-none rounded-lg focus:outline-none outline-none px-4 text-sm font-normal text-black placeholder-gray-font"
+          />
+        </div> -->
+      
+        <!-- Profile Section -->
+        <a href="{% url 'profile_view' user.id %}" class="flex-shrink-0 mr-5">
+          {% if user.profile.profile_image %}
+            <img
+              src="{{ user.profile.profile_image.url }}"
+              alt="Profile Image"
+              class="w-10 h-10 rounded-full object-cover"
+            />
+          {% else %}
+            <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+          {% endif %}
+        </a>
+      </div>
+</div>

@@ -23,7 +23,11 @@ def delete_image(file_path):
 
 # Create your views here.
 def profile_view(request, user_id):
+    user = request.user
     student = get_object_or_404(Student, id=user_id)
+    if not hasattr(student, 'profile'):
+        Profile.objects.create(student=student)
+
     profile = get_object_or_404(Profile, student=student)
     posts = Post.objects.filter(author=student).order_by('-date_posted')
     
@@ -175,7 +179,7 @@ def profile_view(request, user_id):
         'links_form': links_form,
         'profile': profile,
         'posts': posts,
-        'user': student
+        'user': user
     }
 
     return render(request, 'profile.html', context)

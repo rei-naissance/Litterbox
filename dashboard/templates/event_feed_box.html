@@ -1,134 +1,176 @@
-<div>
-    <!-- Event Card 1 -->
-    <div class="overflow-hidden">
-      <div class="flex items-center space-x-4 p-4 px-8">
-        <img
-          src="https://via.placeholder.com/50"
-          alt="Logo"
-          class="w-12 h-12 rounded-full"
-        />
-        <div>
-          <h3 class="font-semibold text-gray-800 text-sm">The Technologian</h3>
-          <p class="text-xs text-gray-500">230 people attending</p>
-        </div>
-        <button class="ml-auto text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 6h12M6 12h12m-7 6h7"
-            />
-          </svg>
-        </button>
-      </div>
-      <img
-        src="https://via.placeholder.com/350x200"
-        alt="Event Image"
-        class="w-full h-40 object-cover p-4 px-8"
-      />
-      <div class="p-4 px-8">
-        <h4 class="font-semibold text-gray-800 text-base">
-          CIT-U CAMVAS Showcases Artistic Flair 2024
-        </h4>
-        <p class="text-sm text-gray-500 mt-1">6 PM Saturday, September 7</p>
-        <p class="text-xs text-gray-400">Ayala Center Cebu</p>
-      </div>
-      <div class="flex items-center justify-between px-8 p-4">
-        <button
-          class="bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-2 rounded-md"
-        >
-          Follow event
-        </button>
-        <button class="text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14M12 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
-  
-    <!-- Repeat similar structure for other cards -->
-    <!-- Event Card 2 -->
-    <div class="overflow-hidden">
-      <div class="flex items-center space-x-4 p-4">
-        <img
-          src="https://via.placeholder.com/50"
-          alt="Logo"
-          class="w-12 h-12 rounded-full"
-        />
-        <div>
-          <h3 class="font-semibold text-gray-800 text-sm">GDSC</h3>
-          <p class="text-xs text-gray-500">112 people attending</p>
-        </div>
-        <button class="ml-auto text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 6h12M6 12h12m-7 6h7"
-            />
-          </svg>
-        </button>
-      </div>
-      <img
-        src="https://via.placeholder.com/350x200"
-        alt="Event Image"
-        class="w-full h-40 object-cover"
-      />
-      <div class="p-4">
-        <h4 class="font-semibold text-gray-800 text-base">
-          Build Beautiful Mobile Apps with Flutter
-        </h4>
-        <p class="text-sm text-gray-500 mt-1">10 AM Saturday, October 5</p>
-        <p class="text-xs text-gray-400">NGE Case Room</p>
-      </div>
-      <div class="flex items-center justify-between px-8 p-4">
-        <button
-          class="bg-blue-100 text-blue-600 text-sm font-semibold px-4 py-2 rounded-md"
-        >
-          Follow event
-        </button>
-        <button class="text-gray-400">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="w-5 h-5"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 12h14M12 5l7 7-7 7"
-            />
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Event Calendar</title>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js'></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+      <!-- Calendar Section -->
+      <div class="w-full bg-white p-6 rounded-lg" id="calendar"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calendarEl = document.getElementById("calendar");
+            const listViewEl = document.getElementById("list-view");
+            const eventForm = document.getElementById("event-form");
+            const userId = "{{ user.id }}";
+
+            // List View Calendar
+            const listView = new FullCalendar.Calendar(listViewEl, {
+              initialView: "listMonth",
+              events: "/events/",
+              headerToolbar: {
+                left:   'title',
+                center: '',
+                right:  ''
+              },
+              height: "auto", 
+              // datesSet: function(info) {
+              //   const viewTitle = info.view.title;
+              //   document.getElementById("list-title").textContent = viewTitle;
+              // },
+              eventClick: function(info) {
+                const event = info.event;
+                const eventId = event.id; 
+                const userIdFromEvent = event.extendedProps.user_id;
+                const organizerIdFromEvent = event.extendedProps.organizer_id;
+
+                if (userId == userIdFromEvent || userId == organizerIdFromEvent) {
+                    window.location.href = `/event/${eventId}/`; 
+                } else {
+                    alert("You do not have permission to view the details of this event.");
+                }
+              }
+
+            });
+
+
+
+            listView.render();
+
+            // Main Calendar
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: "dayGridMonth",
+              events: "/events/",
+              dayMaxEvents: true,
+              selectable: true,
+              editable: false,
+              headerToolbar: {
+                left:   'title',
+                center: '',
+                right:  'orgEvents,userEventsButton today prev,next'
+              },
+              customButtons: {
+                userEventsButton: {
+                  text: "My Events",
+                  click: function() {
+                    fetchUserEvents();
+                  }
+                },
+                orgEvents: {
+                  text: "Org Events",
+                  click: function() {
+                    fetchOrgsEvents();
+                  }
+                }
+              },
+              select: function(info){
+                document.getElementById("event-start-date").value = info.startStr;
+                document.getElementById("event-end-date").value = info.endStr;
+              },
+              dateClick: function(info) {
+                document.getElementById("event-start-date").value = info.dateStr;
+                document.getElementById("event-end-date").value = info.dateStr;
+              },
+              eventClick: function(info) {
+                const event = info.event;
+                const eventId = event.id; 
+                const userIdFromEvent = event.extendedProps.user_id;
+                const organizerIdFromEvent = event.extendedProps.organizer_id;
+
+                if (userId == userIdFromEvent || userId == organizerIdFromEvent) {
+                    window.location.href = `/event/${eventId}/`; 
+                } else {
+                    alert("You do not have permission to view the details of this event.");
+                }
+              },
+              datesSet: function(info) {
+                const activeDate = calendar.getDate(); 
+                listView.gotoDate(activeDate);
+                
+              },
+            });
+
+            calendar.render();
+
+              // Handle form submission
+              eventForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+
+                const formData = new FormData(eventForm);
+
+                try {
+                  const response = await axios.post("/event/save/", formData, {
+                    headers: {
+                      'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value, 
+                    },
+                  });
+                  if (response.data.success) {
+                    window.location.reload();
+                  } else {
+                    alert("Error saving event");
+                  }
+                } catch (error) {
+                  console.error("Error saving event:", error.response ? error.response.data : error);
+                  alert("An error occurred.");
+                }
+              });
+
+              function fetchUserEvents() {
+                const userEventsUrl = "/events/user/"; 
+                
+                fetch(userEventsUrl)
+                  .then(response => response.json())
+                  .then(events => {
+                    listView.removeAllEvents();
+                    listView.addEventSource(events); 
+                  })
+                  .catch(error => {
+                    console.error("Error fetching user events:", error);
+                  });
+              }
+
+              function fetchOrgsEvents() {
+                const userEventsUrl = "/events/orgs/"; 
+                
+                fetch(userEventsUrl)
+                  .then(response => response.json())
+                  .then(events => {
+                    listView.removeAllEvents();
+                    listView.addEventSource(events); 
+                  })
+                  .catch(error => {
+                    console.error("Error fetching user events:", error);
+                  });
+              }
+
+          });
+
+
+
+      </script>
+      <style>
+        #list-view *{
+            position: static !important;
+        }
+        thead {
+          display: none;
+        }
+
+        .fc-button {
+          box-shadow: none !important;
+        }
+      </style>
+</html>

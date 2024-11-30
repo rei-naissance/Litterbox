@@ -16,11 +16,14 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    // Open add cover img popup
-    document.getElementById('popup-edit-cover-id').addEventListener("click", function() {
-        toggleVisibility(profileCoverPopup);
-        toggleVisibility(overlay);
-    });
+    // Open add cover img popup    
+    var popEditBtn = document.getElementById('popup-edit-cover-id')
+    if (popEditBtn) {
+        popEditBtn.addEventListener("click", function() {
+            toggleVisibility(profileCoverPopup);
+            toggleVisibility(overlay);
+        });
+    }
 
     // Close add cover img popup when X is clicked
     document.getElementById('base-popup-close-id').addEventListener("click", function() {

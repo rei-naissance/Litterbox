@@ -3,7 +3,13 @@
       {% csrf_token %}
       
       <div class="h-14 w-full border-b border-gray-200 flex space-x-4">
-          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+          <div class="w-9 h-9 rounded-full bg-gray-300">
+            <a href="{% url 'profile_view' user.id %}" class="">
+              {% if user.profile.profile_image %}
+                  <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
+              {% endif %}
+            </a>
+          </div>
           
           <div class="w-3/4 h-9 rounded-lg flex items-center  px-3">
               {{ form.title }}

@@ -30,13 +30,17 @@
 <div class="link-container w-full h-auto flex flex-col gap-y-2 bg-white border-1 px-4 pt-4 pb-2 rounded-lg max-h-[300px]">
     <div class="div-title text-lg font-bold">Links</div>
     <div class="links-container flex flex-col gap-y-2 overflow-x-hidden overflow-y-auto no-scrollbar" id="edit-links-container-id">
-        {% for key, value in profile.social_links.items %}
-        <div class="link-item flex items-center gap-x-2">
-            <a href="{{ value }}" class=" text-[11px] p-2 w-full rounded-lg bg-gray-btn font-bold social-link flex flex-row overflow-x-auto no-scrollbar whitespace-nowrap  hover:bg-gray-200" data-url="{{ value }}">
-                
-            </a>
-        </div>
-        {% endfor %}
+        {% if profile.social_links %}
+            {% for key, value in profile.social_links.items %}
+                <div class="link-item flex items-center gap-x-2">
+                    <a href="{{ value }}" class=" text-[11px] p-2 w-full rounded-lg bg-gray-btn font-bold social-link flex flex-row overflow-x-auto no-scrollbar whitespace-nowrap  hover:bg-gray-200" data-url="{{ value }}">
+                        
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No social links available.</p>
+        {% endif %}
     </div>
     {% if request.user == profile.student%}
         <button class="edit-link-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn  hover:bg-gray-200" id="edit-link-btn-id">
@@ -49,12 +53,16 @@
             {% csrf_token %}
             <input type="hidden" id="social-links-json-v2" name="social_links_json" value="">
             <div id="links-list-v2" class="flex flex-col gap-y-2 overflow-x-hidden overflow-y-auto no-scrollbar h-[160px]">
-                {% for key, value in profile.social_links.items %}
-                    <div class="link-item flex justify-between gap-x-2">
-                        <input type="text" name="link_{{ forloop.counter }}" value="{{ value }}" class="form-input h-[32px] w-full text-[11px]">
-                        <button type="button" class="delete-btn bg-gray-btn h-[32px] w-20 p-1 rounded-lg cursor-pointer hover:bg-gray-200">Delete</button>
-                    </div>
-                {% endfor %}
+                {% if profile.social_links %}
+                    {% for key, value in profile.social_links.items %}
+                        <div class="link-item flex justify-between gap-x-2">
+                            <input type="text" name="link_{{ forloop.counter }}" value="{{ value }}" class="form-input h-[32px] w-full text-[11px]">
+                            <button type="button" class="delete-btn bg-gray-btn h-[32px] w-20 p-1 rounded-lg cursor-pointer hover:bg-gray-200">Delete</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No social links available.</p>
+                {% endif %}
             </div>
             
             <button type="button" id="add-link-btn-v2" class="add-btn my-2 bg-gray-btn p-1 rounded-lg cursor-pointer hover:bg-gray-200 w-full text-sm">Add Link</button>
@@ -119,4 +127,4 @@
 
 
 
-<!-- <script src="{% static 'js/profile_scripts.js' %}" type="module"></script> -->
+<script src="{% static 'js/profile_scripts.js' %}" type="module"></script>

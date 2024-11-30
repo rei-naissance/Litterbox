@@ -62,7 +62,14 @@ class AnnouncementForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['title', 'start_date', 'start_time', 'end_date', 'end_time', 'location', 'description']
+        fields = ['title', 
+                  'start_date', 
+                  'start_time', 
+                  'end_date', 
+                  'end_time', 
+                  'location', 
+                  'description',
+                  'image']
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),

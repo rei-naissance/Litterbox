@@ -5,9 +5,12 @@ document.addEventListener("DOMContentLoaded", function() {
     var overlay = document.getElementById("overlay");
 
     var settingAdditionalSettings = document.getElementById("myDropdown")
-    document.getElementById('profile-settings-id').addEventListener("click", function() {
-        toggleVisibility(settingAdditionalSettings);
-    });
+    var profileSettingsButton = document.getElementById('profile-settings-id');
+    if (profileSettingsButton) {
+        profileSettingsButton.addEventListener("click", function() {
+            toggleVisibility(settingAdditionalSettings);
+        });
+    }
     // Close the dropdown if the user clicks outside of it
     window.addEventListener("click", function(event) {
         if (!settingAdditionalSettings.classList.contains('hidden')) {
@@ -19,10 +22,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     // Open profile popup and overlay
-    document.getElementById('profile-popup-open-id').addEventListener("click", function() {
-        toggleVisibility(profilePopup);
-        toggleVisibility(overlay);
-    });
+    var profilePopupOpenButton = document.getElementById('profile-popup-open-id');
+    if (profilePopupOpenButton) {
+        profilePopupOpenButton.addEventListener("click", function() {
+            toggleVisibility(profilePopup);
+            toggleVisibility(overlay);
+        });
+    }
+
+
     // Close profile popup and overlay if clicking outside of them
     window.addEventListener("click", function(event) {
         if (!profilePopup.classList.contains('hidden')) {
@@ -45,6 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('add-profile-photo-id').addEventListener("click", function() {
         toggleVisibility(addProfilePhotoPopup);
     });
+
     // Close add profile photo button popup if clicking outside of them
     window.addEventListener("click", function(event) {
         if (!addProfilePhotoPopup.classList.contains('hidden')) {
@@ -55,11 +64,14 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     var profilePhotoPopup = document.getElementById('profile-add-photo-popup-id')
-    document.getElementById('add-profile-button-id').addEventListener("click", function() {
-        toggleVisibility(profilePhotoPopup);
-        toggleVisibility(overlay); 
-        console.log("clicked")
-    });
+    var addProfileButton = document.getElementById('add-profile-button-id');
+        if (addProfileButton) {
+            addProfileButton.addEventListener("click", function() {
+                toggleVisibility(profilePhotoPopup);
+                toggleVisibility(overlay); 
+                console.log("clicked")
+            });
+        }
 
     window.addEventListener("click", function(event) {
         if (!profilePhotoPopup.classList.contains('hidden')) {
@@ -79,19 +91,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     var origAboutContainer = document.getElementById('edit-about-container-id')
     var formAboutContainer = document.getElementById('about-form-id')
-    document.getElementById('edit-about-id').addEventListener("click", function() {
-        toggleVisibility(origAboutContainer);
-        toggleVisibility(formAboutContainer);
-    });
+    var editAboutContainer = document.getElementById('edit-about-id');
+    if (editAboutContainer) {
+        editAboutContainer.addEventListener("click", function() {
+            toggleVisibility(origAboutContainer);
+            toggleVisibility(formAboutContainer);
+        });
+    }
 
     var origLinksContainer = document.getElementById('edit-links-container-id')
     var formLinksContainer = document.getElementById('edit-forms-container-v2')
     var editLinksBtn = document.getElementById('edit-link-btn-id')
-    editLinksBtn.addEventListener("click", function() {
-        toggleVisibility(origLinksContainer);
-        toggleVisibility(formLinksContainer);
-        toggleVisibility(editLinksBtn);
-    });
+    if (editAboutContainer) {
+        editLinksBtn.addEventListener("click", function() {
+            toggleVisibility(origLinksContainer);
+            toggleVisibility(formLinksContainer);
+            toggleVisibility(editLinksBtn);
+        });
+    }
 
 
 
@@ -113,14 +130,14 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.social-link').forEach(link => {
         const url = link.getAttribute('data-url');
         const logoUrl = getLogoUrl(url);
-        
+
         const img = document.createElement('img');
         img.src = logoUrl;
         img.width = 16;
         img.height = 16;
         img.alt = "Logo";
         img.style.verticalAlign = "middle";
-        img.style.marginRight = "5px"; 
+        img.style.marginRight = "5px";
 
         link.appendChild(img);
         link.appendChild(document.createTextNode(url));

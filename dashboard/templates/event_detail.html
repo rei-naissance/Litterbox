@@ -8,12 +8,12 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="w-full min-h-screen bg-gray-box">
-    {% include "header_dashboard.html" %}
+    {% include "header_dashboard_v2.html" %}
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mt-5 mx-auto">
 
         <div class="flex items-center justify-between">
             <!-- Back Button -->
-            <a href="{% url 'calendar_view' %}" class="text-gray-500 hover:underline">← Back to Calendar</a>
+            <a href="{% url 'events' %}" class="text-gray-500 hover:underline">← Back to Calendar</a>
 
             <!-- Update Button -->
             <button id="update-button" class="bg-gray-btn  px-4 py-2 rounded-lg">
@@ -45,6 +45,15 @@
                     </p>
                 </div>
             </div>
+
+            <!-- Image -->
+            <div class="mb-6">
+                <div class="mb-6">
+                    {% if event.image %}
+                        <img src="{{ event.image.url }}" alt="Event Image" class="w-full h-auto">
+                    {% endif %}
+                </div>
+            </div>
         
             <!-- Location -->
             <div class="mb-6">
@@ -64,7 +73,8 @@
             id="update-form" 
             class="space-y-4 hidden flex-col items-center w-full mt-4 bg-gray-50 p-6 rounded-lg shadow-lg border border-gray-200" 
             method="POST" 
-            action="{% url 'event_detail' event.id %}">
+            action="{% url 'event_detail' event.id %}"
+            enctype="multipart/form-data">
         
         {% csrf_token %}
         
@@ -80,6 +90,38 @@
             required
             />
         </div>
+
+        <!-- Images -->
+        <label for="image" class="block text-gray-700">Upload Image:</label>
+        <input
+        type="file"
+        id="event-image"
+        name="image"
+        accept="image/*"
+        class="w-full border-gray-300"
+        onchange="previewImage(event)"
+        />
+
+        <!-- Image Preview or Existing Image -->
+        <div class="mt-4">
+            {% if event.image %}
+                <img
+                id="image-preview"
+                class="w-full h-auto object-cover rounded-lg"
+                src="{{ event.image.url }}"
+                alt="Existing Event Image"
+                />
+            {% else %}
+                <img
+                id="image-preview"
+                class="w-full h-auto object-cover rounded-lg hidden"
+                alt="Preview"
+                />
+            {% endif %}
+        </div>
+
+
+
         <!-- Start Date -->
         <div class="mb-4">
             <label for="start_date" class="block text-gray-700">Start Date:</label>
@@ -251,7 +293,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = "{% url 'calendar_view' %}"; 
+                        window.location.href = "{% url 'events' %}"; 
                     } else {
                         console.error("Error deleting event:", data.error);
                     }
@@ -263,6 +305,14 @@
                 });
             });
         });
+        function previewImage(event) {
+            const image = document.getElementById('image-preview');
+            const file = event.target.files[0];
+            if (file) {
+            image.src = URL.createObjectURL(file);
+            image.classList.remove('hidden');
+            }
+        }
     </script>
 </body>
 </html>

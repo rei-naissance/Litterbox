@@ -286,16 +286,16 @@ def save_event(request):
     if request.method == 'POST':
         event_id = request.POST.get('id', None)
         
-        print("Received POST data:", request.POST)
+        # print("Received POST data:", request.POST)
 
         if event_id:  
             event = get_object_or_404(Event, pk=event_id)
-            form = EventForm(request.POST, instance=event)
+            form = EventForm(request.POST, request.FILES, instance=event)
         else: 
-            form = EventForm(request.POST)
+            form = EventForm(request.POST, request.FILES)
 
         if not form.is_valid():
-            print("Form errors:", form.errors)
+            # print("Form errors:", form.errors)
             return JsonResponse({'success': False, 'errors': form.errors}, status=400)
         
         event = form.save(commit=False)
@@ -305,7 +305,7 @@ def save_event(request):
             event.save()
         except Exception as e:
             return JsonResponse({'success': False, 'errors': str(e)}, status=500)
-
+        
         return JsonResponse({'success': True, 'event': {
             'id': event.id,
             'title': event.title,
@@ -315,7 +315,9 @@ def save_event(request):
             'end_time': event.end_time.strftime('%H:%M'),
             'location': event.location,
             'description': event.description,
+            'image': event.image.url if event.image else None
         }})
+    
     return JsonResponse({'success': False, 'errors': 'Invalid request'}, status=400)
 
 
@@ -349,6 +351,7 @@ def get_events(request):
             'start': f"{event.start_date.isoformat()}T{event.start_time.isoformat()}", 
             'end': f"{event.end_date.isoformat()}T{event.end_time.isoformat()}", 
             'description': event.description,
+            'image': event.image.url if event.image else None,
             'extendedProps': {
                 'user_id': event.user.id,
                 'organizer_id': event.organizer.id if event.organizer else None,  
@@ -364,6 +367,7 @@ def get_events(request):
             'start': f"{event.start_date.isoformat()}T{event.start_time.isoformat()}", 
             'end': f"{event.end_date.isoformat()}T{event.end_time.isoformat()}", 
             'description': event.description,
+            'image': event.image.url if event.image else None,
             'extendedProps': {
                 'user_id': event.user.id,
                 'organizer_id': event.organizer.id if event.organizer else None,  
@@ -379,6 +383,10 @@ def get_events(request):
     return JsonResponse(combined_events_data, safe=False)
 
 
+
+@login_required
+def orgs_events(request):
+    pass
 
 @login_required
 def user_events(request):
@@ -416,7 +424,7 @@ def unfollow_event(request, event_id):
 def event_detail(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     if request.method == "POST":
-        form = EventForm(request.POST, instance=event)
+        form = EventForm(request.POST, request.FILES, instance=event)
         if form.is_valid():
             form.save()
             return JsonResponse({"success": True})
