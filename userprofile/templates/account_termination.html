@@ -1,0 +1,49 @@
+{% load static tailwind_tags %}
+{% tailwind_css %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Litterbox</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    </head>
+    <body>
+        <div class="m-4 p-4 w-auto h-full rounded-xl flex space-x-4 bg-gray-box justify-center items-center">
+            <div class="w-fit h-fit">
+
+                <div class="forms">
+                    <form method="POST" action="{% url 'account_termination' %}" class="space-y-4">
+                        {% csrf_token %}
+                        <div class="bg-white py-8 px-40">
+                            <div class="text-gray-700 font-bold text-20 text-center">We are sorry to see you go!</div>
+                            <div class="text-gray-700 font-bold text-16 text-center mb-5">Are you sure you want to terminate your Account?</div>
+                            <div class="text-gray-600 font-medium text-8 text-center mb-2">If so please enter your email address and password</div>
+                            <label for="email" class="block text-gray-700 font-medium">Email Address</label>
+                            <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <label for="password" class="block text-gray-700 font-medium">Password</label>
+                            <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            {% if error %}
+                                <p class="text-red-500 text-sm">{{ error }}</p>
+                            {% elif success%}
+                                <p class="text-green-500 text-sm">{{ success }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="flex text-center mt-6 p-2 gap-x-8 justify-center">
+                            <button type="submit" class="bg-red-500 text-white font-semibold py-2 px-6 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                                Yes, terminate this account
+                            </button>
+                            <a href="{% url 'dashboard_home' %}" class="font-semibold bg-gray-btn text-black py-2 px-6 rounded  border-gray-200  border-[4px] hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</a>
+                        </div>
+                        <div class="form-group text-center mt-6">
+                            
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+    
+</html>

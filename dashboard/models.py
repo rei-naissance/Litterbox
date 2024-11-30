@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.urls import reverse
+from django.forms import ValidationError
 
 # Create your models here.
 
@@ -123,3 +124,45 @@ class Announcement(models.Model):
 
     def __str__(self):
         return self.title        
+        return f'{self.author} notified {self.post}'
+    
+class Event(models.Model):
+    title = models.CharField(max_length=200)
+    image = models.ImageField(upload_to='images/', blank=True, null=True, default='')
+    start_date = models.DateField()
+    end_date = models.DateField()
+    start_time = models.TimeField()
+    end_time = models.TimeField()
+    location = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    user = models.ForeignKey(
+        'authentication.Student', on_delete=models.CASCADE, 
+        related_name="events", null=True, blank=True
+    )
+    
+    organizer = models.ForeignKey(
+        'authentication.Student', on_delete=models.CASCADE, 
+        related_name="organized_events", null=True, blank=True
+    )
+
+    def clean(self):
+        if self.user and self.organizer:
+            raise ValidationError("You must specify either a user or an organizer, but not both.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean() 
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
+    
+class Follow(models.Model):
+    user = models.ForeignKey('authentication.Student', related_name="followed_events", on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, related_name="followers", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('user', 'event')
+
+    def __str__(self):
+        return f"{self.user.username} follows event: {self.event.title}"

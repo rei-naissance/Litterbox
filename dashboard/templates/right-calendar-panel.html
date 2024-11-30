@@ -1,0 +1,137 @@
+{% load static tailwind_tags %}
+<div class="flex flex-col gap-y-2 w-full max-h-[700px]">
+  <div class="flex flex-col bg-white p-6 rounded-lg h-4/6">
+    <h2 class="text-lg font-semibold mb-4">Create Event</h2>
+    <div class="overflow-y-auto no-scrollbar px-4">
+      <form id="event-form">
+        {% csrf_token %}
+        <input type="hidden" name="id" id="event-id" enctype="multipart/form-data" />
+
+        <!-- Title -->
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700">Title:</label>
+          <input
+            type="text"
+            id="event-title"
+            name="title"
+            class="w-full border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        <!-- Images -->
+        <label for="image" class="block text-gray-700">Upload Image:</label>
+        <input
+          type="file"
+          id="event-image"
+          name="image"
+          accept="image/*"
+          class="w-full border-gray-300"
+          onchange="previewImage(event)"
+        />
+        <div class="my-4">
+          <img
+            id="image-preview"
+            class="w-full h-[200px] object-contain rounded-lg hidden"
+            alt="Preview"
+          />
+        </div>
+
+        <!-- Start Date -->
+        <div class="mb-4">
+          <label for="start_date" class="block text-gray-700">Start Date:</label>
+          <input
+            type="date"
+            id="event-start-date"
+            name="start_date"
+            class="w-full border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        <!-- Start Time -->
+        <div class="mb-4">
+          <label for="start_time" class="block text-gray-700">Start Time:</label>
+          <input
+            type="time"
+            id="event-start-time"
+            name="start_time"
+            class="w-full border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        <!-- End Date -->
+        <div class="mb-4">
+          <label for="end_date" class="block text-gray-700">End Date:</label>
+          <input
+            type="date"
+            id="event-end-date"
+            name="end_date"
+            class="w-full border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        <!-- End Time -->
+        <div class="mb-4">
+          <label for="end_time" class="block text-gray-700">End Time:</label>
+          <input
+            type="time"
+            id="event-end-time"
+            name="end_time"
+            class="w-full border-gray-300 rounded-lg"
+            required
+          />
+        </div>
+
+        <!-- Location -->
+        <div class="mb-4">
+          <label for="location" class="block text-gray-700">Location:</label>
+          <input
+            type="text"
+            id="event-location"
+            name="location"
+            class="w-full border-gray-300 rounded-lg"
+            placeholder="Enter location..."
+            required
+          />
+        </div>
+
+        <!-- Description -->
+        <div class="mb-4">
+          <label for="description" class="block text-gray-700">Description:</label>
+          <textarea
+            id="event-description"
+            name="description"
+            class="w-full border-gray-300 rounded-lg"
+          ></textarea>
+        </div>
+
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 mb-4 rounded-lg w-full"
+        >
+          Save
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="flex flex-col bg-white p-6 rounded-lg">
+    <div id="list-view" class="overflow-y-auto no-scrollbar flex-grow max-h-[400px] lg:h-[300px]">
+      <!-- List content goes here -->
+    </div>
+  </div>
+</div>
+
+<script>
+  function previewImage(event) {
+    const image = document.getElementById('image-preview');
+    const file = event.target.files[0];
+    if (file) {
+      image.src = URL.createObjectURL(file);
+      image.classList.remove('hidden');
+    }
+  }
+</script>

@@ -28,6 +28,7 @@
         {% include "header_dashboard.html" %}
 
         <div class="flex flex-row w-full">
+
           <div class="w-1/4"></div>
           <div class="w-1/4"></div>
           <div class="w-5/6 m-auto top-0 sticky bg-white border border-border-gray border-t-0 rounded-b-[30px]">
@@ -37,6 +38,11 @@
           </div>
           <div class="w-1/4"></div>
           <div class="w-1/4"></div>
+            {% if request.resolver_match.url_name == 'events' %}  
+              <div class="w-1/4 h-[570px] fixed no-scrollbar bg-white border border-border-gray rounded-3xl overflow-y-auto right-5">
+                  {% include "right-calendar-panel.html" %}
+              </div>
+            {% endif %}
           {% if request.resolver_match.url_name == 'announcements' %}
             <a href="/announcement_create"><button class="w-16 h-16 rounded-2xl flex justify-center items-center fixed right-5 bottom-5 bg-gray-100 padding-5 hover:bg-gray-200"> {% include "assets/mingcute_add-fill.svg" %}</button></a>
           {% endif %}

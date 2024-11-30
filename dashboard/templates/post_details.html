@@ -13,7 +13,13 @@
   <div class="p-6 pb-1">
     <div class="flex justify-between">
       <div class="flex space-x-3 mb-4 w-full items-center">
-        <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+        <div class="w-9 h-9 rounded-full bg-gray-300">
+          <a href="{% url 'profile_view' post.author.id %}" class="">
+            {% if post.author.profile.profile_image %}
+                <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
+            {% endif %}
+          </a>
+        </div>
         <div class="font-bold">{{ post.author }}</div>
         <div class="text-gray-font">{{ post.date_posted|timesince_first }}</div>
       </div>

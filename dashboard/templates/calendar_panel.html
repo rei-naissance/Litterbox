@@ -1,1 +1,110 @@
-<div class="mt-4 h-16 bg-white rounded-xl text-center p-10 border border-border-gray">Calendar stuff</div>
+<div class="mt-4 h-max bg-white rounded-xl text-center p-6 border border-border-gray">
+    <a href="{% url 'calendar_view' %}" id="calendar-link">
+        <div id="calendar-miniature"></div>
+    </a>
+    
+    
+
+    <!-- FullCalendar Script -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar-miniature');
+
+            // Fetch event data
+            fetch('/events/') // Adjust this URL to match your events endpoint
+                .then(response => response.json())
+                .then(events => {
+                    // Preprocess event dates into a set for efficient lookup
+                    const eventDates = new Set(events.map(event => event.start.split('T')[0])); // Extract unique dates
+            
+                    // Initialize the calendar
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        headerToolbar: {
+                            left: 'title', // Show only the title in the header
+                            center: '',
+                            right: ''
+                        },
+                        height: 'auto', // Dynamically adjusts based on content
+                        fixedWeekCount: false, // Ensure dynamic weeks based on the current month
+                        contentHeight: '200',
+                        dayHeaderFormat: {
+                            weekday: 'narrow' // Display short names for days (e.g., Mon, Tue)
+                        },
+                        dayCellDidMount: function (info) {
+                            const currentDate = info.date.toISOString().split('T')[0];
+
+                            // Add a dot for days with events
+                            if (eventDates.has(currentDate)) {
+                                const dotElement = document.createElement('div');
+                                dotElement.style.width = '5px';
+                                dotElement.style.height = '5px';
+                                dotElement.style.backgroundColor = 'red';
+                                dotElement.style.borderRadius = '50%';
+                                dotElement.style.position = 'absolute';
+                                dotElement.style.top = '-1';
+                                dotElement.style.right = '0';
+                                dotElement.style.marginTop = '4px'; 
+                                info.el.style.position = 'relative';
+                                info.el.appendChild(dotElement);
+                            }
+                        }
+                    });
+
+                    calendar.render();
+                })
+                .catch(error => console.error('Error fetching events:', error));
+        });
+
+        document.querySelector('a#calendar-link').addEventListener('click', function(e) {
+            window.location.href = '/calendar/';
+        });
+
+    </script>
+
+    <!-- CSS -->
+    <style>
+        .fc td, .fc th {
+            border-style: none !important;
+        }
+        
+        /* FullCalendar Day Cell Styles */
+        .fc-daygrid-day-number {
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 0.9rem; /* Adjust font size */
+            width: 100%; /* Center horizontally */
+        }
+
+        /* Style for calendar container */
+        #calendar-miniature {
+            max-width: 300px; /* Ensure responsiveness */
+            margin: 0 auto; /* Center align in the parent div */
+            border-style: none !important;
+        }
+
+        .fc-daygrid-day-frame {
+            height: 25px; /* Ensure full height is used */
+
+        }
+
+        /* Additional calendar adjustments */
+        .fc-daygrid-day {
+            padding: 5px; /* Add some padding for better spacing */
+        }
+
+        .fc-ltr .fc-daygrid-day-frame {
+            text-align: center; /* Center content inside day cells */
+        }
+
+        /* Dot indicator styling */
+        .fc-daygrid-day-frame div {
+            position: relative; /* Ensure relative positioning for dots */
+        }
+
+        
+    </style>
+</div>
