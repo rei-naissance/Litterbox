@@ -1329,6 +1329,10 @@ select {
   height: 100vh;
 }
 
+.h-32 {
+  height: 8rem;
+}
+
 .max-h-\[300px\] {
   max-height: 300px;
 }
@@ -2034,6 +2038,16 @@ select {
 .bg-yellow-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(250 204 21 / var(--tw-bg-opacity));
+}
+
+.bg-gray-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#6a7181\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(106 113 129 / var(--tw-bg-opacity));
 }
 
 .bg-opacity-50 {

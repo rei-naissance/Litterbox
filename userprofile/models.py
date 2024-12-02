@@ -5,7 +5,7 @@ class Profile(models.Model):
     username = models.CharField(null=True,max_length=150)
     bio = models.TextField(null=True, blank=True)
 
-    cover_image = models.ImageField(null=True, blank=True, upload_to="images/")
+    cover_image = models.ImageField(null=True, blank=True, upload_to="images/",  default="images/default_profile_image.png")
     profile_image = models.ImageField(null=True, blank=True, upload_to="images/")
     
     title = models.CharField(null=True,max_length=150)  

@@ -2,7 +2,11 @@
 {% tailwind_css %}
 <div class="profile-container h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
     <div class="profile-image-container flex justify-center" id="add-profile-photo-id">
-            <img src="{% if profile.profile_image %} {{ profile.profile_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}"  alt="Profile Cover Image" class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90">
+        {% if profile.profile_image %}
+            <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90"/>
+        {% else %}
+            <div class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90 bg-gray-300"></div>
+        {% endif %}
         <div class="profile-option-section hidden absolute right-[35%] top-[10px] z-[10]" id="profile-popup-add-id">
             {% if request.user == profile.student%}
                 <div>
@@ -21,15 +25,33 @@
 
     <div class="profile-stats-info flex flex-row justify-around text-center gap-y-[10px] w-[100%]">
         <div class="posts-stats flex flex-col flex-1 items-center">
-            <div class="count text-[16px] font-bold">{{profile.post_count}}</div>
+            <div class="count text-[16px] font-bold">
+                {% if profile.post_count > 999 %}
+                    999+
+                {% else %}
+                    {{ profile.post_count }}
+                {% endif %}
+            </div>
             <div class="title text-[11px] text-gray-font">Posts</div>
         </div>
         <div class="comment-stats flex flex-col flex-1 items-center">
-            <div class="count text-[16px] font-bold">{{profile.comment_count}}</div>
+            <div class="count text-[16px] font-bold">
+                {% if profile.comment_count > 999 %}
+                    999+
+                {% else %}
+                    {{ profile.comment_count }}
+                {% endif %}
+            </div>
             <div class="title text-[11px] text-gray-font">Comments</div>
         </div>
         <div class="event-participated-stats flex flex-col flex-1 items-center">
-            <div class="count text-[16px] font-bold">{{profile.event_count}}</div>
+            <div class="count text-[16px] font-bold">
+                {% if profile.event_count > 999 %}
+                    999+
+                {% else %}
+                    {{ profile.event_count }}
+                {% endif %}
+            </div>
             <div class="title text-[11px] text-gray-font">Events <br>participated</div>
         </div>
     </div>
