@@ -1,6 +1,7 @@
 from django import forms
 from .models import Post, Comment, Report, Announcement
 from .models import Post, Comment, Report, Event
+from tinymce.widgets import TinyMCE
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -11,9 +12,9 @@ class PostForm(forms.ModelForm):
                 'class': 'placeholder-gray-font w-full focus:outline-none rounded-lg border border-border-gray font-normal text-gray-font2 text-sm placeholder-gray-font',
                 'placeholder': 'Enter title here...',
             }),
-            'content': forms.Textarea(attrs={
-                'class': 'placeholder-gray-font w-full h-80 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray',
-                'placeholder': 'Write your post here...',
+            'content': TinyMCE(attrs={
+                'class': 'placeholder-gray-font w-full h-96 rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray',
+                'placeholder': 'Write your post here...',  # TinyMCE doesn't use this, but keeping it won't hurt
             }),
             'image': forms.ClearableFileInput(attrs={
                 'id': 'id_image',
