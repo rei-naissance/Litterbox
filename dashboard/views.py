@@ -198,6 +198,13 @@ def post_edit(request, post_id):
         
     return render(request, 'dashboard.html', {'form': form, 'post': post})
 
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id, author=request.user)
+    post.is_deleted = True
+    post.save()    
+    return redirect('dashboard_home')
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(is_deleted=False).order_by('-date_posted')
