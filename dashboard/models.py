@@ -76,40 +76,6 @@ class Report(models.Model):
 
     def __str__(self):
         return f'{self.author} reported {self.post}'
-    
-# experimental for now
-class Notification(models.Model):
-    NEW_COMMENT = 'NC'
-    NEW_LIKE = 'NL'
-    NEW_REPORT = 'NR'
-    NEW_NOTIF = 'NN' # for purpose of avoiding null default
-
-    EVENT_MAP = [
-        (NEW_COMMENT, 'New Comment'),
-        (NEW_LIKE, 'New Like'),
-        (NEW_REPORT, 'New Report'),
-    ]
-    
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='notifications')
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
-    type = models.CharField(max_length=2, choices=EVENT_MAP, default=NEW_NOTIF)
-    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True, blank=True, related_name='notifications')
-    comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True, blank=True, related_name='notifications')
-    report = models.ForeignKey(Report, on_delete=models.SET_NULL, null=True, blank=True, related_name='notifications')
-    message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_read = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f'Notification for {self.recipient} - {self.get_event_type_display()}'
-    
-    def get_url(self):
-        if self.post:
-            return reverse('post_detail', kwargs={'post_id': self.post.id})
-        return '#'
-
-    class Meta: 
-        ordering = ['-created_at']
 
 class Announcement(models.Model):
     title = models.CharField(max_length=150)

@@ -2,7 +2,7 @@ from time import localtime
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
-from .models import Post, Comment, Report, Like, Save, Announcement, Notification
+from .models import Post, Comment, Report, Like, Save, Announcement
 from .forms import PostForm, CommentForm, ReportForm, AnnouncementForm
 from django.db.models import Prefetch
 from django.core.serializers import serialize
