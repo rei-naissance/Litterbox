@@ -1,6 +1,12 @@
 <div class="h-1/6 p-6 px-6 border border-b-border-gray">
   <div class="w-full flex space-x-4 justify-between">
-    <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+    <a href="{% url 'profile_view' user.id %}" class="">
+      {% if user.profile.profile_image %}
+          <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
+      {% else %}
+          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+      {% endif %}
+    </a>
     <a class="w-1/6 h-9" href="{% url 'post_create' %}">
     <button
       class="w-full h-full rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"

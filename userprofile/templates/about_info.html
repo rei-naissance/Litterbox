@@ -1,0 +1,130 @@
+{% load static tailwind_tags %}
+{% tailwind_css %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<div class="about-container flex flex-col gap-y-2 bg-white border-1 px-4 py-4 rounded-lg max-h-[300px]">
+    <div id="edit-about-container-id" class="flex flex-col gap-y-4">
+        <div class="gap-y-0">
+            <div class="div-title text-lg font-bold">About</div>
+            <div class="about-detail-container flex flex-col overflow-x-hidden overflow-y-auto h-full w-full text-[11px] no-scrollbar" id="about-detail-id">
+                <p class="text-[11px] text-gray-font break-words">{{ profile.bio}}</p>
+            </div>
+        </div>
+        {% if request.user == profile.student%}
+            <button class="edit-about-container flex w-full justify-around py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn  hover:bg-gray-200" id="edit-about-id">
+                Edit Bio
+            </button>
+        {% endif %}
+
+    </div>
+
+    <div class="about-form hidden" id="about-form-id">
+        <form method="POST" enctype="multipart/form-data" id="cover-form">
+            {% csrf_token %}
+            <label for="id_bio" class="block font-bold text-lg text-black">About</label>
+            {{ about_form.bio }}
+            <input type="submit" name="about-submit" value="Confirm Changes" class="btn btn-secondary bg-gray-btn  py-[5px] px-[10px] rounded-lg text-[14px] my-2 w-full  hover:bg-gray-200">
+        </form>
+    </div>
+</div>
+
+<div class="link-container w-full h-auto flex flex-col gap-y-2 bg-white border-1 px-4 pt-4 pb-2 rounded-lg max-h-[300px]">
+    <div class="div-title text-lg font-bold">Links</div>
+    <div class="links-container flex flex-col gap-y-2 overflow-x-hidden overflow-y-auto no-scrollbar" id="edit-links-container-id">
+        {% if profile.social_links %}
+            {% for key, value in profile.social_links.items %}
+                <div class="link-item flex items-center gap-x-2">
+                    <a href="{{ value }}" class=" text-[11px] p-2 w-full rounded-lg bg-gray-btn font-bold social-link flex flex-row overflow-x-auto no-scrollbar whitespace-nowrap  hover:bg-gray-200" data-url="{{ value }}">
+                        
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No social links available.</p>
+        {% endif %}
+    </div>
+    {% if request.user == profile.student%}
+        <button class="edit-link-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn  hover:bg-gray-200" id="edit-link-btn-id">
+            Edit Link
+        </button>
+    {% endif %}
+
+    <div id="edit-forms-container-v2" class="hidden flex-col w-full text-[11px]">
+        <form method="POST" enctype="multipart/form-data" id="links-form-v2">
+            {% csrf_token %}
+            <input type="hidden" id="social-links-json-v2" name="social_links_json" value="">
+            <div id="links-list-v2" class="flex flex-col gap-y-2 overflow-x-hidden overflow-y-auto no-scrollbar h-[160px]">
+                {% if profile.social_links %}
+                    {% for key, value in profile.social_links.items %}
+                        <div class="link-item flex justify-between gap-x-2">
+                            <input type="text" name="link_{{ forloop.counter }}" value="{{ value }}" class="form-input h-[32px] w-full text-[11px]">
+                            <button type="button" class="delete-btn bg-gray-btn h-[32px] w-20 p-1 rounded-lg cursor-pointer hover:bg-gray-200">Delete</button>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No social links available.</p>
+                {% endif %}
+            </div>
+            
+            <button type="button" id="add-link-btn-v2" class="add-btn my-2 bg-gray-btn p-1 rounded-lg cursor-pointer hover:bg-gray-200 w-full text-sm">Add Link</button>
+            <div class="w-full flex justify-end">
+                <button type="submit" name="links_change_v2" class="bg-gray-btn text-black px-4 py-2 rounded-lg h-[32px] hover:bg-gray-200 text-sm">
+                    Confirm Changes
+                </button>
+            </div>
+        </form>
+    </div>
+
+    
+</div>
+<script>
+    const linksContainerV2 = document.getElementById('links-list-v2');
+    const addLinkBtnV2 = document.getElementById('add-link-btn-v2');
+
+    // Collect all links into JSON for second link form
+    function collectSocialLinksV2() {
+        const links = {};
+        // Loop through each input within the container and add to links object
+        linksContainerV2.querySelectorAll('.link-item input').forEach((input, index) => {
+            if (input.value.trim() !== "") {
+                links[`link_${index}`] = input.value;
+            }
+        });
+        return links;
+    }
+
+    // Update the hidden JSON input with the collected links
+    function updateSocialLinksJSON() {
+        const links = collectSocialLinksV2();
+        document.getElementById('social-links-json-v2').value = JSON.stringify(links);
+    }
+
+    // Call this function before form submission to update the hidden input
+    document.getElementById('links-form-v2').addEventListener('submit', function(event) {
+        updateSocialLinksJSON();
+    });
+
+    // Add a new link input in the second form
+    addLinkBtnV2.addEventListener('click', function() {
+        const newLink = document.createElement('div');
+        newLink.classList.add('link-item', 'flex', 'justify-between', 'gap-x-2');
+        newLink.innerHTML = `
+        <input type="text" name="{{ key }}" value="{{ value }}" class="form-input w-full text-[11px]" placeholder="Enter new link">
+
+        <button type="button" class="delete-btn bg-gray-btn w-20 rounded-lg cursor-pointer hover:brightness-75 text-[11px]">Delete</button>
+        `;
+        linksContainerV2.appendChild(newLink);
+    });
+
+    // Add event listener for delete buttons in the second form
+    linksContainerV2.addEventListener('click', function(event) {
+        if (event.target.classList.contains('delete-btn')) {
+            event.stopPropagation(); 
+            event.target.closest('.link-item').remove();  
+        }
+});
+</script>
+
+
+
+
+<script src="{% static 'js/profile_scripts.js' %}" type="module"></script>

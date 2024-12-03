@@ -95,9 +95,17 @@
         {% include "assets/basil_settings-outline.svg" %}
         {% endif %}
       </div>
-      <div class="w-10 h-10 rounded-full bg-gray-300">
-      </div>
+      <a href="{% url 'profile_view' user.id %}" class="">
+        {% if user.profile.profile_image %}
+            <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
+        {% else %}
+            <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+        {% endif %}
+      </a>
     </div>
+
+
+  </div>
 
 </div>
 </div>

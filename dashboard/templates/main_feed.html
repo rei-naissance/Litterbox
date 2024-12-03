@@ -10,6 +10,14 @@
 {% elif request.resolver_match.url_name == 'post_edit' %}
     {% include "edit_post_form.html" %}
 
+{% elif request.resolver_match.url_name == 'profile_view'  %}
+    {% if user.profile == profile %}
+        {% include "create_post_panel.html" %}
+    {% endif %}
+    {% for post in posts %}
+        {% include "feed_box.html" with post=post %}
+    {% endfor %}
+    
 {% elif request.resolver_match.url_name == 'send_report' %}
     {% include "report_post.html" %}
 
@@ -39,6 +47,5 @@
 {% elif request.resolver_match.url_name == 'post_detail' %}
     {% include "post_details.html" with post=post comments=comments user_liked=user_liked image=image %}
 {% else %}
-<p>URL Name: {{ request.resolver_match.url_name }}</p>
-
+    <p>URL Name: {{ request.resolver_match.url_name }}</p>
 {% endif %}

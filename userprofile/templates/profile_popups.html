@@ -1,0 +1,298 @@
+{% load static tailwind_tags %}
+{% tailwind_css %}
+
+<div class="hidden fixed flex-col justify-between gap-5  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white z-[99999] w-full max-w-[700px] h-[650px] border border-[rgba(0,0,0,0.2)] overflow-y-scroll no-scrollbar" id="edit-profile-section-id">
+    <div class="title-section flex flex-row items-center p-2.5 sticky z-[999] top-0 justify-between w-full bg-white h-fit">
+        <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Update Profile</div>
+        <button id="profile-edit-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+    </div>
+    
+    <form method="POST" enctype="multipart/form-data" class="space-y-4 flex flex-col items-center justify-center w-full p-2.5 "  id="profile-form">
+        {% csrf_token %}
+        <div class="w-full flex flex-col items-center">
+            <div class="w-full flex items-start">
+                <label for="id_profile_image" class="block font-bold text-[20px] text-gray-700">Profile Image</label>
+            </div>
+
+            <div class="mb-4 flex justify-center p-4">
+                <img id="profileImagePreview" 
+                     src="{% if profile.profile_image %} {{ profile.profile_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}" 
+                     alt="Profile Image" class="w-[200px] h-[200px] object-cover rounded-full">
+            </div>
+
+            <!-- Displaying current profile image link -->
+            <div class="w-[500px]">
+                <div class="flex flex-row gap-x-2 items-center justify-center">
+                    <input type="checkbox" name="profile_image-clear" id="profile_image-clear_id">
+                    <label for="profile_image-clear_id">Clear</label><br>
+                
+                    <!-- File input for changing image -->
+                    <input type="file" name="profile_image" id="id_profile_image_custom" class="hidden" accept="image/*">
+                    <label class="bg-gray-btn p-1 rounded-lg cursor-pointer  hover:bg-gray-200" for="id_profile_image_custom">Change Image</label>
+                </div>
+            </div>
+
+    
+        </div>
+
+        <div class="w-full">
+
+            <div class="w-full flex items-start">
+                <label for="id_cover_image" class="block font-bold text-[20px] text-gray-700">Cover Image</label>
+            </div>
+
+            <div class="flex mb-4 justify-center p-4">
+                    <img id="coverImagePreview" 
+                     src="{% if profile.cover_image %} {{ profile.cover_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}" 
+                     alt="Cover Image" class="w-[500px] h-[300px] object-cover rounded-lg">
+            </div>
+
+            <div class="flex flex-row gap-x-2 items-center justify-center">
+                <input type="checkbox" name="cover_image-clear" id="cover_image-clear_id">
+                <label for="cover_image-clear_id">Clear</label><br>
+            
+                <!-- File input for changing image -->
+                <input type="file" name="cover_image" id="id_cover_image_custom" class="hidden" accept="image/*">
+                <label class="bg-gray-btn p-1 rounded-lg cursor-pointer  hover:bg-gray-200" for="id_cover_image_custom">Change Image</label>
+            </div>
+    
+        </div>
+        
+        
+
+        <div class="w-full">
+            <div class="w-full flex items-start">
+                <label for="id_title" class="block font-bold text-[20px] w-full  text-gray-700">Title</label>
+            </div>
+            <div class="flex mb-4 justify-center p-4">
+                {{ profile_form.title }}
+            </div>
+            
+        </div>
+
+        <div class="w-full">
+            <div class="w-full flex items-start">
+                <label for="id_bio" class="block font-bold text-[20px] text-gray-700">About</label>
+            </div>
+            <div class="flex mb-4 justify-center p-4">
+                {{ profile_form.bio }}
+            </div>
+            
+        </div>
+        
+
+        <div id="social-links-container" class="flex flex-col items-center w-full ">
+            <div class="w-full flex items-start">
+                <label for="id_bio" class="block font-bold text-[20px] text-gray-700">Social Links</label>
+            </div>
+            <div class="flex flex-col mb-4 p-4 w-[500px]">
+                <input type="hidden" id="social-links-json" name="social_links_json" value="">
+                <div id="links-list" class="flex flex-col gap-y-2">
+                    {% for key, value in profile.social_links.items %}
+                        <div class="link-item flex justify-between gap-x-2 ">
+                            <input type="text" name="{{ key }}" value="{{ value }}" class="form-input w-full">
+                            <button type="button" class="delete-btn bg-gray-btn w-20 p-1 rounded-lg cursor-pointer  hover:bg-gray-200">Delete</button>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button type="button" id="add-link-btn" class="add-btn my-2 bg-gray-btn p-1 rounded-lg cursor-pointer  hover:bg-gray-200 w-full">Add Link</button>
+            </div>
+
+        </div>
+
+        <div class="w-full flex justify-end">
+            <button type="submit" name="profile_change" class="bg-gray-btn text-black px-4 py-2 my-2 rounded-lg hover:bg-gray-200">
+                Save Changes
+            </button>
+        </div>
+
+    </form>
+</div>
+
+<div class="cover-popup" id="cover-popup-id">
+    <div class="base-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="base-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Photo</div>
+            <button id="base-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <div class="option-section flex flex-row-reverse" >
+            <button id="add-cover-photo-id" class="add-cover-button px-4 py-2 my-2 rounded-lg text-[14px]  border-none bg-gray-btn  hover:bg-gray-200 w-fit">Add Photo</button>
+        </div>
+        
+    </div>
+
+    <div class="select-image-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="select-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Cover Photo</div>
+            <button id="select-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        
+        <div class="flex mb-4 justify-center p-4">
+            <img id="coverImagePreviewv2" 
+                 src="{% if profile.cover_image %}{{ profile.cover_image.url }}{% else %}https://via.placeholder.com/150{% endif %}" 
+                 alt="Cover Image" class="w-[500px] h-[300px] object-cover rounded-lg">
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" id="cover-form">
+            {% csrf_token %}
+            <div class="flex flex-row gap-x-2 items-center justify-center">
+                <input type="checkbox" name="cover_image-clear" id="cover_image-clear_id">
+                <label for="cover_image-clear_id">Clear</label>
+            
+                <!-- File input for changing image -->
+                <input type="file" name="cover_image" id="id_cover_image" class="hidden" accept="image/*">
+                <label class="bg-gray-btn p-1 rounded-lg cursor-pointer  hover:bg-gray-200" for="id_cover_image">Change Image</label>
+            </div>
+            <div class="flex w-full justify-end mt-4">
+                <input type="submit" name="cover-submit" value="Submit" class="btn btn-secondary bg-gray-btn text-black px-4 py-2 my-2 rounded-lg text-sm hover:bg-gray-200">
+            </div>
+        </form>
+    </div>
+    
+
+    <div class="select-image-section hidden fixed flex-col justify-between gap-5 w-full top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]" id="profile-add-photo-popup-id">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Profile Photo</div>
+            <button id="select-profile-popup-close-id" class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <div class="flex mb-4 justify-center p-4">
+            <img id="profileImagePreviewv2" 
+                 src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}https://via.placeholder.com/150{% endif %}" 
+                 alt="Cover Image" class="w-[200px] h-[200px] object-cover rounded-full">
+        </div>
+        
+        <form method="POST" enctype="multipart/form-data" id="profile-img-form">
+            {% csrf_token %}
+            <div class="flex flex-row gap-x-2 items-center justify-center">
+                <input type="checkbox" name="profile_image-clear" id="cover_image-clear_id">
+                <label for="profile_image-clear_id">Clear</label>
+            
+                <!-- File input for changing image -->
+                <input type="file" name="profile_image" id="id_profile_image" class="hidden" accept="image/*">
+                <label class="bg-gray-btn p-1 rounded-lg cursor-pointer hover:brightness-75" for="id_profile_image">Change Image</label>
+            </div>
+            <div class="flex w-full justify-end mt-4">
+                <input type="submit" name="profile-img-submit" value="Submit" class="btn btn-secondary bg-gray-btn text-black px-4 py-2 my-2 rounded-lg text-sm hover:bg-gray-200">
+            </div>
+        </form>
+    </div>
+
+    <div class="edit-section hidden fixed flex-col justify-between gap-5 w-full h-[500px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-lg bg-white p-2.5 z-[99999] max-w-[680px] border border-[rgba(0,0,0,0.2)]">
+        <div class="title-section flex flex-row items-center justify-center">
+            <div class="popup-title pl-10 text-xl font-bold flex flex-grow justify-center">Select Photo</div>
+            <button class="close-button w-9 h-9 rounded-full border border-[rgba(0,0,0,0.2)]">X</button>
+        </div>
+        <button class="confirm-edit-button px-4 py-2 my-2 rounded-lg text-[14px] border-none bg-gray-btn hover:bg-gray-200 text-sm">Confirm</button>
+    </div>
+
+    <div id="overlay" class="hidden fixed top-0 left-0 right-0 bottom-0 bg-[rgba(0,0,0,0.2)] z-[9999]"></div>
+</div>
+<script>
+    
+
+
+
+const linksContainer = document.getElementById('links-list');
+const addLinkBtn = document.getElementById('add-link-btn');
+const socialLinksJson = document.getElementById('social-links-json');
+
+// Collect all links into JSON
+function collectSocialLinks() {
+    const links = {};
+    linksContainer.querySelectorAll('.link-item input').forEach((input, index) => {
+        if (input.value.trim() !== "") {
+                links[`link_${index}`] = input.value;
+         }
+    });
+    return links;
+}
+
+// Add a new link input
+addLinkBtn.addEventListener('click', function() {
+    const newLink = document.createElement('div');
+    newLink.classList.add('link-item', 'flex', 'justify-between', 'gap-x-2');
+    newLink.innerHTML = `
+        <input type="text" name="{{ key }}" value="{{ value }}" class="form-input w-full" placeholder="Enter new link">
+
+        <button type="button" class="delete-btn bg-gray-btn w-20 p-1 rounded-lg cursor-pointer hover:brightness-75">Delete</button>
+    `;
+    linksContainer.appendChild(newLink);
+});
+
+// Add event listener for delete buttons
+linksContainer.addEventListener('click', function(event) {
+    if (event.target.classList.contains('delete-btn')) {
+        event.stopPropagation(); 
+        event.target.closest('.link-item').remove();  
+    }
+});
+
+// Collect the social links and set them in a hidden input field
+document.getElementById('profile-form').addEventListener('submit', function(event) {
+    const links = collectSocialLinks();
+    socialLinksJson.value = JSON.stringify(links);
+});
+
+document.getElementById('id_profile_image_custom').addEventListener('change', function(event) {
+    const profileImagePreview = document.getElementById('profileImagePreview');
+    
+    // Check if a file is selected
+    if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            profileImagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+});
+
+document.getElementById('id_cover_image_custom').addEventListener('change', function(event) {
+    const profileImagePreview = document.getElementById('coverImagePreview');
+    
+    // Check if a file is selected
+    if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            profileImagePreview.src = e.target.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+});
+
+document.getElementById('id_cover_image').addEventListener('change', function(event) {
+    const coverImagePreviewv2 = document.getElementById('coverImagePreviewv2');
+    
+    // Check if a file is selected
+    if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            // Set the src attribute of the img tag to the loaded file's data URL
+            coverImagePreviewv2.src = e.target.result;
+        };
+        
+        // Read the selected file as a data URL
+        reader.readAsDataURL(event.target.files[0]);
+    }
+});
+
+document.getElementById('id_profile_image').addEventListener('change', function(event) {
+    const profileImagePreviewv2 = document.getElementById('profileImagePreviewv2');
+    
+    // Check if a file is selected
+    if (event.target.files && event.target.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            // Set the src attribute of the img tag to the loaded file's data URL
+            profileImagePreviewv2.src = e.target.result;
+        };
+        
+        // Read the selected file as a data URL
+        reader.readAsDataURL(event.target.files[0]);
+    }
+});
+</script>
+<!-- <script src="{% static 'js/profile_popup_scripts.js' %}" type="module"></script> -->

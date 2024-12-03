@@ -1,5 +1,6 @@
 from django import forms
 from .models import Post, Comment, Report, Announcement
+from .models import Post, Comment, Report, Event
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -56,4 +57,24 @@ class AnnouncementForm(forms.ModelForm):
             'is_archived': forms.CheckboxInput(attrs={
                 'class': 'h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500'
             }),
+        }
+
+class EventForm(forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ['title', 
+                  'start_date', 
+                  'start_time', 
+                  'end_date', 
+                  'end_time', 
+                  'location', 
+                  'description',
+                  'image']
+        widgets = {
+            'start_date': forms.DateInput(attrs={'type': 'date'}),
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),  
+            'end_time': forms.TimeInput(attrs={'type': 'time'}),  
+            'location': forms.TextInput(attrs={'placeholder': 'Enter location here...'}), 
+            'description': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Enter event description...'}),
         }
