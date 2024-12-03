@@ -2,14 +2,14 @@
   <div class="w-full flex space-x-4 justify-between">
     <a href="{% url 'profile_view' user.id %}" class="">
       {% if user.profile.profile_image %}
-          <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
+          <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover hover:scale-105 active:scale-95 transform transition duration-300">
       {% else %}
           <div class="w-9 h-9 rounded-full bg-gray-300"></div>
       {% endif %}
     </a>
     <a class="w-1/6 h-9" href="{% url 'post_create' %}">
     <button
-      class="w-full h-full rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-bg-gray"
+      class="w-full h-full rounded-lg text-sm font-normal text-black border border-border-gray hover:bg-hover-color transform transition duration-300"
     >
       Add post
     </button>

@@ -1,9 +1,9 @@
 {% load custom_filters %}
 {% load static %}
 <div
-  class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex"
+  class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex transition duration-300"
 >
-  <div class="w-9 h-9 rounded-full bg-gray-300">
+  <div class="w-9 h-9 rounded-full bg-gray-300 hover:scale-105 active:scale-95 transform transition duration-300">
     <a href="{% url 'profile_view' post.author.id %}" class="">
       {% if post.author.profile.profile_image %}
           <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
@@ -15,14 +15,14 @@
     <!-- Profile Section -->
     <div class="flex justify-between items-center">
       <div class="flex flex-row pb-2 space-x-2">
-          <p class="font-medium">{{ post.author.first_name }} {{ post.author.last_name }}</p>
-          <p class="text-gray-font">{{ post.date_posted|timesince }}</p>
+          <p class="font-bold hover:underline cursor-pointer">{{ post.author.first_name }} {{ post.author.last_name }}</p>
+          <p class="text-gray-font text-xs self-center">{{ post.date_posted|timesince }}</p>
       </div>
       <div class="relative">
         <!-- Dots Button -->
         <button
           type="button"
-          class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100"
+          class="flex items-center justify-center w-10 h-10 p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300"
           onclick="toggleDropdown('{{ post.id }}')"
         >
           {% include "assets/dots.svg" %}
@@ -31,9 +31,8 @@
         <!-- Dropdown Menu -->
         <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
           <!-- Edit Option -->
-          {% if request.user == post.author %}
           <a
-            href="{% url 'post_edit' post.id %}"
+            href=""
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Edit
@@ -55,34 +54,43 @@
           </a>
         </div>
       </div>
-      
     </div>
-    <p>Post ID: {{ post.id }}</p>
+
     <!-- Main Content Section -->
     <a href="{% url 'post_detail' post.id %}" class="block">
-      <div class="flex pb-2">
+      <div class="flex pb-2 py-2 max-w-xl w-full">
+        {% if post.image and post.image.url %}
           <div class="h-56 w-1/2 bg-gray-100 rounded-xl overflow-hidden">
-            {% if post.image and post.image.url %}
-              <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full" />
-            {% else %}
-              <img src="{% static '/images/default_image.jpg' %}" alt="Default Image" class="object-cover h-full w-full" />
-            {% endif %}
+            <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full" />
           </div>
-          <div class="h-56 w-1/2 p-5 flex flex-col justify-between">
-              <h2 class="text-3xl font-bold">{{ post.title }}</h2>
-              <p class="text-gray-700 text-lg mt-2 overflow-hidden text-ellipsis ">
-                  {{ post.content }}
-              </p>
+          <div class="h-56 w-1/2 px-4 py-2 flex flex-col justify-between">
+            <h2 class="text-3xl font-bold">{{ post.title }}</h2>
+            <div class="text-gray-700 text-lg mt-2 overflow-hidden line-clamp-4">
+              <div class="tiny-content prose">
+                {{ post.content|safe }}
+              </div>
+            </div>
           </div>
+        {% else %}
+          <div class="w-full flex flex-col justify-between">
+            <h2 class="text-3xl font-bold">{{ post.title }}</h2>
+            <div class="text-gray-700 text-lg mt-2 overflow-hidden line-clamp-4 break-words">
+              <div class="tiny-content prose text-justify">
+                {{ post.content|safe }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
       </div>
-  </a>
+    </a>
+    
   
     <!-- Interactions Section -->
-    <div class="py-2 flex justify-between text-xs">
-      <div class="flex items-center space-x-2">
+    <div class="flex justify-between text-xs">
+      <div class="flex items-center space-x-1">
         <!-- Like Button -->
-        <button class="text-gray-font flex items-center cursor-pointer" onclick="toggleLike('{{ post.id }}')">
-          <div class="mx-2" id="like-svg-{{ post.id }}">
+        <button class="text-gray-font flex items-center cursor-pointer p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300" onclick="toggleLike('{{ post.id }}')">
+          <div class="mx-2 ml-0" id="like-svg-{{ post.id }}">
             {% if post.id in user_likes %}
               {% include "assets/heart-filled.svg" %}
             {% else %}
@@ -93,29 +101,23 @@
         </button>
     
         <!-- Comment Button -->
-        <button class="text-gray-font flex items-center" onclick="toggleCommentInput('{{ post.id }}')">
-          <div class="mx-2">{% include "assets/iconamoon_comment.svg" %}</div>
+        <button class="text-gray-font flex items-center cursor-pointer p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300" onclick="toggleCommentInput('{{ post.id }}')">
+          <div class="mx-2 ml-0">{% include "assets/iconamoon_comment.svg" %}</div>
           <span class="flex items-center">{{ post.comments.count }}</span>
         </button>
-    
-        <!-- Share -->
-        <span class="text-gray-font flex items-center">
-          <div class="mx-2">{% include "assets/uil_share.svg" %}</div>
-          <span class="flex items-center">0</span>
-        </span>
       </div>
     
       <!-- Read Time and Bookmark -->
       <div class="flex items-center">
-        <span class="text-gray-font flex items-center">0 min read</span>
-        <button class="text-gray-font flex items-center" onclick="toggleSave('{{ post.id }}')">
-        <div class="ml-6" id="save-svg-{{ post.id }}">
-          {% if post.id in user_saves %}
-            {% include "assets/bookmark.svg" %}
-          {% else %}
-            {% include "assets/material-symbols_bookmark-outline.svg" %}
-          {% endif %}
-        </div>
+        <button class="text-gray-font flex items-center p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300" onclick="toggleSave('{{ post.id }}')">
+          <div class="" id="save-svg-{{ post.id }}">
+            {% if post.id in user_saves %}
+              {% include "assets/bookmark.svg" %}
+            {% else %}
+              {% include "assets/material-symbols_bookmark-outline.svg" %}
+            {% endif %}
+          </div>
+        </button>
       </div>
     </div>
     

@@ -63,6 +63,8 @@ module.exports = {
         "blue-box": "#e5f1ff",
         "blue-font": "#3985de",
         "gray-btn": "#EDEDED",
+        "hover-color": "#f0f0f0",
+        "black-box" : "#1E1E1E",
         "input-border": "#A9A9A9",
         "green-box": "#087443",
         "bg-gray": "#FAFAFA",
@@ -98,5 +100,6 @@ module.exports = {
     require("@tailwindcss/forms"),
     require("@tailwindcss/typography"),
     require("@tailwindcss/aspect-ratio"),
+    require('@tailwindcss/line-clamp'),
   ],
 };

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from django.conf.urls.static import static
 
 from Litterbox import settings
@@ -31,7 +31,8 @@ urlpatterns = [
     path('event/delete/<int:event_id>/', views.delete_event, name='delete_event'),
     path('events/user/', views.user_events, name='user_events'),
     path('follow-event/<int:event_id>/', views.follow_event, name='follow_event'),
-    path('unfollow-event/<int:event_id>/', views.unfollow_event, name='unfollow_event')
+    path('unfollow-event/<int:event_id>/', views.unfollow_event, name='unfollow_event'),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:
