@@ -59,6 +59,7 @@ module.exports = {
         "gray-font1": "#6D6D6D",
         "blue-box": "#e5f1ff",
         "blue-font": "#3985de",
+        "black-box": "#1E1E1E",
         "input-border": "#A9A9A9",
         "green-box": "#087443",
         "bg-gray": "#FAFAFA",

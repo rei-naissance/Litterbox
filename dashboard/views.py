@@ -2,7 +2,7 @@ from time import localtime
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
-from .models import Post, Comment, Report, Like, Save, Announcement
+from .models import Post, Comment, Report, Like, Save, Announcement, Notification
 from .forms import PostForm, CommentForm, ReportForm, AnnouncementForm
 from django.db.models import Prefetch
 from django.http import JsonResponse
@@ -182,21 +182,36 @@ def post_create(request):
         form = PostForm()
     return render(request, 'dashboard.html', {'form': form})
 
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_home') 
+    else:
+        form = PostForm(instance=post)
+        
+    return render(request, 'dashboard.html', {'form': form, 'post': post})
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(is_deleted=False).order_by('-date_posted')
 
-
     if request.user.is_authenticated:
         user_liked = post.likes.filter(author=request.user).exists()
+        user_saved = post.saves.filter(author=request.user).exists()
     else:
         user_liked = False
+        user_saved = False
 
     # user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
     return render(request, 'dashboard.html', {
         'post': post,
         'comments': comments,
-        'user_liked': user_liked
+        'user_liked': user_liked,
+        'user_saved': user_saved
     })
 
 @login_required
@@ -262,3 +277,21 @@ def send_report(request, post_id):
     else: 
         form = ReportForm()
     return render(request, 'dashboard.html', {'form': form, 'post': post})
+
+def get_notifications(request):
+    if request.user.is_authenticated:
+        # Splice array to get 5 most recent notifications
+        notifications = Notification.objects.filter(recipient=request.user).order_by('-created_at')[:5]
+        # Form JSON response
+        notifications_data = [
+            {
+                'message': notification.message,
+                'created_at': notification.created_at.isoformat(),
+                'url': notification.get_url,
+            }
+            for notification in notifications
+        ]
+        
+        return JsonResponse({'notifications': notifications_data})
+    else:
+        return JsonResponse({'error': 'Unauthorized'}, status=401) # 401 Unauthorized

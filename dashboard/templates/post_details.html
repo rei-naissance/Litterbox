@@ -54,15 +54,15 @@
 
     <div class="px-4 pl-0 py-2 flex justify-between text-xs mb-4">
       <div class="flex items-center">
-        <span class="text-gray-font flex">
-          <div class="mx-2 ml-0">
+        <button class="text-gray-font flex items-center cursor-pointer" onclick="toggleLike('{{ post.id }}')">
+          <div class="mx-2 ml-0" id="like-svg-{{ post.id }}">
             {% if user_liked %}
               {% include "assets/heart-filled.svg" %}
             {% else %}
               {% include "assets/ph_heart-bold.svg" %}
             {% endif %}
           </div>
-          {{ post.likes.count }}</span
+          <span id="like-count-{{ post.id }}">{{ post.likes.count }}</span
         >
         <span class="mx-4 text-gray-font flex">
           <div class="mx-2">{% include "assets/iconamoon_comment.svg" %}</div>
@@ -74,9 +74,14 @@
         >
       </div>
       <div class="flex items-center">
-        <span class="text-gray-font">59 min read</span>
-        <div class="ml-6">
-          {% include "assets/material-symbols_bookmark-outline.svg" %}
+        <span class="text-gray-font">0 min read</span>
+        <button class="text-gray-font   flex items-center" onclick="toggleSave('{{ post.id }}')">
+        <div class="ml-6" id="save-svg-{{ post.id }}">
+          {% if user_saved %}
+            {% include "assets/bookmark.svg" %}
+          {% else %}
+            {% include "assets/material-symbols_bookmark-outline.svg" %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -136,4 +141,43 @@ function closeOnClickOutside(event, id) {
     document.removeEventListener('click', (e) => closeOnClickOutside(e, id));
   }
 }
+function toggleLike(postId) {
+    fetch(`/toggle-like/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Like toggling with json to avoid reload
+      const likeCount = document.querySelector(`#like-count-${postId}`);
+      const likeSvg = document.querySelector(`#like-svg-${postId}`);
+      likeCount.textContent = data.like_count;
+      likeSvg.innerHTML = data.liked
+      ? `{% include "assets/heart-filled.svg" %}`
+      : `{% include "assets/ph_heart-bold.svg" %}`;
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function toggleSave(postId) {
+    fetch(`/toggle-save/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const saveSvg = document.querySelector(`#save-svg-${postId}`);
+      saveSvg.innerHTML = data.saved
+      ? `{% include "assets/bookmark.svg" %}`
+      : `{% include "assets/material-symbols_bookmark-outline.svg" %}`;
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
 </script>
