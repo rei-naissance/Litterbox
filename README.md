@@ -30,9 +30,9 @@
   </a>
 
   <h4>
-    <a href="https://github.com/rei-naissance/Litterbox/issues/new?assignees=&labels=bug&template=bug_report.md&title=">Report Bug</a>
+    <a href="https://github.com/rei-naissance/Litterbox/issues/new?title=&labels=bug">Report Bug</a>
     <span> · </span>
-    <a href="https://github.com/rei-naissance/Litterbox/issues/new?assignees=&labels=enhancement&template=feature_request.md&title=">Request Feature</a>
+    <a href="https://github.com/rei-naissance/Litterbox/issues/new?title=&labels=enhancement">Request Feature</a>
   </h4>
 </div>
 
