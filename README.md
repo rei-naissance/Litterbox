@@ -1,4 +1,4 @@
-# **Litterbox: Student Blog Management System**
+![erd2](https://github.com/user-attachments/assets/6c348118-6cb7-4566-bc04-4c1f951f5aeb)# **Litterbox: Student Blog Management System**
 
 <div align="center">
   <img src="https://drive.usercontent.google.com/download?id=1CHKYtNihj3v0fTjELwNUjBHWEnbQiy6R" alt="Logo" width="100%" height="100%" />
@@ -163,8 +163,8 @@ This project is licensed under the MIT License. See the <a href="https://github.
 <!-- erd -->
 ### Entity Relationship Diagram
 <section id="erd">
-  <a href="https://online.visual-paradigm.com/share.jsp?id=333134323333322d34#diagram:workspace=vqaljzkc&proj=0&id=4" target="_blank">
-    <img src="https://github.com/rei-naissance/Litterbox/blob/Calendar-System/static/readme_files/erd.png" alt="Entity Relationship Diagram Image" width="1000"/>
+  <a href="https://lucid.app/lucidchart/e2700542-1a8c-45e1-82d1-1209efdb0511/view?page=0_0&invitationId=inv_245a72cb-2ac4-4653-8c11-0af71af67961#" target="_blank">
+    <img src="https://github.com/rei-naissance/Litterbox/blob/Calendar-System/static/readme_files/erd2.png" alt="Entity Relationship Diagram Image" width="1000"/>
   </a>
 </section>
 
