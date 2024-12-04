@@ -2,7 +2,7 @@
 {% load static %}
 
 <div class="w-1/5 fixed right-10 ">
-  {% if post.image and post.image.url %}
+  {% if post.image%}
     <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full rounded-3xl border border-border-gray"/>
   {% else %}
     
