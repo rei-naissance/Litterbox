@@ -1,4 +1,4 @@
-![erd2](https://github.com/user-attachments/assets/6c348118-6cb7-4566-bc04-4c1f951f5aeb)# **Litterbox: Student Blog Management System**
+# **Litterbox: Student Blog Management System**
 
 <div align="center">
   <img src="https://drive.usercontent.google.com/download?id=1CHKYtNihj3v0fTjELwNUjBHWEnbQiy6R" alt="Logo" width="100%" height="100%" />
