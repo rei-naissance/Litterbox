@@ -9,22 +9,28 @@
       <button
         type="button"
         class="flex items-center justify-center w-10 h-10 p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300"
-        onclick="toggleDropdown('{{ post.id }}')"
+        onclick="toggleDropdown('{{ announcement.id }}')"
       >
         {% include "assets/dots.svg" %}
       </button>
 
       <!-- Dropdown Menu -->
       <div
-        id="dropdown-{{ post.id }}"
+        id="dropdown-{{ announcement.id }}"
         class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10"
       >
-        <!-- Edit Option -->
         <a
-          href=""
+          href="{% url 'announcement_edit' announcement.id %}"
           class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
         >
           Edit
+        </a>
+
+        <a
+          href="{% url 'announcement_delete' announcement.id %}"
+          class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+        >
+          Delete
         </a>
       </div>
     </div>

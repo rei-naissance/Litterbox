@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib import auth
 from django.contrib.auth import login, update_session_auth_hash
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -149,3 +150,7 @@ def password_reset_confirmation(request, uidb64, token):
     
 def password_reset_sent(request):
     return render(request, 'password_reset_sent.html')  
+
+def logout(request):
+    auth.logout(request)
+    return render(request, 'home.html')

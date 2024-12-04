@@ -14,16 +14,9 @@
   <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       
-      <div class="h-14 w-full border-b border-gray-200 flex space-x-4">
-          <div class="w-9 h-9 rounded-full bg-gray-300 hover:scale-105 active:scale-95 transform transition duration-300">
-            <a href="{% url 'profile_view' post.author.id %}" class="block w-9 h-9">
-              {% if post.author.profile.profile_image %}
-                  <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
-              {% endif %}
-            </a>
-          </div>
+      <div class="h-14 w-full flex space-x-4 justify-between py-2 px-0">
           
-          <div class="w-3/4 h-9 rounded-lg flex items-center  px-3">
+          <div class="w-3/4 h-9 rounded-lg flex items-center">
               {{ form.title }}
           </div>
           
@@ -34,31 +27,6 @@
               Save Post
           </button>
       </div>
-      
-      <div class="flex justify-between items-center mt-4">
-        <div class="w-full flex space-x-6 font-normal text-gray-font2 items-center">
-            <!-- File Name Display -->
-            
-            <!-- Upload Button -->
-            <button class="flex items-center space-x-2" type="button" onclick="document.getElementById('id_image').click()">
-                {% include "assets/octicon_image-24.svg" %}
-                <p class="text-gray-font1">Image</p>  
-            </button>
-            
-            <div class="flex justify-center items-center border rounded-lg p-3">
-                <span id="file-name" class="text-sm text-gray-font2 hidden"></span>
-                <!-- Cancel Button -->
-                <button id="cancel-upload" class="hidden text-sm text-red-500 hover:underline" type="button" onclick="cancelFile()">
-                    <div class="mx-2 mr-0">
-                        {% include "assets/ix_cancel.svg" %}
-                    </div>
-                </button>
-            </div>
-
-            <!-- Hidden File Input -->
-            <input type="file" id="id_image" name="image" class="hidden" onchange="handleFileChange(event)" />
-        </div>
-    </div>
 </div>
 
 <div class="h-full py-0 pb-6 px-6">

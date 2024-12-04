@@ -1,13 +1,72 @@
 {% load static tailwind_tags %} {% tailwind_css %}
-<div class="sticky top-0 z-10 m-auto">
-  <div class="flex-grow flex justify-center p-8 header-size m-auto bg-bg-gray border border-b-border-gray border-x-0">
-    <div class=" h-9">
-    </div>
+<div class="sticky top-0 z-10 m-auto hidden lg:block md:block sm:hidden">
+  <div class="flex-grow flex justify-center py-8 w-full lg:w-2/5 md:w-3/5 m-auto bg-bg-gray border border-b-border-gray border-x-0">
+    <div class="h-9"></div>
   </div>
   <div class="absolute custom-border1" style="margin-top: -1px;">
     {% include "assets/hide-corner-left.svg" %}
   </div>
-  <div class="absolute custom-border2" style="margin-top: -1px;">
+  <div class="absolute custom-border2 " style="margin-top: -1px;">
     {% include "assets/hide-corner-right.svg" %}
   </div>
 </div>
+
+<div class="sticky md:hidden lg:hidden top-0 z-10 m-auto bg-bg-gray border-b border-border-gray">
+  <!-- Header Wrapper -->
+  <div class="flex items-center justify-between px-4 py-3 lg:px-0 lg:py-8 lg:w-2/5 md:w-3/5 m-auto">
+    <!-- Left Section (Logo) -->
+    <div>
+      <a href="/dashboard_home">
+        {% include "assets/logo small2.svg" %}
+      </a>
+    </div>
+
+    <!-- Hamburger Menu for Small Screens -->
+    <button id="hamburgerMenu" class="block lg:hidden p-2 rounded-lg hover:bg-gray-200">
+      {% include "assets/mingcute_menu-fill.svg" %}
+    </button>
+
+    <!-- Profile Icon -->
+    <a href="{% url 'profile_view' user.id %}" class="hidden lg:block hover:scale-105 active:scale-95 transition-transform duration-300">
+      {% if user.profile.profile_image %}
+        <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
+      {% else %}
+        <div class="w-10 h-10 rounded-full bg-gray-300"></div>
+      {% endif %}
+    </a>
+  </div>
+
+  <!-- Dropdown Menu for Small Screens -->
+  <div id="dropdownMenu" class="hidden flex-col bg-white shadow-lg border border-gray-200 rounded-md lg:hidden">
+    <a href="/dashboard_home" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      Home
+    </a>
+    <a href="/events" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      Events
+    </a>
+    <a href="/announcements" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      Announcements
+    </a>
+    <a href="/saved_posts" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      Saved Posts
+    </a>
+    <a href="{% url 'profile_view' user.id %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+      Profile
+    </a>
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+        Logout
+      </a>
+    </form>
+  </div>
+</div>
+
+<script>
+  const hamburgerMenu = document.getElementById('hamburgerMenu');
+  const dropdownMenu = document.getElementById('dropdownMenu');
+
+  hamburgerMenu.addEventListener('click', () => {
+    dropdownMenu.classList.toggle('hidden');
+  });
+</script>

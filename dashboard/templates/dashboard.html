@@ -8,41 +8,73 @@
     {% tailwind_css %}
   </head>
   <style>
-    .custom-border1{
-      left: calc(25% + 2.25%);
-    }
-    
-    .custom-border2{
-      right: calc(25% + 2.21%);
-    }
 
-    .header-size{
-      width: calc(45.5%);
-    }
+.custom-border1 {
+  left: calc(30%);
+  display: none;
+}
+
+.custom-border2 {
+  right: calc(30%);
+  display: none;
+}
+
+@media screen and (min-width: 639px) { /* Tailwind's md breakpoint */
+  .custom-border1 {
+    display: none;
+  }
+
+  .custom-border2 {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) { /* Tailwind's md breakpoint */
+  .custom-border1 {
+    left: calc(20%); /* Matches md:w-3/5 */
+    display: block;
+  }
+
+  .custom-border2 {
+    right: calc(20%); /* Matches md:w-3/5 */
+    display: block;
+  }
+}
+
+@media screen and (min-width: 1024px) { /* Tailwind's lg breakpoint */
+.custom-border1 {
+    left: calc(30%); /* Matches md:w-3/5 */
+    display: block;
+  }
+
+  .custom-border2 {
+    right: calc(30%); /* Matches md:w-3/5 */
+    display: block;
+  }
+}
+
   </style>
   <body class="text-sm bg-bg-gray">
     <div class="w-auto h-full rounded-xl flex">
-      {% include "left_panel.html" %}
+      <div>
+        {% include "left_panel.html" %}
+      </div>
 
       <div class="w-full h-full ">
-        {% include "header_dashboard.html" %}
+          {% include "header_dashboard.html" %}
 
-        <div class="flex flex-row w-full">
-
-          <div class="w-1/4"></div>
-          <div class="w-1/4"></div>
-          <div class="w-5/6 m-auto top-0 sticky bg-white border border-border-gray border-t-0 rounded-b-[30px]">
+        <div class="flex flex-col w-full">
+          <div class="m-auto w-full lg:w-2/5 md:w-3/5 top-0 sticky bg-white border border-border-gray border-t-0 rounded-b-[30px]">
             <div class="overflow-y-auto z-[-100]">
               {% include "main_feed.html" %}
-            </div>
-          </div>
-          <div class="w-1/4"></div>
-          <div class="w-1/4"></div>
-            {% if request.resolver_match.url_name == 'events' %}  
-              <div class="w-1/4 h-[570px] fixed no-scrollbar bg-white border border-border-gray rounded-3xl overflow-y-auto right-5">
+              {% if request.resolver_match.url_name == 'events' %}  
+              <div class="w-full lg:w-1/4 lg:h-[570px] h-full lg:fixed lg:no-scrollbar lg:bg-white lg:border lg:border-border-gray rounded-3xl overflow-y-auto lg:right-5 lg:top-24">
                   {% include "right-calendar-panel.html" %}
               </div>
             {% endif %}
+            </div>
+          </div>
+            
           {% if request.resolver_match.url_name == 'announcements' %}
             <a href="/announcement_create"><button class="w-16 h-16 rounded-2xl flex justify-center items-center fixed right-5 bottom-5 bg-gray-100 padding-5 hover:bg-gray-200"> {% include "assets/mingcute_add-fill.svg" %}</button></a>
           {% endif %}
