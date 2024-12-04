@@ -192,21 +192,43 @@ def post_create(request):
         form = PostForm()
     return render(request, 'dashboard.html', {'form': form})
 
+@login_required
+def post_edit(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_home') 
+    else:
+        form = PostForm(instance=post)
+        
+    return render(request, 'dashboard.html', {'form': form, 'post': post})
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id, author=request.user)
+    post.is_deleted = True
+    post.save()    
+    return redirect('dashboard_home')
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(is_deleted=False).order_by('-date_posted')
 
-
     if request.user.is_authenticated:
         user_liked = post.likes.filter(author=request.user).exists()
+        user_saved = post.saves.filter(author=request.user).exists()
     else:
         user_liked = False
+        user_saved = False
 
     # user_liked = post.likes.filter(author=request.user).exists() if request.user.is_authenticated else False
     return render(request, 'dashboard.html', {
         'post': post,
         'comments': comments,
-        'user_liked': user_liked
+        'user_liked': user_liked,
+        'user_saved': user_saved
     })
 
 @login_required

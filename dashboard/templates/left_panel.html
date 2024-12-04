@@ -1,130 +1,84 @@
-<div
-  class="h-full  left-0 top-0 fixed w-16"
->
-<div class="flex flex-col justify-between w-20 items-center h-full pb-6">
-  <div class="flex flex-col items-center space-y-5">
-    <div class="p-5">{% include "assets/logo small2.svg" %}</div>
-    <!-- Home Icon -->
-     <a href="/dashboard_home">
-       <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_home' %}{% endif %}">
-         {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'post_create' or request.resolver_match.url_name == 'send_report' or request.resolver_match.url_name == 'post_detail'%}
-          {% include "assets/majesticons_home.svg" %}
-         {% else %}
-          {% include "assets/majesticons_home-line.svg" %}
-         {% endif %}
+{% load static %}
+<div class="h-full left-0 top-0 fixed w-16">
+  <div class="flex flex-col justify-between w-20 items-center h-full pb-6">
+    <div class="flex flex-col items-center space-y-5">
+      
+      <div class="p-5 group relative z-20">
+        <a href="/index">
+          <!-- Default Logo -->
+          <div class="block group-hover:hidden">
+            {% include "assets/logo small2.svg" %}
+          </div>
+          
+          <!-- Hover Logo -->
+          <div class="hidden group-hover:block">
+            {% include "assets/logo-outline.svg" %}
+          </div>
+        </div>
+      </a>
+        
+      
+      <!-- Home Icon -->
+      <a href="/dashboard_home">
+        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+          {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'post_create' or request.resolver_match.url_name == 'send_report' %}
+            {% include "assets/majesticons_home.svg" %}
+          {% else %}
+            {% include "assets/majesticons_home-line.svg" %}
+          {% endif %}
         </div>
       </a>
 
-    <!-- Event Icon -->
-    <a href="/events">
-      <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_event' %}{% endif %}">
-        {% if request.resolver_match.url_name == 'dashboard_event' %}
-          {% include "assets/material-symbols_event.svg" %}
-        {% else %}
-          {% include "assets/material-symbols_event-outline.svg" %}
-        {% endif %}
-      </div>
-    </a>
+      <!-- Event Icon -->
+      <a href="/events">
+        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+          {% if request.resolver_match.url_name == 'events' %}
+            {% include "assets/material-symbols_event.svg" %}
+          {% else %}
+            {% include "assets/material-symbols_event-outline.svg" %}
+          {% endif %}
+        </div>
+      </a>
 
-    <!-- Tags Icon -->
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_tags' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'dashboard_tags' %}
-        {% include "assets/tabler_tags-solid.svg" %}
-      {% else %}
-        {% include "assets/tabler_tags.svg" %}
-      {% endif %}
-    </div>
+      <!-- Megaphone Icon -->
+      <a href="/announcements">
+        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+          {% if request.resolver_match.url_name == 'announcements' %}
+            {% include "assets/majesticons_megaphone.svg" %}
+          {% else %}
+            {% include "assets/majesticons_megaphone-line.svg" %}
+          {% endif %}
+        </div>
+      </a>
 
-    <!-- Megaphone Icon -->
-    <a href="/announcements">
-      <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-        {% if request.resolver_match.url_name == 'announcements' %}
-          {% include "assets/majesticons_megaphone.svg" %}
-        {% else %}
-          {% include "assets/majesticons_megaphone-line.svg" %}
-        {% endif %}
-      </div>
-    </a>
-
-    <a href="/saved_posts">
-    <div class="p-3 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-      {% if request.resolver_match.url_name == 'saved_posts' or request.resolver_match.url_name == 'post_detail'   %}
-        {% include "assets/bookmark.svg" %}
-      {% else %}
-        {% include "assets/material-symbols_bookmark-outline.svg" %}
-      {% endif %}
-    </div>
-    </a>
-  </div>
-
-  <div class="flex flex-col justify-center items-center space-y-6">
-    <div class="relative flex flex-col items-center space-y-8">
-      <!-- Notification Button -->
-      <div id="notif-button" class="p-3 rounded-lg hover:bg-gray-box cursor-pointer">
-        {% if request.resolver_match.url_name == '' %}
-        {% include "assets/notification-outline.svg" %}
-        {% else %}
-        {% include "assets/notification-alert.svg" %}
-        {% endif %}
-      </div>
-
-    <!-- Dropdown Menu -->
-      <div 
-      id="notif-dropdown" 
-      class="fixed bottom-36 left-20 ml-2 mb-2 w-56 bg-white border border-border-gray rounded-lg hidden"
-      >
-        <ul class="text-13 text-gray-700 divide-y divide-gray-200">
-          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif1</li>
-          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif2</li>
-          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
-          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
-          <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">New Notif3</li>
-        </ul>
-            <div class="border-t border-gray-200">
-                <button class="w-full text-xs font-bold py-2 px-4 hover:bg-gray-100 text-center">
-                    View all notifications
-                </button>
-            </div>
-      </div>
-    </div>
-
-      <div class="pb-2 mb-5 rounded-lg hover:bg-gray-box {% if request.resolver_match.url_name == 'dashboard_announcement' %}{% endif %}">
-        {% if request.resolver_match.url_name == '' %}
-        {% include "assets/basil_settings.svg" %}
-        {% else %}
-        {% include "assets/basil_settings-outline.svg" %}
-        {% endif %}
-      </div>
-      <a href="{% url 'profile_view' user.id %}" class="">
-        {% if user.profile.profile_image %}
-            <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
-        {% else %}
-            <div class="w-9 h-9 rounded-full bg-gray-300"></div>
-        {% endif %}
+      <!-- Saved Posts Icon -->
+      <a href="/saved_posts">
+        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+          {% if request.resolver_match.url_name == 'saved_posts' %}
+            {% include "assets/bookmark.svg" %}
+          {% else %}
+            {% include "assets/material-symbols_bookmark-outline2.svg" %}
+          {% endif %}
+        </div>
       </a>
     </div>
 
-
+    <!-- Bottom Section -->
+    <div class="flex flex-col justify-center items-center space-y-6">
+      <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        {% if request.resolver_match.url_name == '' %}
+          {% include "assets/basil_settings.svg" %}
+        {% else %}
+          {% include "assets/basil_settings-outline.svg" %}
+        {% endif %}
+      </div>
+      <a href="{% url 'profile_view' user.id %}" class="hover:scale-105 active:scale-95 transform transition duration-300">
+        {% if user.profile.profile_image %}
+          <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
+        {% else %}
+          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+        {% endif %}
+      </a>
+    </div>
   </div>
-
 </div>
-</div>
-</div>
-
-
-<script>
-  document.getElementById('notif-button').addEventListener('click', () => {
-    const dropdown = document.getElementById('notif-dropdown');
-    dropdown.classList.toggle('hidden');
-  });
-  
-  // Close dropdown when clicking outside
-  document.addEventListener('click', (event) => {
-    const dropdown = document.getElementById('notif-dropdown');
-    const button = document.getElementById('notif-button');
-    if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-        dropdown.classList.add('hidden');
-    }
-});
-
-</script>

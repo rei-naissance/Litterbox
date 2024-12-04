@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import include, path
 from django.conf.urls.static import static
 
 from Litterbox import settings
@@ -10,6 +10,8 @@ urlpatterns = [
     path('post_create', views.post_create, name='post_create'),
     path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
     path('post/<int:post_id>/send_report', views.send_report, name='send_report'),
+    path('post/<int:post_id>/edit', views.post_edit, name='post_edit'),
+    path('post/<int:post_id>/delete', views.post_delete, name='post_delete'),
     path('report/<int:report_id>/delete/', views.delete_reported_post, name='delete_reported_post'),
     path('report/<int:report_id>/ignore/', views.disregard_reported_post, name='disregard_reported_post'),
     path('toggle-like/<int:post_id>/', views.toggle_like, name='toggle_like'),
@@ -29,7 +31,8 @@ urlpatterns = [
     path('event/delete/<int:event_id>/', views.delete_event, name='delete_event'),
     path('events/user/', views.user_events, name='user_events'),
     path('follow-event/<int:event_id>/', views.follow_event, name='follow_event'),
-    path('unfollow-event/<int:event_id>/', views.unfollow_event, name='unfollow_event')
+    path('unfollow-event/<int:event_id>/', views.unfollow_event, name='unfollow_event'),
+    path('tinymce/', include('tinymce.urls')),
 ]
 
 if settings.DEBUG:

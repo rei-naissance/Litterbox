@@ -53,21 +53,10 @@
               <a href="{% url 'password_reset' %}" class="text-gray-font1 text-13">Forgot Password?</a>
             </div>
           </div>
-          <div class="relative flex items-center justify-center">
+          <div class="relative flex items-center justify-center pb-2">
             <hr class="w-full border-gray-300" />
             <span class="absolute bg-white px-3 text-gray-font1 text-13">OR</span>
           </div>
-
-          <div class="flex flex-col items-center justify-center space-y-4">
-            <button
-              class="w-full flex justify-center items-center border border-input-border py-2 rounded-sm hover:bg-gray-100 font-semibold text-13 h-10"
-            >
-              <div class="h-7 w-9 mr-1">{% include 'assets/outlook.svg' %}</div>
-    
-              <a href="#outlooksignin"> Sign in with Outlook </a>
-            </button>
-          </div>
-
           <button
             type="submit"
             class="w-full bg-green-box text-white py-2 rounded-sm hover:bg-green-700 transition-colors font-regular text-base text-13 font-bold"
@@ -77,6 +66,6 @@
         </form>
       </div>
     </div>
-    <button class="flex text-gray-font1 text-13 mx-5 px-5 mt-12">{% include 'assets/arrow_left.svg' %}<dic class="px-2 font-bold"> <a href="{% url 'register' %}">Register</a></div></button>
+    <a href="{% url 'register' %}" class="fixed left-0 bottom-12"><div class="flex text-gray-font1 text-13 mx-5 px-5 mt-12">{% include 'assets/arrow_left.svg' %}<div class="px-2 font-bold">Register</div></div></a>
   </body>
 </html>
