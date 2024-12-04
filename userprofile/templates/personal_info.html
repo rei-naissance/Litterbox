@@ -82,6 +82,12 @@
             <button id="profile-popup-open-id" class="edit-profile-container py-[5px] px-[10px] rounded-lg text-[14px] border-none bg-gray-btn  hover:bg-gray-200">
                 Edit Profile
             </button>
+
+            {% if user.is_authenticated and user.is_admin %}
+            <a href="{% url 'admin_dashboard' %}" class=" text-white rounded-lg transition">
+                <div class="fixed z-10 text-11 left-5 bottom-5 p-2 px-3  text-black bg-white border hover:bg-gray-200 border-border-gray rounded-xl">Admin Dashboard</div>
+            </a>
+            {% endif %}
             
         </div>
     {% endif %}

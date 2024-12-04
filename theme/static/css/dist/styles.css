@@ -1394,6 +1394,10 @@ select {
   left: 50%;
 }
 
+.left-5 {
+  left: 1.25rem;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -1765,10 +1769,6 @@ select {
   height: 500px;
 }
 
-.h-\[570px\] {
-  height: 570px;
-}
-
 .h-\[650px\] {
   height: 650px;
 }
@@ -1818,6 +1818,10 @@ select {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-4 {
+  height: 1rem;
 }
 
 .max-h-\[300px\] {
@@ -1957,17 +1961,6 @@ select {
   width: 100%;
 }
 
-<<<<<<< HEAD
-=======
-.w-2\/5 {
-  width: 40%;
-}
-
-.w-4\/5 {
-  width: 80%;
-}
-
->>>>>>> 8a09a89ba474f4e8cdeae49363f08d615652c4fd
 .min-w-\[730px\] {
   min-width: 730px;
 }
@@ -2442,6 +2435,11 @@ select {
 .bg-blue-500 {
   --tw-bg-opacity: 1;
   background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.bg-blue-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .bg-blue-box {
@@ -3112,6 +3110,11 @@ select {
   background-color: rgb(250 250 250 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-blue-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(29 78 216 / var(--tw-bg-opacity));
+}
+
 .hover\:bg-gray-100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
@@ -3256,10 +3259,6 @@ select {
 }
 
 @media (min-width: 640px) {
-  .sm\:right-5 {
-    right: 1.25rem;
-  }
-
   .sm\:hidden {
     display: none;
   }
@@ -3273,27 +3272,18 @@ select {
     padding-right: 1.5rem;
   }
 
-  .sm\:text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-
-  .sm\:text-xs {
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-
   .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
+
+  .sm\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
 
 @media (min-width: 768px) {
-  .md\:right-5 {
-    right: 1.25rem;
-  }
-
   .md\:mb-0 {
     margin-bottom: 0px;
   }
@@ -3351,24 +3341,8 @@ select {
     right: 1.25rem;
   }
 
-  .lg\:top-10 {
-    top: 2.5rem;
-  }
-
-  .lg\:top-20 {
-    top: 5rem;
-  }
-
-  .lg\:top-32 {
-    top: 8rem;
-  }
-
   .lg\:top-24 {
     top: 6rem;
-  }
-
-  .lg\:m-auto {
-    margin: auto;
   }
 
   .lg\:block {

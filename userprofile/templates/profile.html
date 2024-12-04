@@ -11,11 +11,6 @@
     <body>
         {% include "header_dashboard_v2.html" %}
         <div class="body-container relative flex flex-wrap w-full h-full justify-center gap-6 p-4 bg-gray-box rounded-xl">
-            {% if user.is_authenticated and user.is_admin %}
-            <a href="{% url 'admin_dashboard' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-            <div class="fixed z-10 text-11 left-5 bottom-5 p-2 px-3 text-black bg-white border border-border-gray rounded-xl">Admin Dashboard</div>
-            </a>
-            {% endif %}
             <div class="side-container flex flex-col gap-5 w-full h-auto xl:sticky lg:max-w-[285px] top-[-100px]">
                 {% include "personal_info.html" %}
                 {% include "about_info.html" %}
