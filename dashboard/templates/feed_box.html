@@ -4,7 +4,7 @@
   class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex transition duration-300"
 >
   <div class="w-9 h-9 rounded-full bg-gray-300 hover:scale-105 active:scale-95 transform transition duration-300">
-    <a href="{% url 'profile_view' post.author.id %}" class="">
+    <a href="{% url 'profile_view' post.author.id %}" class="block w-9 h-9">
       {% if post.author.profile.profile_image %}
           <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
       {% endif %}

@@ -192,9 +192,9 @@ def account_termination(request):
         
         if user is not None:
             # user.delete()
+            user.is_active = False
             return render(request, 'account_termination.html', {'success': 'Account Terminated'})
         else:
             return render(request, 'account_termination.html', {'error': 'Invalid credentials'})
-    print("check")
     return render(request, 'account_termination.html')
     

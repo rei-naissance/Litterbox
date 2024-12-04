@@ -11,6 +11,7 @@ from .models import Post, Comment, Report, Event, Follow
 from django.http import JsonResponse
 from datetime import datetime
 from django.utils.timezone import localtime
+from django.db.models import F
 import json
 
 def admin_check(user):                                                          # decorator to check if user is admin.
@@ -180,6 +181,12 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+
+            profile = request.user.profile
+            profile.post_count = F('post_count') + 1
+            profile.save()
+            profile.refresh_from_db()
+
             return redirect('dashboard_home')  # Redirect to dashboard home after posting
     else:
         form = PostForm()
@@ -237,6 +244,15 @@ def comment_create(request, post_id):
                 author = request.user,
                 content = content
             )
+
+            # Increment the comment_count field
+            profile = request.user.profile
+            profile.comment_count = F('comment_count') + 1
+            profile.save()
+
+            # Reload the profile to reflect the updated comment_count
+            profile.refresh_from_db()
+
             return JsonResponse({'success': True, 'comment_id': comment.id, 'content': comment.content})
         else:
             # 400 Bad Request
@@ -250,6 +266,12 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     comment.is_deleted = True
     comment.save()
+
+    profile = comment.author.profile
+    if profile.comment_count > 0:
+        profile.comment_count = F('comment_count') - 1
+    profile.save()
+
     return JsonResponse({'success': True})
 
 @login_required

@@ -2,11 +2,15 @@
 {% tailwind_css %}
 
 <div class="cover-image-container flex flex-col items-center p-4">
+    {% if profile.cover_image %}
     <img 
-        src="{% if profile.cover_image %} {{ profile.cover_image.url }} {% else %} https://via.placeholder.com/150 {% endif %}" 
+        src="{{ profile.cover_image.url }}" 
         alt="Profile Cover Image" 
         class="min-w-[730px] w-full h-[400px] rounded-lg"
     >
+    {% else %}
+        <div class="min-w-[730px] w-full h-[400px]  bg-[#6a7181] rounded-lg"></div>
+    {% endif %}
     {% if request.user == profile.student%}
         <button id="popup-edit-cover-id" class="edit-cover-container absolute bg-gray-btn px-2 py-1 rounded-lg text-center w-[168px] text-sm  right-[47px] bottom-[29px] border-none z-0  hover:bg-gray-200" >
             Edit Cover Photo
