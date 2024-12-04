@@ -53,6 +53,12 @@
     <a href="{% url 'profile_view' user.id %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
       Profile
     </a>
+    <form method="POST" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <a href="{% url 'logout' %}" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">
+        Logout
+      </a>
+    </form>
   </div>
 </div>
 

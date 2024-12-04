@@ -60,13 +60,11 @@
 
     <!-- Bottom Section -->
     <div class="flex flex-col justify-center items-center space-y-6">
-      <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300" onclick="toggleDropdown()">
-        {% if request.resolver_match.url_name == '' %}
+      <a href="{% url 'logout' %}">
+        <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300">
           {% include "assets/majesticons_logout-line2.svg" %}
-        {% else %}
-          {% include "assets/majesticons_logout-line.svg" %}
-        {% endif %}
-      </div>
+        </div>
+      </a>
       <a href="{% url 'profile_view' user.id %}" class="hover:scale-105 active:scale-95 transition-transform duration-300">
         {% if user.profile.profile_image %}
           <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
