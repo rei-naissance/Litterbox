@@ -222,6 +222,26 @@ def post_delete(request, post_id):
     post.save()    
     return redirect('dashboard_home')
 
+@login_required
+def announcement_edit(request, announcement_id):
+    announcement = get_object_or_404(Announcement, pk=announcement_id)
+    if request.method == 'POST':
+        form = AnnouncementForm(request.POST, request.FILES, instance=announcement)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard_home') 
+    else:
+        form = AnnouncementForm(instance=announcement)
+        
+    return render(request, 'dashboard.html', {'form': form, 'announcement': announcement})
+
+@login_required
+def announcement_delete(request, announcement_id):
+    announcement = get_object_or_404(Announcement, pk=announcement_id, author=request.user)
+    announcement.is_archived = True
+    announcement.save()
+    return redirect('dashboard_home')
+
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.filter(is_deleted=False).order_by('-date_posted')

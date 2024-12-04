@@ -1,7 +1,7 @@
 {% load custom_filters %}
 {% load static %}
 
-<div class="w-1/5 fixed right-10 ">
+<div class="w-1/5 fixed right-10 lg:right-10 md:hidden sm:hidden hidden lg:block ">
   {% if post.image%}
     <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full rounded-3xl border border-border-gray"/>
   {% else %}
@@ -79,10 +79,10 @@
           <span id="like-count-{{ post.id }}" class="flex items-center">{{ post.likes.count }}</span>
         </button>
         
-        <span class="text-gray-font flex items-center cursor-pointer p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        <button class="text-gray-font flex items-center cursor-pointer p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
           <div class="mx-2 ml-0">{% include "assets/iconamoon_comment.svg" %}</div>
-          {{ post.comments.count }}</span
-        >
+          <span class="flex items-center">{{ post.comments.count }}</span>
+        </button>
       </div>
       <div class="flex items-center">
         <button class="text-gray-font flex items-center p-2 rounded-full hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300" onclick="toggleSave('{{ post.id }}')">
@@ -113,13 +113,59 @@
       <li class="px-6 py-4 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
         <div class="flex space-x-2">
           <div class="font-bold">{{ comment.author }}</div>
-          <div class="text-gray-font">{{ comment.date_posted|timesince_first }}</div>
+          <div class="text-gray-font text-xs m-auto">{{ comment.date_posted|timesince_first }}</div>
         </div>
         <p>{{ comment.content }}</p>
       </li>
       {% endfor %}
     </ul>
   </div>
+</div>
+</div>
+
+<div id="comment-section-{{ post.id }}">
+
+  <div id="comments-{{ post.id }}" class="">
+    <ul class="">
+        <!-- Additional hidden comments -->
+        {% for comment in post.comments.all|slice:"3:" %}
+        <div id="comment-{{ comment.id }}" class="mt-2 comment">
+          <li class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+              <div class="flex space-x-2">
+                  <div class="font-bold">{{ comment.author.email }}</div>
+                  <div class="text-gray-font text-xs m-auto">{{ comment.date_posted|timesince_first }}</div>
+              </div>
+              
+
+              {% if comment.author == request.user %}
+              <div class="flex justify-between w-full pr-2">
+                <p>{{ comment.content }}</p>
+                <div class="space-x-2">
+                  <button onclick="editComment('{{ comment.id }}')">{% include "assets/tabler_pencil.svg" %}</button>
+                  <button onclick="deleteComment('{{ comment.id }}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+                </div>
+              </div>
+              {% endif %}
+          </li>
+      </div>
+        {% endfor %}
+    </ul>
+
+    <!-- Show More button -->
+    {% if post.comments.count > 3 %}
+    <button id="show-more-btn-{{ post.id }}" onclick="showMoreComments('{{ post.id }}', 5)" class="text-gray-font1 px-6 py-2 border border-x-0 border-t-0 border-b-border-gray w-full">
+        Show More Comments
+    </button>
+    {% endif %}
+</div>
+
+<div id="comment-input-{{ post.id }}" class="mt-2 flex px-6 pt-2 pb-4">
+  <input type="text" class="w-full border border-border-gray px-3 py-2 rounded-lg text-sm" 
+        placeholder="Comment as {{ request.user.email }}"
+        id="new-comment-{{ post.id }}">
+  <button onclick="postComment('{{ post.id }}')" class="text-black rounded-lg h-9 w-12 flex  items-center justify-center">
+    {% include "assets/iconamoon_send-bold.svg" %}
+  </button>
 </div>
 </div>
 
@@ -184,7 +230,7 @@ function showMoreComments(postId, count) {
           <div class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
             <div class="flex space-x-2">
               <div class="font-bold">{{ request.user.email }}</div>
-              <div class="text-gray-font">${data.date_posted}</div>
+              <div class="text-gray-font text-xs m-auto">Now</div>
             </div>
             <div class="flex justify-between w-full pr-2">
               <p>${data.content}</p>
