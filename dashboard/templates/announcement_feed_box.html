@@ -19,9 +19,11 @@
                 <h2 class="text-base font-semibold text-gray-800">
                     {{ announcement.title }}
                 </h2>
-                <p class="text-xs text-gray-600">
-                    {{ announcement.content|truncatewords:10 }} <!-- Truncate content -->
-                </p>
+                <div class="text-gray-700 text-lg mt-2 overflow-hidden line-clamp-1 break-words">
+                    <div class="tiny-content prose text-justify text-xs">
+                      {{ announcement.content|safe }}
+                    </div>
+                  </div>
             </div>
         </div>
         <div class="flex -space-x-3 items-center justify-center text-xs text-gray-600">

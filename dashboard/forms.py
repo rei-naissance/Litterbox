@@ -50,7 +50,7 @@ class AnnouncementForm(forms.ModelForm):
                 'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500',
                 'placeholder': 'Enter title'
             }),
-            'content': forms.Textarea(attrs={
+            'content': TinyMCE(attrs={
                 'class': 'block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500',
                 'placeholder': 'Enter announcement details',
                 'rows': 5

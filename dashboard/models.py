@@ -16,8 +16,9 @@ class Post(models.Model):
     is_deleted = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.title
-    
+        return self.title if self.title else 'Untitled Post'
+
+
 class Comment(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
@@ -80,7 +81,7 @@ class Report(models.Model):
 
 class Announcement(models.Model):
     title = models.CharField(max_length=150)
-    content = models.TextField()
+    content = tinymce_models.HTMLField()
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='announcements'
     )

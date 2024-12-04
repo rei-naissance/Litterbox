@@ -2,25 +2,20 @@
 <div class="h-full left-0 top-0 fixed w-16">
   <div class="flex flex-col justify-between w-20 items-center h-full pb-6">
     <div class="flex flex-col items-center space-y-5">
-      
       <div class="p-5 group relative z-20">
         <a href="/index">
-          <!-- Default Logo -->
           <div class="block group-hover:hidden">
             {% include "assets/logo small2.svg" %}
           </div>
-          
-          <!-- Hover Logo -->
           <div class="hidden group-hover:block">
             {% include "assets/logo-outline.svg" %}
           </div>
-        </div>
-      </a>
-        
-      
+        </a>
+      </div>
+
       <!-- Home Icon -->
       <a href="/dashboard_home">
-        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300">
           {% if request.resolver_match.url_name == 'dashboard_home' or request.resolver_match.url_name == 'post_create' or request.resolver_match.url_name == 'send_report' %}
             {% include "assets/majesticons_home.svg" %}
           {% else %}
@@ -31,7 +26,7 @@
 
       <!-- Event Icon -->
       <a href="/events">
-        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300">
           {% if request.resolver_match.url_name == 'events' %}
             {% include "assets/material-symbols_event.svg" %}
           {% else %}
@@ -42,7 +37,7 @@
 
       <!-- Megaphone Icon -->
       <a href="/announcements">
-        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300">
           {% if request.resolver_match.url_name == 'announcements' %}
             {% include "assets/majesticons_megaphone.svg" %}
           {% else %}
@@ -53,7 +48,7 @@
 
       <!-- Saved Posts Icon -->
       <a href="/saved_posts">
-        <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+        <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300">
           {% if request.resolver_match.url_name == 'saved_posts' %}
             {% include "assets/bookmark.svg" %}
           {% else %}
@@ -65,18 +60,18 @@
 
     <!-- Bottom Section -->
     <div class="flex flex-col justify-center items-center space-y-6">
-      <div class="p-3 rounded-lg hover:bg-hover-color hover:scale-105 active:scale-95 transform transition duration-300">
+      <div class="p-3 rounded-lg hover:bg-gray-200 hover:scale-105 active:scale-95 transition-transform duration-300" onclick="toggleDropdown()">
         {% if request.resolver_match.url_name == '' %}
-          {% include "assets/basil_settings.svg" %}
+          {% include "assets/majesticons_logout-line2.svg" %}
         {% else %}
-          {% include "assets/basil_settings-outline.svg" %}
+          {% include "assets/majesticons_logout-line.svg" %}
         {% endif %}
       </div>
-      <a href="{% url 'profile_view' user.id %}" class="hover:scale-105 active:scale-95 transform transition duration-300">
+      <a href="{% url 'profile_view' user.id %}" class="hover:scale-105 active:scale-95 transition-transform duration-300">
         {% if user.profile.profile_image %}
           <img src="{{ user.profile.profile_image.url }}" alt="Profile Image" class="w-10 h-10 rounded-full object-cover">
         {% else %}
-          <div class="w-9 h-9 rounded-full bg-gray-300"></div>
+          <div class="w-10 h-10 rounded-full bg-gray-300"></div>
         {% endif %}
       </a>
     </div>

@@ -47,6 +47,7 @@ module.exports = {
         'gray-shadow': '0px 0px 18px 0px rgba(0, 0, 0, 0.3)',
       },
       fontSize: {
+        8: "8px",
         10: "10px",
         11: "11px",
         12: "12px",
