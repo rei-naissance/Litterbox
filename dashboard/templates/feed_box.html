@@ -31,8 +31,9 @@
         <!-- Dropdown Menu -->
         <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
           <!-- Edit Option -->
+          {% if request.user == post.author %}
           <a
-            href=""
+            href="{% url 'post_edit' post.id %}"
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Edit
