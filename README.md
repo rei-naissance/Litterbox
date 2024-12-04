@@ -17,10 +17,10 @@
       <img src="https://img.shields.io/github/last-commit/rei-naissance/Litterbox" alt="last update" style="height: 25px; width: auto;" />
   </a>
   <a href="https://github.com/rei-naissance/Litterbox/network/members">
-      <img src="https://img.shields.io/github/forks/rei-naissance/Litterbox" alt="forks" style="height: 25px; width: auto;" />
+      <img src="https://img.shields.io/github/forks/rei-naissance/Litterbox?style=social&cacheBust=1" alt="forks" style="height: 25px; width: auto;" />
   </a>
   <a href="https://github.com/rei-naissance/Litterbox/stargazers">
-      <img src="https://img.shields.io/github/stars/rei-naissance/Litterbox" alt="stars" style="height: 25px; width: auto;" />
+      <img src="https://img.shields.io/github/stars/rei-naissance/Litterbox?style=social&cacheBust=1" alt="stars" style="height: 25px; width: auto;" />
   </a>
   <a href="https://github.com/rei-naissance/Litterbox/issues">
       <img src="https://img.shields.io/github/issues/rei-naissance/Litterbox" alt="open issues" style="height: 25px; width: auto;" />
