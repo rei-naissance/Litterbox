@@ -12,6 +12,7 @@ from django.http import JsonResponse
 from datetime import datetime
 from django.utils.timezone import localtime
 from django.db.models import F
+from django.utils.timezone import now
 import json
 
 def admin_check(user):                                                          # decorator to check if user is admin.
@@ -22,11 +23,20 @@ def toggle_like(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     user = request.user
     like, created = Like.objects.get_or_create(author=user, post=post)          # get_or_create returns a tuple contaning like object and boolean.
+    author_profile = post.author.profile
+    
+
     if created:                                                                 # boolean used to check if like object was created (post was unliked beforehand).
-        like.liked_on = datetime.now()
+        like.liked_on = now()
         like.save()
+        author_profile.like_count = F('like_count') + 1
     else:
         like.delete()
+        if author_profile.like_count > 0:
+            author_profile.like_count = F('like_count') - 1
+            
+    author_profile.save()
+    author_profile.refresh_from_db() 
     return JsonResponse({                                                       # returns line count and status to reflect on frontend.
         'like_count': post.likes.count(),
         'liked': created
