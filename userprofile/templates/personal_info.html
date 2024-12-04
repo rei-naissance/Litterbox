@@ -1,26 +1,29 @@
 {% load static tailwind_tags %}
 {% tailwind_css %}
 <div class="profile-container h-auto flex flex-col  gap-y-2  bg-white border-1 px-4 pt-4 pb-2 rounded-lg">
-    <div class="profile-image-container flex justify-center" id="add-profile-photo-id">
+    <div class="profile-image-container flex justify-center items-center relative" id="add-profile-photo-id">
         {% if profile.profile_image %}
             <img src="{{ profile.profile_image.url }}" alt="Profile Image" class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90"/>
         {% else %}
             <div class="w-[208px] h-[208px] object-cover rounded-full hover:brightness-90 bg-gray-300"></div>
         {% endif %}
-        <div class="profile-option-section hidden absolute right-[35%] top-[10px] z-[10]" id="profile-popup-add-id">
-            {% if request.user == profile.student%}
-                <div>
-                    <button id="add-profile-button-id" class="add-profile-button bg-gray-btn py-2 px-3 my-2 rounded-lg text-sm shadow-gray-shadow hover:bg-gray-200">Add Photo</button>
-                </div>
+        
+        <div class="profile-option-section absolute flex justify-center items-center w-full h-full z-[10]" id="profile-popup-add-id">
+            {% if request.user == profile.student %}
+                <button id="add-profile-button-id" class="add-profile-button bg-gray-btn py-2 px-3 my-2 rounded-lg text-sm shadow-gray-shadow hover:bg-gray-200">Add Photo</button>
             {% endif %}
         </div>
     </div>
-
+    
     
     <div class="profile-personal-info text-center font-semibold">
         <div class="identifier text-[16px] font-medium  text-gray-font ">{{profile.username}}</div>
         <div class="name text-[20px] font-bold ">{{ profile.student.first_name }} {{ profile.student.last_name }}</div>
-        <div class="title text-[10px] my-[21px]  text-gray-font font-medium">{{profile.title}}</div>
+        <div class="title text-[10px] my-[21px]  text-gray-font font-medium">
+            {% if profile.title %}
+                {{profile.title}}
+            {% endif %}
+        </div>
     </div>
 
     <div class="profile-stats-info flex flex-row justify-around text-center gap-y-[10px] w-[100%]">
@@ -46,13 +49,13 @@
         </div>
         <div class="event-participated-stats flex flex-col flex-1 items-center">
             <div class="count text-[16px] font-bold">
-                {% if profile.event_count > 999 %}
+                {% if profile.like_count > 999 %}
                     999+
                 {% else %}
-                    {{ profile.event_count }}
+                    {{ profile.like_count }}
                 {% endif %}
             </div>
-            <div class="title text-[11px] text-gray-font">Events <br>participated</div>
+            <div class="title text-[11px] text-gray-font">Likes</div>
         </div>
     </div>
 
@@ -69,7 +72,8 @@
                 </button>
 
                 <div id="myDropdown" class="dropdown-content shadow-gray-shadow absolute right-0 mt-2 bg-white rounded-lg overflow-hidden hidden z-10">
-                    <a href="{% url 'account_termination' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Termination</a>
+                    <a href="{% url 'account_termination' action='terminate' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Termination</a>
+                    <a href="{% url 'account_termination' action='deactivate' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Deactivation</a>
                 </div>
             </div>
 

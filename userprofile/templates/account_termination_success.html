@@ -1,0 +1,55 @@
+{% load static tailwind_tags %} 
+{% tailwind_css %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Status</title>
+</head>
+<body>
+    <div class="m-4 p-4 h-full rounded-xl flex space-x-4 w-auto min-h-screen bg-gray-box bg-center bg-cover bg-no-repeat justify-center items-center"
+        style="box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05); background-image: url('/static/imgs/home-bg-2.png');">
+        <div class="w-fit h-fit">
+            <div class="forms">
+                <div class="bg-white py-8 px-40">
+                    <div class="text-gray-700 font-bold text-20 text-center">
+                        {% if action == 'terminated' %}
+                            Your account has been terminated.
+                        {% elif action == 'deactivate' %}
+                            Your account has been deactivated.
+                        {% else %}
+                            Unexpected action.
+                        {% endif %}
+                    </div>
+                    
+                    <div class="text-gray-600 font-medium text-8 text-center mb-4">
+                        {% if action == 'terminated' %}
+                            Your account and data has been deleted from our database.
+                        {% elif action == 'deactivate' %}
+                            If you wish to reactivate your account, please email 
+                            <span class="font-bold text-[#ea3c3c]">philippeandrei.dael@cit.edu</span> 
+                            with your user account detail.
+                        {% endif %}
+                    </div>
+
+                    <div class="text-gray-600 font-medium text-8 text-center mb-2 mt-4">
+                        {% if action == 'terminated' %}
+                            We hope to welcome you back soon!
+                        {% elif action == 'deactivate' %}
+                            Your account is deactivated. You can reactivate it by contacting support.
+                        {% endif %}
+                    </div>
+
+                    <div class="flex justify-center mt-6">
+                        <a href="{% url 'home' %}" class="bg-gray-btn text-black py-2 px-6 rounded hover:bg-gray-200">
+                            Back to Homepage
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

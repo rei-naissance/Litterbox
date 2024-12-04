@@ -20,7 +20,7 @@
             <a href="{% url 'events' %}" class="text-gray-500 hover:underline">← Back to Calendar</a>
 
             <!-- Update Button -->
-            <button id="update-button" class="bg-gray-btn  px-4 py-2 rounded-lg">
+            <button id="update-button" class="bg-gray-btn  hover:bg-gray-200  px-4 py-2 rounded-lg">
                 Update
             </button>
         </div>
@@ -90,7 +90,7 @@
             id="title"
             name="title"
             value="{{ form.title.value }}"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
             required
             />
         </div>
@@ -186,7 +186,7 @@
             id="location"
             name="location"
             value="{{ form.location.value }}"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 "
             placeholder="Enter location..."
             required
             />
@@ -198,7 +198,7 @@
             <textarea
             id="description"
             name="description"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 "
             placeholder="Enter a description..."
             >{{ form.description.value }}</textarea>
         </div>
@@ -207,7 +207,7 @@
             <!-- Submit Button -->
             <button
                 type="submit"
-                class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-gray-btn focus:ring-2 focus:ring-gray-btn focus:outline-none"
+                class=" px-6 py-3 rounded-lg font-semibold text-sm bg-gray-btn  hover:bg-gray-200  focus:ring-2 focus:outline-none"
             >
                 Save Changes
             </button>
