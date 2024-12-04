@@ -277,7 +277,7 @@ If you have any questions or suggestions regarding the Litterbox project, feel f
 ### Contact Details
 
 - **Project Link**: [https://github.com/rei-naissance/Litterbox](https://github.com/rei-naissance/Litterbox)
-- **Email**: litterbox.project@gmail.com
+- **Email**: philippeandreid@gmail.com
 
 We appreciate your interest in Litterbox, and we are happy to assist with any inquiries or contributions!
 
