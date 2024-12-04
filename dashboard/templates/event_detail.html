@@ -7,7 +7,11 @@
     <title>Event Details</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body class="w-full min-h-screen bg-gray-box">
+<body class="w-full min-h-screen bg-gray-box bg-center bg-cover bg-no-repeat"
+      style="box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05); 
+             background-image: url('/static/imgs/home-bg-2.png'); 
+             background-attachment: fixed;">
+</body>
     {% include "header_dashboard_v2.html" %}
     <div class="bg-white p-6 rounded-lg shadow-lg max-w-2xl mt-5 mx-auto">
 
@@ -16,7 +20,7 @@
             <a href="{% url 'events' %}" class="text-gray-500 hover:underline">← Back to Calendar</a>
 
             <!-- Update Button -->
-            <button id="update-button" class="bg-gray-btn  px-4 py-2 rounded-lg">
+            <button id="update-button" class="bg-gray-btn  hover:bg-gray-200  px-4 py-2 rounded-lg">
                 Update
             </button>
         </div>
@@ -86,7 +90,7 @@
             id="title"
             name="title"
             value="{{ form.title.value }}"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700"
             required
             />
         </div>
@@ -182,7 +186,7 @@
             id="location"
             name="location"
             value="{{ form.location.value }}"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 "
             placeholder="Enter location..."
             required
             />
@@ -194,7 +198,7 @@
             <textarea
             id="description"
             name="description"
-            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 focus:ring-2 focus:ring-gray-500 focus:outline-none"
+            class="w-full border-gray-300 rounded-lg p-2 text-gray-700 "
             placeholder="Enter a description..."
             >{{ form.description.value }}</textarea>
         </div>
@@ -203,7 +207,7 @@
             <!-- Submit Button -->
             <button
                 type="submit"
-                class="bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-gray-btn focus:ring-2 focus:ring-gray-btn focus:outline-none"
+                class=" px-6 py-3 rounded-lg font-semibold text-sm bg-gray-btn  hover:bg-gray-200  focus:ring-2 focus:outline-none"
             >
                 Save Changes
             </button>

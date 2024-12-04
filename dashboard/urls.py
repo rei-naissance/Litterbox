@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin_dashboard', views.admin_dashboard, name='admin_dashboard'),
     path('post/<int:post_id>/send_report', views.send_report, name='send_report'),
     path('post/<int:post_id>/edit', views.post_edit, name='post_edit'),
+    path('post/<int:post_id>/delete', views.post_delete, name='post_delete'),
     path('report/<int:report_id>/delete/', views.delete_reported_post, name='delete_reported_post'),
     path('report/<int:report_id>/ignore/', views.disregard_reported_post, name='disregard_reported_post'),
     path('toggle-like/<int:post_id>/', views.toggle_like, name='toggle_like'),

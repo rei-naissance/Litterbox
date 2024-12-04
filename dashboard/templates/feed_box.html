@@ -4,7 +4,7 @@
   class="p-4 bg-white border-x-0 border-t-0 border border-b-border-gray hover:bg-bg-gray flex transition duration-300"
 >
   <div class="w-9 h-9 rounded-full bg-gray-300 hover:scale-105 active:scale-95 transform transition duration-300">
-    <a href="{% url 'profile_view' post.author.id %}" class="">
+    <a href="{% url 'profile_view' post.author.id %}" class="block w-9 h-9">
       {% if post.author.profile.profile_image %}
           <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
       {% endif %}
@@ -35,13 +35,21 @@
         <!-- Dropdown Menu -->
         <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
           <!-- Edit Option -->
+          {% if request.user == post.author %}
           <a
-            href=""
+            href="{% url 'post_edit' post.id %}"
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Edit
           </a>
-      
+
+          <a
+            href="{% url 'post_delete' post.id %}"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Delete
+          </a>
+          {% endif %}
           <!-- Report Option -->
           <a
             href="{% url 'send_report' post.id %}"
@@ -60,7 +68,7 @@
           <div class="h-56 w-1/2 bg-gray-100 rounded-xl overflow-hidden">
             <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full" />
           </div>
-          <div class="h-56 w-1/2 px-4 py-2 flex flex-col justify-between">
+          <div class="h-56 w-1/2 px-4 py-2 flex flex-col">
             <h2 class="text-3xl font-bold">{{ post.title }}</h2>
             <div class="text-gray-700 text-lg mt-2 overflow-hidden line-clamp-4">
               <div class="tiny-content prose">

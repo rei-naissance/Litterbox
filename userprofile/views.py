@@ -11,15 +11,22 @@ from django.contrib.auth import authenticate
 import json
 
 
+DEFAULT_COVER_IMAGE = "images/cover_photo.png"
+DEFAULT_PROFILE_IMAGE = "images/default_profile_pic.png"
+
 def delete_image(file_path):
-    # Ensure file_path is not empty
-    if file_path:  
-        if os.path.exists(file_path):
-            try:
-                os.remove(file_path)
-                print(f"Deleted image: {file_path}")
-            except Exception as e:
-                print(f"Error deleting image: {e}")
+    # Ensure file_path is not empty and it's not the default image
+    if file_path:
+        if file_path != DEFAULT_COVER_IMAGE and file_path != DEFAULT_PROFILE_IMAGE:
+            # Proceed with deleting the image if it's not the default image
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                    print(f"Deleted image: {file_path}")
+                except Exception as e:
+                    print(f"Error deleting image: {e}")
+        else:
+            print(f"Skipping deletion of default image: {file_path}")
 
 # Create your views here.
 def profile_view(request, user_id):
@@ -65,7 +72,7 @@ def profile_view(request, user_id):
                 # Handle cover image clear
                 if 'cover_image-clear' in request.POST and current_cover_image_path:
                     delete_image(current_cover_image_path)
-                    profile.cover_image = None
+                    profile.cover_image = DEFAULT_COVER_IMAGE
                 elif cover_image and cover_image != profile.cover_image.name: 
                     if current_cover_image_path:
                         delete_image(current_cover_image_path)
@@ -80,7 +87,7 @@ def profile_view(request, user_id):
                 # Handle profile image clear
                 if 'profile_image-clear' in request.POST and current_profile_image_path:
                     delete_image(current_profile_image_path)
-                    profile.profile_image = None
+                    profile.profile_image = DEFAULT_PROFILE_IMAGE
                 elif profile_image and profile_image != profile.profile_image.name:
                     if current_profile_image_path:
                         delete_image(current_profile_image_path)
@@ -109,7 +116,7 @@ def profile_view(request, user_id):
 
                 if 'cover_image-clear' in request.POST:
                     delete_image(current_cover_image_path) 
-                    profile.profile_image = None
+                    profile.cover_image = DEFAULT_COVER_IMAGE
 
                 # Save the new cover image if provided and valid
                 elif cover_image:
@@ -137,7 +144,7 @@ def profile_view(request, user_id):
 
                 if 'profile_image-clear' in request.POST:
                     delete_image(current_profile_image_path) 
-                    profile.profile_image = None
+                    profile.profile_image = DEFAULT_PROFILE_IMAGE
 
                 # Save the new cover image if provided and valid
                 elif profile_image:
@@ -184,17 +191,33 @@ def profile_view(request, user_id):
 
     return render(request, 'profile.html', context)
 
-def account_termination(request):
+def account_termination_success(request, action):
+    if action == 'terminated':
+        message = "We hope to see you back!"
+    elif action == 'deactivate':
+        message = "Your account is deactivated. You can reactivate it by contacting support."
+    else:
+        message = "Unexpected action."
+
+    return render(request, 'account_termination_success.html', {'message': message})
+
+def account_termination(request, action):
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
-        
-        if user is not None:
-            # user.delete()
-            return render(request, 'account_termination.html', {'success': 'Account Terminated'})
+
+        if user is not None and user == request.user:
+            if action == 'terminate':
+                user.delete()  # Terminate the account
+                return render(request, 'account_termination_success.html', {'action': 'terminated'})
+            elif action == 'deactivate':
+                user.is_active = False  # Deactivate the account
+                user.save()
+                return render(request, 'account_termination_success.html', {'action': 'deactivate'})
         else:
             return render(request, 'account_termination.html', {'error': 'Invalid credentials'})
-    print("check")
-    return render(request, 'account_termination.html')
+
+    return render(request, 'account_termination.html', {'action': action})
+
     

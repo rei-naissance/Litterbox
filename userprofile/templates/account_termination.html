@@ -9,41 +9,50 @@
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     </head>
     <body>
-        <div class="m-4 p-4 w-auto h-full rounded-xl flex space-x-4 bg-gray-box justify-center items-center">
+        <div class="m-4 p-4 h-full rounded-xl flex space-x-4 w-auto min-h-screen bg-gray-box bg-center bg-cover bg-no-repeat justify-center items-center" 
+        style="box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.05); 
+           background-image: url('/static/imgs/home-bg-2.png'); 
+           ">
             <div class="w-fit h-fit">
-
                 <div class="forms">
-                    <form method="POST" action="{% url 'account_termination' %}" class="space-y-4">
+                    <form method="POST" action="{% url 'account_termination' action=action %}" class="space-y-4" autocomplete="off">
                         {% csrf_token %}
                         <div class="bg-white py-8 px-40">
                             <div class="text-gray-700 font-bold text-20 text-center">We are sorry to see you go!</div>
-                            <div class="text-gray-700 font-bold text-16 text-center mb-5">Are you sure you want to terminate your Account?</div>
-                            <div class="text-gray-600 font-medium text-8 text-center mb-2">If so please enter your email address and password</div>
+                            <div class="text-gray-700 font-bold text-16 text-center mb-5">
+                                {% if action == 'terminate' %}
+                                    Are you sure you want to terminate your Account?
+                                {% elif action == 'deactivate' %}
+                                    Are you sure you want to deactivate your Account?
+                                {% endif %}
+                            </div>
+                            <div class="text-gray-600 font-medium text-8 text-center mb-2">Please enter your email address and password</div>
                             <label for="email" class="block text-gray-700 font-medium">Email Address</label>
-                            <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <input type="email" id="email" name="email" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500" autocomplete="off">
                             <label for="password" class="block text-gray-700 font-medium">Password</label>
-                            <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500">
+                            <input type="password" id="password" name="password" required class="w-full p-2 border border-gray-300 rounded mt-1 focus:outline-none focus:ring-2 focus:ring-gray-500" autocomplete="off">
                             {% if error %}
                                 <p class="text-red-500 text-sm">{{ error }}</p>
-                            {% elif success%}
+                            {% elif success %}
                                 <p class="text-green-500 text-sm">{{ success }}</p>
                             {% endif %}
                         </div>
 
                         <div class="flex text-center mt-6 p-2 gap-x-8 justify-center">
-                            <button type="submit" class="bg-red-500 text-white font-semibold py-2 px-6 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
-                                Yes, terminate this account
-                            </button>
-                            <a href="{% url 'dashboard_home' %}" class="font-semibold bg-gray-btn text-black py-2 px-6 rounded  border-gray-200  border-[4px] hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</a>
+                            {% if action == 'terminate' %}
+                                <button type="submit" name="action" value="terminate" class="bg-red-500 text-white font-semibold py-2 px-6 rounded hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400">
+                                    Yes, terminate this account
+                                </button>
+                            {% elif action == 'deactivate' %}
+                                <button type="submit" name="action" value="deactivate" class="bg-yellow-500 text-white font-semibold py-2 px-6 rounded hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                                    Yes, deactivate this account
+                                </button>
+                            {% endif %}
+                            <a href="{% url 'profile_view' user.id %}" class="font-semibold bg-gray-btn text-black py-2 px-6 rounded  border-gray-200 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400">Cancel</a>
                         </div>
-                        <div class="form-group text-center mt-6">
-                            
-                        </div>
-                        
                     </form>
                 </div>
             </div>
         </div>
     </body>
-    
 </html>

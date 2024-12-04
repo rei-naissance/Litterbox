@@ -11,6 +11,8 @@ from .models import Post, Comment, Report, Event, Follow
 from django.http import JsonResponse
 from datetime import datetime
 from django.utils.timezone import localtime
+from django.db.models import F
+from django.utils.timezone import now
 import json
 
 def admin_check(user):                                                          # decorator to check if user is admin.
@@ -21,11 +23,20 @@ def toggle_like(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     user = request.user
     like, created = Like.objects.get_or_create(author=user, post=post)          # get_or_create returns a tuple contaning like object and boolean.
+    author_profile = post.author.profile
+    
+
     if created:                                                                 # boolean used to check if like object was created (post was unliked beforehand).
-        like.liked_on = datetime.now()
+        like.liked_on = now()
         like.save()
+        author_profile.like_count = F('like_count') + 1
     else:
         like.delete()
+        if author_profile.like_count > 0:
+            author_profile.like_count = F('like_count') - 1
+            
+    author_profile.save()
+    author_profile.refresh_from_db() 
     return JsonResponse({                                                       # returns line count and status to reflect on frontend.
         'like_count': post.likes.count(),
         'liked': created
@@ -180,6 +191,12 @@ def post_create(request):
             post = form.save(commit=False)
             post.author = request.user
             post.save()
+
+            profile = request.user.profile
+            profile.post_count = F('post_count') + 1
+            profile.save()
+            profile.refresh_from_db()
+
             return redirect('dashboard_home')  # Redirect to dashboard home after posting
     else:
         form = PostForm()
@@ -197,6 +214,13 @@ def post_edit(request, post_id):
         form = PostForm(instance=post)
         
     return render(request, 'dashboard.html', {'form': form, 'post': post})
+
+@login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id, author=request.user)
+    post.is_deleted = True
+    post.save()    
+    return redirect('dashboard_home')
 
 def post_detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
@@ -230,6 +254,15 @@ def comment_create(request, post_id):
                 author = request.user,
                 content = content
             )
+
+            # Increment the comment_count field
+            profile = request.user.profile
+            profile.comment_count = F('comment_count') + 1
+            profile.save()
+
+            # Reload the profile to reflect the updated comment_count
+            profile.refresh_from_db()
+
             return JsonResponse({'success': True, 'comment_id': comment.id, 'content': comment.content})
         else:
             # 400 Bad Request
@@ -243,6 +276,12 @@ def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     comment.is_deleted = True
     comment.save()
+
+    profile = comment.author.profile
+    if profile.comment_count > 0:
+        profile.comment_count = F('comment_count') - 1
+    profile.save()
+
     return JsonResponse({'success': True})
 
 @login_required

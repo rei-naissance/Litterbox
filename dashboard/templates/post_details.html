@@ -2,7 +2,7 @@
 {% load static %}
 
 <div class="w-1/5 fixed right-10 ">
-  {% if post.image and post.image.url %}
+  {% if post.image%}
     <img src="{{ post.image.url }}" alt="Post image" class="object-cover h-full w-full rounded-3xl border border-border-gray"/>
   {% else %}
     
@@ -14,7 +14,7 @@
     <div class="flex justify-between">
       <div class="flex space-x-3 mb-4 w-full items-center">
         <div class="w-9 h-9 rounded-full bg-gray-300 hover:scale-105 active:scale-95 transform transition duration-300">
-          <a href="{% url 'profile_view' post.author.id %}" class="">
+          <a href="{% url 'profile_view' post.author.id %}" class="block w-9 h-9">
             {% if post.author.profile.profile_image %}
                 <img src="{{ post.author.profile.profile_image.url }}" alt="Profile Image" class="w-9 h-9 rounded-full object-cover">
             {% endif %}
@@ -37,12 +37,19 @@
         <div id="dropdown-{{ post.id }}" class="hidden absolute right-0 mt-2 w-32 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
           <!-- Edit Option -->
           <a
-            href=""
+            href="{% url 'post_edit' post.id %}"
             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
           >
             Edit
           </a>
       
+          <!-- Delete Option -->
+          <a
+            href="{% url 'post_delete' post.id %}"
+            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+          >
+            Delete
+          </a>
           <!-- Report Option -->
           <a
             href="{% url 'send_report' post.id %}"
@@ -117,6 +124,151 @@
 </div>
 
 <script>
+  function toggleCommentInput(postId) {
+  // Toggle the visibility of the comment section
+  const commentSection = document.getElementById(`comment-section-${postId}`);
+  commentSection.classList.toggle('hidden');
+
+  if (!commentSection.classList.contains('hidden')) {
+    // Show only the first 3 comments initially
+    const allComments = document.querySelectorAll(`#comments-${postId} .comment`);
+    allComments.forEach((comment, index) => {
+      comment.classList.toggle('hidden', index >= 3); // Hide comments after the first 3
+    });
+
+    // Display the "Show More" button if there are more than 3 comments
+    const showMoreBtn = document.getElementById(`show-more-btn-${postId}`);
+    if (allComments.length > 3) {
+      showMoreBtn.style.display = 'block';
+    } else {
+      showMoreBtn.style.display = 'none';
+    }
+  }
+}
+
+function showMoreComments(postId, count) {
+  // Select all hidden comments for the current post
+  const hiddenComments = document.querySelectorAll(`#comments-${postId} .comment.hidden`);
+
+  // Show up to the specified count of hidden comments
+  for (let i = 0; i < count && i < hiddenComments.length; i++) {
+    hiddenComments[i].classList.remove('hidden'); // Use class removal to reveal
+  }
+
+  // Hide the "Show More" button if there are no more hidden comments
+  if (document.querySelectorAll(`#comments-${postId} .comment.hidden`).length === 0) {
+    document.getElementById(`show-more-btn-${postId}`).style.display = 'none';
+  }
+}
+
+
+    function postComment(postId) {
+    const content = document.getElementById(`new-comment-${postId}`).value;
+    fetch(`/add-comment/${postId}/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': '{{ csrf_token }}'
+      },
+      body: JSON.stringify({ content })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const commentsDiv = document.getElementById(`comments-${postId}`);
+        const newComment = document.createElement('div');
+        newComment.id = `comment-${data.comment_id}`;
+        newComment.classList.add('mt-2', 'comment');
+        
+        newComment.innerHTML = `
+          <div class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+            <div class="flex space-x-2">
+              <div class="font-bold">{{ request.user.email }}</div>
+              <div class="text-gray-font">${data.date_posted}</div>
+            </div>
+            <div class="flex justify-between w-full pr-2">
+              <p>${data.content}</p>
+              <div class="space-x-2">
+                <button onclick="editComment('${data.comment_id}')">{% include "assets/tabler_pencil.svg" %}</button>
+                <button onclick="deleteComment('${data.comment_id}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        commentsDiv.appendChild(newComment);
+        document.getElementById(`new-comment-${postId}`).value = ''; // Clear the input
+      } else {
+        console.error('Error posting comment:', data.error);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+
+  function deleteComment(commentId) {
+    fetch(`/delete-comment/${commentId}/`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}'
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handles deletion of comments without reload
+      if (data.success) {
+        const commentDiv = document.getElementById(`comment-${commentId}`);
+        commentDiv.remove();
+      } else {
+        console.error('Failed to delete comment');
+      }
+    })
+    .catch(error => console.error('Error:', error));
+  }
+  function editComment(commentId) {
+    // Bandaid solution, email gets added to input field when editing text. Email removed with regex below.
+    const commentContent = document.querySelector(`#comment-${commentId} p`);
+    const currentContent = commentContent.textContent.replace(/^[^:]+:\s*/, '');
+    
+    commentContent.innerHTML = `
+      <input type="text" value="${currentContent}" id="edit-comment-${commentId}" class="h-9">
+      <button onclick="submitEditComment(${commentId})">Save</button>
+    `;
+  }
+  function submitEditComment(commentId) {
+  const newContent = document.getElementById(`edit-comment-${commentId}`).value;
+  fetch(`/edit-comment/${commentId}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: JSON.stringify({ content: newContent })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      const commentDiv = document.getElementById(`comment-${commentId}`);
+      commentDiv.innerHTML = `
+        <div class="px-6 py-3 space-y-1 border border-x-0 border-t-0 border-b-border-gray">
+          <div class="flex space-x-2">
+            <div class="font-bold">{{ request.user.email }}</div>
+            <div class="text-gray-font">${data.date_posted}</div>
+          </div>
+          <div class="flex justify-between w-full pr-2">
+            <p>${data.content}</p>
+            <div class="space-x-2">
+              <button onclick="editComment('${commentId}')">{% include "assets/tabler_pencil.svg" %}</button>
+              <button onclick="deleteComment('${commentId}')">{% include "assets/majesticons_delete-bin-line.svg" %}</button>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      alert(data.error || 'Failed to edit comment');
+    }
+  })
+  .catch(error => console.error('Error:', error));
+}
   function toggleDropdown(id) {
   const dropdown = document.getElementById(`dropdown-${id}`);
   
